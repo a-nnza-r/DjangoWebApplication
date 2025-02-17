@@ -39,8 +39,12 @@ class DjSeed(AbstractSeed):
         return self.queue.popleft()
 
 
+# TODO @a-nnza-r: Implement priority queue for SeedQ
+
+
 class DjIsInteresting(AbstractIsInteresting):
     def __init__(self):
+        # @a-nnza-r TODO: update coverage to use count bucketing
         self.prev_coverage = set()
         self.coverage_file = ".coverage"
         self.server_process = None
@@ -137,6 +141,9 @@ class DjPowerSchedule(AbstractPowerSchedule):
         return base_energy + (100 * self.discovered_paths)
 
 
+# @a-nnza-r TODO: Implement adaptive power schedule ( exponential cut-off, linear progression etc)
+
+
 class DjMutator(AbstractMutator):
     def mutateInput(self, input: dict) -> dict:
         """Mutate input fields aggressively."""
@@ -179,6 +186,7 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
         self.power_schedule = power_schedule
         self.mutator = mutator
         self.is_interesting = is_interesting
+        # @a-nnza-r TODO: Implement failure Queue
         self.bugs = []
         self.max_iterations = 99999
 
