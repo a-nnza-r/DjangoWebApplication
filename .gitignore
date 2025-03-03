@@ -13,3 +13,6 @@ env
 *.sqlite*
 
 .env
+.venv/
+.coverage
+__pycache__

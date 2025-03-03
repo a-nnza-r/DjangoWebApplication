@@ -16,7 +16,7 @@ from abstract import (
 
 # Setup logging
 logging.basicConfig(
-    filename="./fuzz_report.log",
+    filename="./django/fuzz_report.log",
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
 )
@@ -46,7 +46,7 @@ class DjIsInteresting(AbstractIsInteresting):
     def __init__(self):
         # @a-nnza-r TODO: update coverage to use count bucketing
         self.prev_coverage = set()
-        self.coverage_file = ".coverage"
+        self.coverage_file = "django/.coverage"
         self.server_process = None
 
     def start_server(self):
@@ -54,7 +54,7 @@ class DjIsInteresting(AbstractIsInteresting):
         if not self.server_process:
             logging.info("[INFO] Starting Django server with coverage.")
             self.server_process = subprocess.Popen(
-                ["coverage", "run", "manage.py", "runserver", "8000"],
+                ["coverage", "run", "django/manage.py", "runserver", "8000"],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             )
