@@ -24,3 +24,4 @@ coverage==7.6.12
 nicegui
 pyserial
 bleak
+bitstring

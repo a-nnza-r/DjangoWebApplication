@@ -1,3 +1,4 @@
 nicegui
 pyserial
 bleak
+bitstring

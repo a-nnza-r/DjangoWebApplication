@@ -1,9 +1,13 @@
 
 
+
+
+
+
 import copy
 import random
 from bitstring import BitArray
-from fuzzer.greybox import Mutator
+from fuzzer.abstract import AbstractMutator
 
 
 class ByteMutator():
@@ -52,7 +56,7 @@ class ByteMutator():
         ]
         return random.choice(fs)(input)
     
-class ByteArrayMutator(Mutator):
+class ByteArrayMutator(AbstractMutator):
     def mutateRandomBytes(self, input: list[int]) -> list[int]:
         num_bytes_to_mutate = random.randint(1, len(input))
         idxs_to_mutate = random.choices(list(range(len(input))), k=num_bytes_to_mutate)
