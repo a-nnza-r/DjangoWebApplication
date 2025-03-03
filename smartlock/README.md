@@ -1,0 +1,1 @@
+Setup a virtual environment, run pip install, activate the environment, then run `python fuzz.py`.
