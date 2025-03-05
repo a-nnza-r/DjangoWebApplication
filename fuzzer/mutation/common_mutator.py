@@ -43,6 +43,16 @@ class ByteMutator():
     @staticmethod
     def _setToInterestingByte(input: int) -> int:
         return random.choice([0, 1, 2, 255])
+    
+    @staticmethod
+    def _arithmetic_inc(input: int) -> int:
+        """Increment the byte value, keeping it within range (0-255)."""
+        return (input + 1) % 256
+
+    @staticmethod
+    def _arithmetic_dec(input: int) -> int:
+        """Decrement the byte value, keeping it within range (0-255)."""
+        return (input - 1) % 256
 
     @staticmethod
     def mutate(input: int) -> int:
@@ -52,11 +62,18 @@ class ByteMutator():
             # lambda inp: ByteMutator._mutate(lambda arr: ByteMutator._bitflip(arr, 2, 1), inp),
             lambda inp: ByteMutator._mutate(lambda arr: ByteMutator._bitflip(arr, 4, 1), inp),
             ByteMutator._setToRandomByte,
-            ByteMutator._setToInterestingByte
+            ByteMutator._setToInterestingByte,
+            ByteMutator._arithmetic_inc,
+            ByteMutator._arithmetic_dec,
         ]
         return random.choice(fs)(input)
     
 class ByteArrayMutator(AbstractMutator):
+    def __init__(self, seed=None, user_extras: list[list[int]] = None, auto_extras: list[list[int]] = None):
+        self.seed = seed
+        self.user_extras = user_extras if user_extras else []
+        self.auto_extras = auto_extras if auto_extras else []
+
     def mutateRandomBytes(self, input: list[int]) -> list[int]:
         num_bytes_to_mutate = random.randint(1, len(input))
         idxs_to_mutate = random.choices(list(range(len(input))), k=num_bytes_to_mutate)
@@ -79,14 +96,39 @@ class ByteArrayMutator(AbstractMutator):
             input.insert(insert_position, random_byte)  # Insert the byte at the random position
         return input
     
+    def crossover(self, input1: list[int], input2: list[int]) -> list[int]:
+        """Perform a crossover between two inputs to create a new input."""
+        if not input2 or len(input1) < 2 or len(input2) < 2:
+            return input1  # If one input is empty, return the other
+        
+        crossover_point = random.randint(1, min(len(input1), len(input2)) - 1)
+        new_input = input1[:crossover_point] + input2[crossover_point:]
+        return new_input
+    
+    def useUserExtras(self, input: list[int]) -> list[int]:
+        """Replace input with a random user-provided test case."""
+        if not self.user_extras:
+            return input  # If no user extras, return the original input
+        return random.choice(self.user_extras)
+    
+    def useAutoExtras(self, input: list[int]) -> list[int]:
+        """Replace input with a random auto-discovered interesting input."""
+        if not self.auto_extras:
+            return input
+        return random.choice(self.auto_extras)
+    
     def mutateInput(self, input: list[int]) -> list[int]:
         copy_of_input = copy.deepcopy(input)
         fs = [
             self.mutateRandomBytes,
             self.deleteRandomBytes,
-            self.insertRandomBytes
+            self.insertRandomBytes,
+            lambda inp: self.crossover(inp, random.choice(self.seed.queue) if self.seed and self.seed.queue else inp),
+            self.useUserExtras,
+            self.useAutoExtras
         ]
         mutation_operator = random.choice(fs)
+        # print(f"[DEBUG] Applying mutation: {mutation_operator}")
         return mutation_operator(copy_of_input)
         
 

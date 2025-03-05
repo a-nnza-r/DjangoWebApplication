@@ -77,6 +77,7 @@ class GreyboxFuzzer(AbstractGreyboxFuzzer):
         self.is_interesting = is_interesting
         self.program = program
         self.bugs = []  # failure queue
+        self.auto_extras = []
 
     async def check_program_for_bugs(self, input) -> tuple[bool, int]:
         try:
@@ -112,6 +113,7 @@ class GreyboxFuzzer(AbstractGreyboxFuzzer):
 
                 if self.is_interesting(t_prime):
                     self.seed.queue.append(t_prime)
+                    self.auto_extras.append(mutated_value)
 
 
 DEVICE_NAME = "Smart Lock [Group 4]" # <------ Modify here to match your group. Don't hijack other groups :-)
