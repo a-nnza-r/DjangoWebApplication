@@ -66,8 +66,49 @@ class PowerSchedule(AbstractPowerSchedule):
         return path.e
 
 class IsInteresting(AbstractIsInteresting):
-    def __call__(self, *args, **kwds) -> bool:
-        return True
+    # def __call__(self, *args, **kwds) -> bool:
+        # return True
+
+    # use BUCKETING 
+    def __init__(self):
+        self.path_frequencies = {}  # Store frequency count for each path
+        self.bucket_thresholds = [1, 2, 3, 4, 8, 16, 32, 128]  # Bucket ranges
+        self.last_bucket = {}  # Store last seen bucket for each path
+
+    def get_bucket(self, count):
+        """Determine which bucket a count falls into."""
+        for threshold in self.bucket_thresholds:
+            if count < threshold:
+                return threshold
+        return self.bucket_thresholds[-1]  # Return the largest bucket if count is very high
+
+    def __call__(self, t: Input) -> bool:
+        path_id = t.path_id
+
+        # Initialize path if not tracked
+        if path_id not in self.path_frequencies:
+            self.path_frequencies[path_id] = 0
+            self.last_bucket[path_id] = None
+
+        # Update frequency count
+        self.path_frequencies[path_id] += 1
+        count = self.path_frequencies[path_id]
+
+        # Get the new bucket based on updated count
+        new_bucket = self.get_bucket(count)
+
+        # Print debug information
+        print(f"[DEBUG] Path ID: {path_id}, Count: {count}, New Bucket: {new_bucket}")
+
+        # Check if this is the first time hitting this bucket
+        try: 
+            if self.last_bucket[path_id] != new_bucket:
+                print(f"[INTERESTING] New bucket reached for Path {path_id}: {new_bucket}")
+                self.last_bucket[path_id] = new_bucket  # Update last bucket
+                return True  # This input is interesting
+            return False  # Not interesting this time
+        except Exception as e:
+            print(f"[ERROR] Bucket update failed: {e}")
 
 class GreyboxFuzzer(AbstractGreyboxFuzzer):
     def __init__(self, seed: AbstractSeed, power_schedule: AbstractPowerSchedule, mutator: AbstractMutator, is_interesting: IsInteresting, program):
