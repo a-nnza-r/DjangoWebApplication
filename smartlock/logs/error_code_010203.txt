@@ -1,0 +1,187 @@
+[1] Connecting to "Smart Lock [Group 4]"...
+[!] Serial Port: COM4
+
+[3] Running random command
+[!] --> Command:  [0, 2, 3, 4, 5, 6]
+[!] <-- Response: [1]
+
+[4] Logs from Smart Lock (Serial Port):
+--------------------------------------------------
+Error codes: []
+
+[3] Running random command
+[!] --> Command:  [0, 1, 2, 3, 4]
+[!] <-- Response: [1]
+
+[4] Logs from Smart Lock (Serial Port):
+--------------------------------------------------
+Error codes: []
+
+[3] Running random command
+[!] --> Command:  [0, 1, 2, 4, 5, 6]
+[!] <-- Response: [1]
+
+[4] Logs from Smart Lock (Serial Port):
+--------------------------------------------------
+Error codes: []
+
+[3] Running random command
+[!] --> Command:  [0, 1, 2, 5, 6]
+[!] <-- Response: [1]
+
+[4] Logs from Smart Lock (Serial Port):
+--------------------------------------------------
+Error codes: []
+
+[3] Running random command
+[!] --> Command:  [240, 62, 130, 131, 4, 133, 6]
+[!] <-- Response: [2]
+
+[4] Logs from Smart Lock (Serial Port):
+--------------------------------------------------
+Error codes: []
+
+[3] Running random command
+[!] --> Command:  [0, 129, 2, 3, 52, 5, 6]
+[!] <-- Response: [1]
+
+[4] Logs from Smart Lock (Serial Port):
+--------------------------------------------------
+Error codes: []
+
+[3] Running random command
+[!] --> Command:  [0, 1, 2, 3, 170, 4, 5, 6, 93]
+[!] <-- Response: [1]
+
+[4] Logs from Smart Lock (Serial Port):
+--------------------------------------------------
+Error codes: []
+
+[3] Running random command
+[!] --> Command:  [0, 1, 2, 5, 6]
+[!] <-- Response: [1]
+
+[4] Logs from Smart Lock (Serial Port):
+--------------------------------------------------
+Error codes: []
+
+[3] Running random command
+[!] --> Command:  [0, 2, 5, 6]
+[!] <-- Response: [1]
+
+[4] Logs from Smart Lock (Serial Port):
+--------------------------------------------------
+Error codes: []
+
+[3] Running random command
+[!] --> Command:  [128, 0, 2, 3, 237, 111, 78, 4, 5, 6]
+[!] <-- Response: [2]
+
+[4] Logs from Smart Lock (Serial Port):
+--------------------------------------------------
+Error codes: []
+
+[3] Running random command
+[!] --> Command:  [3, 4, 5]
+[!] <-- Response: [2]
+
+[4] Logs from Smart Lock (Serial Port):
+--------------------------------------------------
+Error codes: []
+
+[3] Running random command
+[!] --> Command:  [0, 2, 6]
+[!] <-- Response: [1]
+
+[4] Logs from Smart Lock (Serial Port):
+--------------------------------------------------
+Error codes: []
+
+[3] Running random command
+[!] --> Command:  [0, 2, 202, 28, 3, 4, 5, 6, 169]
+[!] <-- Response: [1]
+
+[4] Logs from Smart Lock (Serial Port):
+--------------------------------------------------
+Error codes: []
+
+[3] Running random command
+[!] --> Command:  [240, 2, 3, 4, 245, 200]
+[!] <-- Response: [2]
+
+[4] Logs from Smart Lock (Serial Port):
+--------------------------------------------------
+Error codes: []
+
+[3] Running random command
+[!] --> Command:  [0, 2, 4, 6]
+[!] <-- Response: [1]
+
+[4] Logs from Smart Lock (Serial Port):
+--------------------------------------------------
+Error codes: []
+
+[3] Running random command
+[!] --> Command:  [0, 153, 2, 167, 84, 3, 4, 5, 155, 6]
+[!] <-- Response: [1]
+
+[4] Logs from Smart Lock (Serial Port):
+--------------------------------------------------
+Error codes: []
+
+[3] Running random command
+[!] --> Command:  [0, 2, 5]
+[!] <-- Response: [1]
+
+[4] Logs from Smart Lock (Serial Port):
+--------------------------------------------------
+Error codes: []
+
+[3] Running random command
+[!] --> Command:  [154, 0, 2, 3, 4, 5, 6]
+[!] <-- Response: [2]
+
+[4] Logs from Smart Lock (Serial Port):
+--------------------------------------------------
+Error codes: []
+
+[3] Running random command
+[!] --> Command:  [2, 3, 4, 6]
+[!] <-- Response: [3]
+
+[4] Logs from Smart Lock (Serial Port):
+--------------------------------------------------
+Error codes: []
+
+[3] Running random command
+[!] --> Command:  [0, 1, 67, 2, 149, 5, 6]
+[([0, 1, 67, 2, 149, 5, 6], OSError(22, 'The operation was canceled by the user', None, -2147023673, None))]
+
+[3] Running random command
+[!] --> Command:  [240, 62, 130, 157, 131, 4, 133, 133, 6, 95]
+[([0, 1, 67, 2, 149, 5, 6], OSError(22, 'The operation was canceled by the user', None, -2147023673, None)), ([240, 62, 130, 157, 131, 4, 133, 133, 6, 95], BleakError('Not connected'))]
+
+[3] Running random command
+[!] --> Command:  [64, 1, 2, 5, 198]
+[([0, 1, 67, 2, 149, 5, 6], OSError(22, 'The operation was canceled by the user', None, -2147023673, None)), ([240, 62, 130, 157, 131, 4, 133, 133, 6, 95], BleakError('Not connected')), ([64, 1, 2, 5, 198], BleakError('Not connected'))]
+
+[3] Running random command
+[!] --> Command:  [3, 4, 5]
+[([0, 1, 67, 2, 149, 5, 6], OSError(22, 'The operation was canceled by the user', None, -2147023673, None)), ([240, 62, 130, 157, 131, 4, 133, 133, 6, 95], BleakError('Not connected')), ([64, 1, 2, 5, 198], BleakError('Not connected')), ([3, 4, 5], BleakError('Not connected'))]
+
+[3] Running random command
+[!] --> Command:  [0, 2, 202, 28, 3, 25, 4, 5, 6, 52, 169]
+[([0, 1, 67, 2, 149, 5, 6], OSError(22, 'The operation was canceled by the user', None, -2147023673, None)), ([240, 62, 130, 157, 131, 4, 133, 133, 6, 95], BleakError('Not connected')), ([64, 1, 2, 5, 198], BleakError('Not connected')), ([3, 4, 5], BleakError('Not connected')), ([0, 2, 202, 28, 3, 25, 4, 5, 6, 52, 169], BleakError('Not connected'))]
+
+[3] Running random command
+[!] --> Command:  [3, 245, 200]
+[([0, 1, 67, 2, 149, 5, 6], OSError(22, 'The operation was canceled by the user', None, -2147023673, None)), ([240, 62, 130, 157, 131, 4, 133, 133, 6, 95], BleakError('Not connected')), ([64, 1, 2, 5, 198], BleakError('Not connected')), ([3, 4, 5], BleakError('Not connected')), ([0, 2, 202, 28, 3, 25, 4, 5, 6, 52, 169], BleakError('Not connected')), ([3, 245, 200], BleakError('Not connected'))]
+
+[3] Running random command
+[!] --> Command:  [0, 2]
+[([0, 1, 67, 2, 149, 5, 6], OSError(22, 'The operation was canceled by the user', None, -2147023673, None)), ([240, 62, 130, 157, 131, 4, 133, 133, 6, 95], BleakError('Not connected')), ([64, 1, 2, 5, 198], BleakError('Not connected')), ([3, 4, 5], BleakError('Not connected')), ([0, 2, 202, 28, 3, 25, 4, 5, 6, 52, 169], BleakError('Not connected')), ([3, 245, 200], BleakError('Not connected')), ([0, 2], BleakError('Not connected'))]
+
+[3] Running random command
+[!] --> Command:  [154, 3, 4, 5, 6]
+[([0, 1, 67, 2, 149, 5, 6], OSError(22, 'The operation was canceled by the user', None, -2147023673, None)), ([240, 62, 130, 157, 131, 4, 133, 133, 6, 95], BleakError('Not connected')), ([64, 1, 2, 5, 198], BleakError('Not connected')), ([3, 4, 5], BleakError('Not connected')), ([0, 2, 202, 28, 3, 25, 4, 5, 6, 52, 169], BleakError('Not connected')), ([3, 245, 200], BleakError('Not connected')), ([0, 2], BleakError('Not connected')), ([154, 3, 4, 5, 6], BleakError('Not connected'))]
+Error codes: ['[Error] Code: 0x010203']
