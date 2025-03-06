@@ -5,6 +5,7 @@ import time
 import requests
 import logging
 from collections import deque
+from typing import Dict
 
 from fuzzer.abstract import (
     AbstractIsInteresting,
@@ -145,33 +146,66 @@ class DjPowerSchedule(AbstractPowerSchedule):
 
 
 class DjMutator(AbstractMutator):
-    def mutateInput(self, input: dict) -> dict:
-        """Mutate input fields aggressively."""
+    def mutateInput(self, input: Dict) -> Dict:
+        """Mutate input fields using various common mutation techniques."""
         mutated_data = input.copy()
-        mutation_type = random.choice(["name", "info", "price", "all"])
 
-        if mutation_type in ["name", "all"]:
-            mutated_data["name"] = "".join(
-                random.choices(
-                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-                    k=random.randint(1, 30),
-                )
-            )
+        field = random.choice(list(mutated_data.keys()))
 
-        if mutation_type in ["info", "all"]:
-            mutated_data["info"] = "".join(
-                random.choices(
-                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
-                    k=random.randint(1, 20),
-                )
-            )
+        if isinstance(mutated_data[field], str):
+            mutation_methods = [
+                self.bit_flip,
+                self.byte_insert,
+                self.byte_delete,
+                self.replace_with_extreme_string,
+            ]
+        elif isinstance(mutated_data[field], (int, float)):
+            mutation_methods = [
+                self.replace_with_extreme_float,
+                self.random_float_mutation,
+            ]
+        else:
+            return mutated_data  # Skip mutation if the field type is unsupported
 
-        if mutation_type in ["price", "all"]:
-            mutated_data["price"] = random.choice(
-                [0, -1, 1, float("inf"), -float("inf"), random.uniform(-1000, 10000)]
-            )
-
+        mutation = random.choice(mutation_methods)
+        mutated_data[field] = mutation(mutated_data[field])
         return mutated_data
+
+    def bit_flip(self, data: str) -> str:
+        """Flip a random bit in a string."""
+        if not data:
+            return data
+        s = list(data)
+        pos = random.randint(0, len(s) - 1)
+        s[pos] = chr(ord(s[pos]) ^ (1 << random.randint(0, 7)))
+        return "".join(s)
+
+    def byte_insert(self, data: str) -> str:
+        """Insert a random byte into a string."""
+        if not data:
+            return data
+        pos = random.randint(0, len(data))
+        return data[:pos] + chr(random.randint(32, 126)) + data[pos:]
+
+    def byte_delete(self, data: str) -> str:
+        """Delete a random byte from a string."""
+        if not data:
+            return data
+        pos = random.randint(0, len(data) - 1)
+        return data[:pos] + data[pos + 1 :]
+
+    def replace_with_extreme_string(self, data: str) -> str:
+        """Replace string with extreme values."""
+        extreme_values = ["", "\x00" * 10, "\xff" * 10, "A" * 1000, "Z" * 5000]
+        return random.choice(extreme_values)
+
+    def replace_with_extreme_float(self, data: float) -> float:
+        """Replace float with extreme values."""
+        return random.choice([float("inf"), -float("inf"), 0, -9999999, 9999999])
+
+    def random_float_mutation(self, data: float) -> float:
+        """Apply random float mutations."""
+        return data + random.uniform(-1000, 1000)
 
 
 class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
