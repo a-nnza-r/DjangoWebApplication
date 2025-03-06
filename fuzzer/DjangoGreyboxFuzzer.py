@@ -6,7 +6,7 @@ import requests
 import logging
 from collections import deque
 
-from abstract import (
+from fuzzer.abstract import (
     AbstractIsInteresting,
     AbstractGreyboxFuzzer,
     AbstractMutator,

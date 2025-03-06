@@ -1,15 +1,23 @@
 from collections import deque
 import random
 import sys
-from fuzzer.abstract import AbstractGreyboxFuzzer, AbstractIsInteresting, AbstractMutator, AbstractPowerSchedule, AbstractSeed
+from fuzzer.abstract import (
+    AbstractGreyboxFuzzer,
+    AbstractIsInteresting,
+    AbstractMutator,
+    AbstractPowerSchedule,
+    AbstractSeed,
+)
 from smartlock.BLEClient import BLEClient
 from fuzzer.mutation.common_mutator import ByteArrayMutator
 import asyncio  # Ensure async operations work
 
-class Input():
+
+class Input:
     def __init__(self, value: list[int], path_id: int = -1):
         self.value: list[int] = value
         self.path_id: int = path_id
+
 
 class Path:
     def __init__(self, id):
@@ -22,7 +30,8 @@ class Path:
         self.s = self.s + 1
         self.f = self.f + self.e
 
-class Paths: # sort of like a graph
+
+class Paths:  # sort of like a graph
     def __init__(self):
         self.paths = {}
 
@@ -35,10 +44,15 @@ class Paths: # sort of like a graph
 
     def get_mean_f(self) -> int:
         return int(sum([path.f for path in self.paths.values()]) / len(self.paths))
-    
+
     def __str__(self):
-        s = f'\n[Paths] {len(self.paths)} discovered.'
-        s += ''.join([f" (Path={id}) s={path.s}, f={path.f}." for (id, path) in sorted(self.paths.items())])
+        s = f"\n[Paths] {len(self.paths)} discovered."
+        s += "".join(
+            [
+                f" (Path={id}) s={path.s}, f={path.f}."
+                for (id, path) in sorted(self.paths.items())
+            ]
+        )
         return s
 
 
@@ -49,28 +63,38 @@ class Seed(AbstractSeed):
     def chooseNext(self) -> Input:
         return self.queue.popleft()
 
+
 class PowerSchedule(AbstractPowerSchedule):
     e0 = 1
     M = 34000
 
     def __init__(self):
-        self.paths = Paths() # 1 response code = 1 path
+        self.paths = Paths()  # 1 response code = 1 path
 
     def assignEnergy(self, t: Input = None):
         path = self.paths.get_path(t.path_id)
         path.update()
         if path.f <= self.paths.get_mean_f():
-            path.e = min(int(PowerSchedule.e0 * (2 ** path.s)), PowerSchedule.M)
+            path.e = min(int(PowerSchedule.e0 * (2**path.s)), PowerSchedule.M)
         else:
             path.e = 0
         return path.e
+
 
 class IsInteresting(AbstractIsInteresting):
     def __call__(self, *args, **kwds) -> bool:
         return True
 
+
 class GreyboxFuzzer(AbstractGreyboxFuzzer):
-    def __init__(self, seed: AbstractSeed, power_schedule: AbstractPowerSchedule, mutator: AbstractMutator, is_interesting: IsInteresting, program):
+    def __init__(
+        self,
+        seed: AbstractSeed,
+        power_schedule: AbstractPowerSchedule,
+        mutator: AbstractMutator,
+        is_interesting: IsInteresting,
+        program,
+    ):
         self.seed = seed
         self.power_schedule = power_schedule
         self.mutator = mutator
@@ -80,7 +104,9 @@ class GreyboxFuzzer(AbstractGreyboxFuzzer):
 
     async def check_program_for_bugs(self, input) -> tuple[bool, int]:
         try:
-            path_id = await self.program(input)  # Ensure the program function is awaited
+            path_id = await self.program(
+                input
+            )  # Ensure the program function is awaited
             return (False, path_id)
         except Exception as error:
             self.bugs.append((input, error))
@@ -92,7 +118,7 @@ class GreyboxFuzzer(AbstractGreyboxFuzzer):
     async def run(self):
         while len(self.seed.queue) > 0:
             t: Input = self.seed.chooseNext()
-            
+
             self.power_schedule.paths.append_if_not_exist(t.path_id)
             sys.stdout.flush()
             print(self.power_schedule.paths)
@@ -114,13 +140,14 @@ class GreyboxFuzzer(AbstractGreyboxFuzzer):
                     self.seed.queue.append(t_prime)
 
 
-DEVICE_NAME = "Smart Lock [Group 4]" # <------ Modify here to match your group. Don't hijack other groups :-)
+DEVICE_NAME = "Smart Lock [Group 4]"  # <------ Modify here to match your group. Don't hijack other groups :-)
 # Commands
 AUTH = [0x00]  # 7 Bytes
 OPEN = [0x01]  # 1 Byte
 CLOSE = [0x02]  # 1 Byte
 PASSCODE = [0x01, 0x02, 0x03, 0x04, 0x05, 0x06]  # Correct PASSCODE
 # PASSCODE = [0x01, 0x02, 0x03, 0x04, 0x05, 0x07] # Wrong PASSCODE
+
 
 async def run_fuzzer():
     ble = BLEClient()
@@ -131,7 +158,7 @@ async def run_fuzzer():
 
     print("\n[2] Authenticating...")
     await asyncio.sleep(0.5)
-    res = await ble.write_command(AUTH+PASSCODE)
+    res = await ble.write_command(AUTH + PASSCODE)
     if res[0] != 0:
         print(f"[X] Failure: Wrong Passcode.")
         await ble.disconnect()
@@ -144,10 +171,10 @@ async def run_fuzzer():
         # await ble.write_command([1, 2, 3])
         res = await ble.write_command(x)  # Ensure byte array
         await asyncio.sleep(2)
-        
+
         print(f"\n[4] Logs from Smart Lock (Serial Port):\n{'-'*50}")
         lines = ble.read_logs()  # Return a list of all log lines.
-        lines_with_error = [line for line in lines if line.startswith('[Error]')]
+        lines_with_error = [line for line in lines if line.startswith("[Error]")]
         print("\nError codes:", lines_with_error)
         sys.stdout.flush()
 
@@ -162,14 +189,15 @@ async def run_fuzzer():
 
     fuzzer = GreyboxFuzzer(seed, power_schedule, mutator, is_interesting, program)
     await fuzzer.run()
-    
+
     lines = ble.read_logs()  # Return a list of all log lines.
-    lines_with_error = [line for line in lines if line.startswith('[Error]')]
+    lines_with_error = [line for line in lines if line.startswith("[Error]")]
     print("All error codes:", lines_with_error)
+
 
 if __name__ == "__main__":
     while True:
         try:
-            asyncio.run(run_fuzzer()) 
+            asyncio.run(run_fuzzer())
         except KeyboardInterrupt:
             break
