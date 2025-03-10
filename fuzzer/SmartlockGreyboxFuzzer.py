@@ -14,7 +14,7 @@ class Input():
 class Path:
     def __init__(self, id):
         self.id = id
-        self.f: int = 1
+        self.f: int = 1 
         self.s: int = 0
         self.e: int = PowerSchedule.e0
 
@@ -70,13 +70,12 @@ class IsInteresting(AbstractIsInteresting):
         # return True
 
     # use BUCKETING 
-    def __init__(self):
-        self.path_frequencies = {}  # Store frequency count for each path
+    def __init__(self, paths: Paths):
+        self.paths = paths # use same Paths instance
         self.bucket_thresholds = [1, 2, 3, 4, 8, 16, 32, 128]  # Bucket ranges
         self.last_bucket = {}  # Store last seen bucket for each path
 
     def get_bucket(self, count):
-        """Determine which bucket a count falls into."""
         for threshold in self.bucket_thresholds:
             if count < threshold:
                 return threshold
@@ -85,14 +84,12 @@ class IsInteresting(AbstractIsInteresting):
     def __call__(self, t: Input) -> bool:
         path_id = t.path_id
 
-        # Initialize path if not tracked
-        if path_id not in self.path_frequencies:
-            self.path_frequencies[path_id] = 0
-            self.last_bucket[path_id] = None
+        # Ensure path exists
+        self.paths.append_if_not_exist(path_id)
 
-        # Update frequency count
-        self.path_frequencies[path_id] += 1
-        count = self.path_frequencies[path_id]
+        # Update frequency count from Paths
+        count = self.paths.get_path(path_id).f
+        new_bucket = self.get_bucket(count)
 
         # Get the new bucket based on updated count
         new_bucket = self.get_bucket(count)
@@ -100,15 +97,12 @@ class IsInteresting(AbstractIsInteresting):
         # Print debug information
         print(f"[DEBUG] Path ID: {path_id}, Count: {count}, New Bucket: {new_bucket}")
 
-        # Check if this is the first time hitting this bucket
-        try: 
-            if self.last_bucket[path_id] != new_bucket:
+        # If bucket changes, mark as interesting
+        if self.last_bucket.get(path_id) != new_bucket:
                 print(f"[INTERESTING] New bucket reached for Path {path_id}: {new_bucket}")
-                self.last_bucket[path_id] = new_bucket  # Update last bucket
-                return True  # This input is interesting
-            return False  # Not interesting this time
-        except Exception as e:
-            print(f"[ERROR] Bucket update failed: {e}")
+                self.last_bucket[path_id] = new_bucket
+                return True  
+        return False
 
 class GreyboxFuzzer(AbstractGreyboxFuzzer):
     def __init__(self, seed: AbstractSeed, power_schedule: AbstractPowerSchedule, mutator: AbstractMutator, is_interesting: IsInteresting, program):
@@ -157,7 +151,7 @@ class GreyboxFuzzer(AbstractGreyboxFuzzer):
                     self.auto_extras.append(mutated_value)
 
 
-DEVICE_NAME = "Smart Lock [Group 4]" # <------ Modify here to match your group. Don't hijack other groups :-)
+DEVICE_NAME = "Smart Lock [Group 10]" # <------ Modify here to match your group. Don't hijack other groups :-)
 # Commands
 AUTH = [0x00]  # 7 Bytes
 OPEN = [0x01]  # 1 Byte
@@ -201,7 +195,7 @@ async def run_fuzzer():
     seed = Seed(queue=initial_inputs)
     power_schedule = PowerSchedule()
     mutator = ByteArrayMutator()
-    is_interesting = IsInteresting()
+    is_interesting = IsInteresting(power_schedule.paths) # use the same Paths instance
 
     fuzzer = GreyboxFuzzer(seed, power_schedule, mutator, is_interesting, program)
     await fuzzer.run()
