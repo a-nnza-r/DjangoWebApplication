@@ -150,7 +150,6 @@ class GreyboxFuzzer(AbstractGreyboxFuzzer):
                     self.seed.queue.append(t_prime)
                     self.auto_extras.append(mutated_value)
 
-
 DEVICE_NAME = "Smart Lock [Group 10]" # <------ Modify here to match your group. Don't hijack other groups :-)
 # Commands
 AUTH = [0x00]  # 7 Bytes
@@ -178,7 +177,7 @@ async def run_fuzzer():
 
     async def program(x: list[int]) -> int:  # Make program asyncs
         print("\n[3] Running random command")
-        # await ble.write_command([1, 2, 3])
+        # await ble.write_command([1, 2, 3])    
         res = await ble.write_command(x)  # Ensure byte array
         await asyncio.sleep(2)
         
@@ -194,10 +193,19 @@ async def run_fuzzer():
     initial_inputs = [Input(OPEN), Input(CLOSE), Input(AUTH), Input(PASSCODE)]
     seed = Seed(queue=initial_inputs)
     power_schedule = PowerSchedule()
-    mutator = ByteArrayMutator()
+    mutator = ByteArrayMutator(
+        seed=seed,
+        user_extras=[
+            [0xFF, 0x00, 0x12, 0x34, 0x56, 0x78],
+            [0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF],
+            [0x04, 0x05, 0x06, 0x07, 0x08, 0x09]
+        ],
+        auto_extras=[]
+    )
     is_interesting = IsInteresting(power_schedule.paths) # use the same Paths instance
 
     fuzzer = GreyboxFuzzer(seed, power_schedule, mutator, is_interesting, program)
+    mutator.auto_extras = fuzzer.auto_extras
     await fuzzer.run()
     
     lines = ble.read_logs()  # Return a list of all log lines.

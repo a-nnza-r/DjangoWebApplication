@@ -69,12 +69,17 @@ class ByteMutator():
         return random.choice(fs)(input)
     
 class ByteArrayMutator(AbstractMutator):
-    def __init__(self, seed=None, user_extras: list[list[int]] = None, auto_extras: list[list[int]] = None):
+    def __init__(self, seed, user_extras: list[list[int]] = None, auto_extras: list[list[int]] = None):
+        if seed is None:
+            raise ValueError("Seed must be provided to ByteArrayMutator")
+         
         self.seed = seed
         self.user_extras = user_extras if user_extras else []
         self.auto_extras = auto_extras if auto_extras else []
 
     def mutateRandomBytes(self, input: list[int]) -> list[int]:
+        if len(input) == 0:
+            return input  
         num_bytes_to_mutate = random.randint(1, len(input))
         idxs_to_mutate = random.choices(list(range(len(input))), k=num_bytes_to_mutate)
         for i in idxs_to_mutate:
@@ -97,22 +102,21 @@ class ByteArrayMutator(AbstractMutator):
         return input
     
     def crossover(self, input1: list[int], input2: list[int]) -> list[int]:
-        """Perform a crossover between two inputs to create a new input."""
+        print(f"[DEBUG] Performing crossover between {input1} and {input2}")
         if not input2 or len(input1) < 2 or len(input2) < 2:
             return input1  # If one input is empty, return the other
         
-        crossover_point = random.randint(1, min(len(input1), len(input2)) - 1)
+        crossover_point = random.randint(1, max(1, min(len(input1), len(input2)) - 1))
         new_input = input1[:crossover_point] + input2[crossover_point:]
+        print(f"[DEBUG] Crossover result: {new_input}")
         return new_input
-    
+
     def useUserExtras(self, input: list[int]) -> list[int]:
-        """Replace input with a random user-provided test case."""
         if not self.user_extras:
             return input  # If no user extras, return the original input
         return random.choice(self.user_extras)
     
     def useAutoExtras(self, input: list[int]) -> list[int]:
-        """Replace input with a random auto-discovered interesting input."""
         if not self.auto_extras:
             return input
         return random.choice(self.auto_extras)
@@ -123,12 +127,13 @@ class ByteArrayMutator(AbstractMutator):
             self.mutateRandomBytes,
             self.deleteRandomBytes,
             self.insertRandomBytes,
-            lambda inp: self.crossover(inp, random.choice(self.seed.queue) if self.seed and self.seed.queue else inp),
+            lambda inp: self.crossover(inp, random.choice(self.seed.queue).value) if self.seed.queue else inp,
             self.useUserExtras,
             self.useAutoExtras
         ]
         mutation_operator = random.choice(fs)
-        # print(f"[DEBUG] Applying mutation: {mutation_operator}")
+
+        print(f"[DEBUG] Applying mutation: {mutation_operator}")
         return mutation_operator(copy_of_input)
         
 
