@@ -1,0 +1,17 @@
+2025-03-20 23:11:51,961 - INFO - [INFO] Starting Django server with coverage.
+2025-03-20 23:11:57,021 - INFO - [INFO] Fuzzer started.
+2025-03-20 23:11:57,123 - INFO - [INFO] New execution path found! 69 new lines covered.
+2025-03-20 23:11:57,123 - INFO - [INFO] Found new execution path with input: {'name': 'seed name', 'info': 'abcd', 'price': 0}
+
+Bug: large price value
+2025-03-20 23:11:57,256 - ERROR - [ERROR] Unexpected response: 400
+Response: {"detail": "Python int too large to convert to SQLite INTEGER", "success": false}
+Input: {'name': 'seed name', 'info': 'abcd', 'price': 1.7976931348623157e+308}
+2025-03-20 23:11:57,262 - INFO - [INFO] New execution path found! 4 new lines covered.
+2025-03-20 23:11:57,262 - INFO - [INFO] Found new execution path with input: {'name': 'seed name', 'info': 'abcd', 'price': -0.00012493390829791318}
+
+Bug: infinite price
+2025-03-20 23:11:57,347 - ERROR - [ERROR] Request failed: Out of range float values are not JSON compliant
+Input: {'name': 'seed name', 'info': 'abcd', 'price': inf}
+2025-03-20 23:11:57,355 - INFO - [INFO] New execution path found! 5 new lines covered.
+2025-03-20 23:11:57,355 - INFO - [INFO] Found new execution path with input: {'name': "' OR '1'='1%x", 'info': 'abcd', 'price': 12.21}
