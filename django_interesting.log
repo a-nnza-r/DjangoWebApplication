@@ -15,3 +15,7 @@ Bug: infinite price
 Input: {'name': 'seed name', 'info': 'abcd', 'price': inf}
 2025-03-20 23:11:57,355 - INFO - [INFO] New execution path found! 5 new lines covered.
 2025-03-20 23:11:57,355 - INFO - [INFO] Found new execution path with input: {'name': "' OR '1'='1%x", 'info': 'abcd', 'price': 12.21}
+
+Managed to drop a table?
+2025-03-25 15:11:34,717 - ERROR - [ERROR] Unexpected response: 400
+Response: {"detail": "no such table: home_product", "success": false}

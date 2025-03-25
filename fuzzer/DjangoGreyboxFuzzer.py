@@ -1,10 +1,10 @@
-import coverage
+from coverage import Coverage, CoverageData
 import random
 import subprocess
+import hashlib
 import time
 import requests
 import logging
-from collections import deque
 from typing import (
     Dict,
     List,
@@ -33,240 +33,78 @@ logging.basicConfig(
 
 
 class DjSeed(AbstractSeed):
-    def __init__(self, queue: List[Dict[str, Any]]) -> None:
-        self.queue = deque(queue)
+    """
+    each seed input: {
+        data: {
+            name: str,
+            info: str,
+            price: float,
+        },
+        s: int,
+        f: int,
+        path: hashed path
+    }
+    """
 
-    def chooseNext(self) -> Dict[str, Any]:
-        if not self.queue:
-            logging.info("[INFO] Refilling seed queue with mutated data.")
-            self.queue.append(
-                {
-                    "name": "".join(random.choices("abcdef0123456789", k=10)),
-                    "info": "seed info",
-                    "price": random.uniform(0, 100),
-                }
-            )
-        return self.queue.popleft()
+    def __init__(self, queue) -> None:
+        # Initialize each seed with s and f counters
+        self.queue = [{"data": seed, "s": 0, "f": 0} for seed in queue]
+        self.paths: List[str] = []
+
+    def getAverage(self):
+        total = 0
+        for ele in self.queue:
+            total += ele["f"]
+        return total / len(self.queue)
+
+    def chooseNext(self):
+        # Sort queue by s(i) first, then by f(i)
+        sorted_queue = sorted(self.queue, key=lambda x: (x.get("s", 0), x.get("f", 0)))
+
+        # Select seed with lowest counters
+        chosen_seed = sorted_queue[0]
+
+        # Increment selection counter s(i)
+        chosen_seed["s"] = chosen_seed.get("s", 0) + 1
+
+        return chosen_seed
 
 
 class DjIsInteresting(AbstractIsInteresting):
     def __init__(self) -> None:
-        # Coverage tracking
-        self.coverage_file = ".coverage"  # Use relative path
-        self.server_process: Optional[subprocess.Popen] = None
+        pass
 
-        # Track covered lines
-        self.prev_coverage: Set[int] = set()
-
-        # Clear any existing coverage data
-        subprocess.run(["coverage", "erase"], stdout=subprocess.DEVNULL)
-
-        # Configure coverage with relative paths
-        self.cov = coverage.Coverage(
-            data_file=self.coverage_file,
-            branch=True,
-        )
-        self.cov.start()
-
-    def start_server(self) -> None:
-        """Start Django server only once."""
-        if not self.server_process:
-            logging.info("[INFO] Starting Django server with coverage.")
-
-            # Clear any existing coverage data
-            subprocess.run(["coverage", "erase"], stdout=subprocess.DEVNULL)
-
-            # Start Django server
-            cmd = [
-                "python3",
-                "django/manage.py",
-                "runserver",
-                "8000",
-            ]
-
-            self.server_process = subprocess.Popen(
-                cmd,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            time.sleep(5)  # Allow server to start
-
-            # Start coverage collection
-            if not self.cov._started:
-                self.cov.start()
-
-    def stop_server(self) -> None:
-        """Gracefully stop the Django test server and cleanup coverage data."""
-        if self.server_process:
-            # Stop coverage collection
-            self.cov.stop()
-            self.cov.save()
-
-            # Stop Django server
-            self.server_process.terminate()
-            self.server_process.wait()
-            self.server_process = None
-
-            # Combine coverage data from all parallel processes
-            subprocess.run(
-                ["coverage", "combine"],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-
-            logging.info("[INFO] Django server stopped and coverage data cleaned up.")
-
-    def send_request(self, input: Dict[str, Any]) -> Optional[requests.Response]:
-        """Send a request to Django and return the response."""
-        print(".", end="", flush=True)  # Progress indicator
-        base_url = "http://127.0.0.1:8000/datatb/product/add/"
-        headers = {"Content-Type": "application/json"}
-
-        start_time = time.time()
-        try:
-            response = requests.post(base_url, headers=headers, json=input, timeout=5)
-            elapsed_time = time.time() - start_time
-
-            if elapsed_time > 5:
-                msg = (
-                    f"[WARNING] Request took too long ({elapsed_time:.2f}s)\n"
-                    f"Input: {input}"
-                )
-                logging.warning(msg)
-
-            if response.status_code not in [200, 201]:
-                msg = (
-                    f"[ERROR] Unexpected response: {response.status_code}\n"
-                    f"Response: {response.text}\nInput: {input}"
-                )
-                logging.error(msg)
-
-            return response
-
-        except requests.exceptions.Timeout:
-            elapsed_time = time.time() - start_time
-            msg = (
-                f"[ERROR] Request timed out after {elapsed_time:.2f}s\n"
-                f"Input: {input}"
-            )
-            logging.error(msg)
-            return None
-        except ValueError as ve:
-            # JSON serialization issue (e.g., NaN, Infinity)
-            if "Out of range float values are not JSON compliant" in str(ve):
-                logging.error(f"[ERROR] JSON encoding failed: {ve}\nInput: {input}")
-            return None
-        except requests.exceptions.RequestException as e:
-            logging.error(f"[ERROR] Request failed: {e}\nInput: {input}")
-            return None
-
-    def __call__(self, input: Dict[str, Any]) -> bool:
+    def __call__(self, hashed_path: str, paths: List) -> bool:
         """
-        Check if input produces interesting behavior by detecting new code paths.
+        Check if hashed arcs are new. If new add to paths in seed.
         Returns:
         - bool indicating if a new path was found
         """
-        try:
-            # Stop coverage from previous run if active
-            self.cov.stop()
-        except:
-            pass  # Ignore if coverage wasn't started
-
-        # Clear previous run data
-        # self.cov.erase()
-
-        # Start fresh coverage collection
-        self.cov.start()
-
-        response = self.send_request(input)
-
-        # Stop and save coverage data for this run
-        self.cov.stop()
-        self.cov.save()
-
-        if not response or response.status_code not in [200, 201]:
-            return False  # Ignore failed requests
-
-        # Load coverage data for analysis
-        self.cov.load()
-        current_lines = set()
-        measured_files = self.cov.get_data().measured_files()
-
-        # Collect all executed lines from this run
-        for file in measured_files:
-            if "site-packages" in file:  # Skip library code
-                continue
-            lines = self.cov.get_data().lines(file)
-            if lines is not None:
-                current_lines.update(lines)
-
-        # Check if we found any new lines that weren't covered before
-        new_coverage = current_lines - self.prev_coverage
-        if new_coverage:
-            logging.info(
-                f"[INFO] New execution path found! "
-                f"{len(new_coverage)} new lines covered."
-            )
-            # Update our coverage tracking with the new lines
-            self.prev_coverage.update(new_coverage)
+        if hashed_path not in paths:
+            paths.append(hashed_path)
             return True
 
         return False
 
 
 class DjPowerSchedule(AbstractPowerSchedule):
+    # TODO: metrics should be measured based on the type of mutation? to see which mutation is producing the best
     def __init__(self) -> None:
-        # Track metrics for energy assignment
-        self.discovered_paths = 1
-        self.last_new_path: float = 0.0  # Timestamp of last new path
-        self.total_execs = 0
-        self.paths_found = 0
+        self.energy_const = 1000
+        self.p = 0.95
+        self.max_energy: int = 150000
 
-        # Energy scaling factors
-        self.base_energy = 1000
-        self.path_multiplier = 100
-        self.recency_bonus = 2.0
-
-        # Exponential decay for recency bonus
-        self.decay_factor = 0.95
-
-    def assignEnergy(self) -> int:
+    def assignEnergy(self, input, average_f) -> int:
         """
-        Adaptive energy assignment inspired by AFL's scheduling.
-        Factors considered:
-        - Number of paths discovered
-        - Recency of discoveries
-        - Presence of interesting count patterns
-        - Total executions performed
+        Exponential cutoff algorithm
         """
-        current_time = time.time()
+        print((self.energy_const / self.p) * (2 ** input["s"]))
+        if input["f"] > average_f:
+            return 0
 
-        # Base energy scaled by paths found
-        energy = self.base_energy + (self.path_multiplier * self.discovered_paths)
-
-        # Apply recency bonus for recent findings
-        if current_time - self.last_new_path < 300:  # Within last 5 minutes
-            time_factor = self.decay_factor ** (current_time - self.last_new_path)
-            energy = int(energy * (1 + self.recency_bonus * time_factor))
-
-        # Apply execution-based scaling
-        if self.total_execs > 0:
-            # Reward higher success rates
-            success_rate = self.paths_found / self.total_execs
-            energy = int(energy * (1 + success_rate))
-
-        # Ensure minimum energy
-        return max(100, energy)
-
-    def onNewPath(self) -> None:
-        """Called when a new path is discovered."""
-        self.last_new_path = time.time()
-        self.paths_found += 1
-        self.discovered_paths += 1
-
-    def onExecution(self) -> None:
-        """Called after each fuzzing execution."""
-        self.total_execs += 1
+        return min(
+            int((self.energy_const / self.p) * (2 ** input["s"])), self.max_energy
+        )
 
 
 class DjMutator(AbstractMutator):
@@ -626,6 +464,7 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
         mutator: DjMutator,
         is_interesting: DjIsInteresting,
     ) -> None:
+        self.server_process = None
         self.seed = seed
         self.power_schedule = power_schedule
         self.mutator = mutator
@@ -633,7 +472,7 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
         # Type for bug reports
         BugReport = Dict[str, Any]
         self.bugs: List[BugReport] = []
-        self.max_iterations = 1
+        self.max_iterations = 10
 
     def log_results(
         self, input: Dict[str, Any], output: Any, is_interesting: bool
@@ -643,43 +482,143 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
     def visualize_results(self) -> None:
         return super().visualize_results()
 
+    def start_server(self):
+        # wrap django server with branch coverage to track arcs
+        self.server_process = subprocess.Popen(
+            ["coverage", "run", "--branch", "django/manage.py", "runserver", "8000"]
+        )
+        # wait 5s for server to start
+        time.sleep(5)
+
+    def stop_server(self):
+        self.server_process.terminate()
+
+    def send_request(self, input) -> Optional[requests.Response]:
+        """Send a request to Django and return the response."""
+        print(".", end="", flush=True)  # Progress indicator
+        base_url = "http://127.0.0.1:8000/datatb/product/add/"
+        headers = {"Content-Type": "application/json"}
+
+        start_time = time.time()
+        try:
+            response = requests.post(base_url, headers=headers, json=input, timeout=5)
+            elapsed_time = time.time() - start_time
+
+            if elapsed_time > 5:
+                msg = (
+                    f"[WARNING] Request took too long ({elapsed_time:.2f}s)\n"
+                    f"Input: {input}"
+                )
+                logging.warning(msg)
+
+            if response.status_code not in [200, 201]:
+                msg = (
+                    f"[ERROR] Unexpected response: {response.status_code}\n"
+                    f"Response: {response.text}\nInput: {input}"
+                )
+                logging.error(msg)
+
+            return response
+
+        except requests.exceptions.Timeout:
+            elapsed_time = time.time() - start_time
+            msg = (
+                f"[ERROR] Request timed out after {elapsed_time:.2f}s\n"
+                f"Input: {input}"
+            )
+            logging.error(msg)
+            return None
+        except ValueError as ve:
+            # JSON serialization issue (e.g., NaN, Infinity)
+            if "Out of range float values are not JSON compliant" in str(ve):
+                logging.error(f"[ERROR] JSON encoding failed: {ve}\nInput: {input}")
+            return None
+        except requests.exceptions.RequestException as e:
+            logging.error(f"[ERROR] Request failed: {e}\nInput: {input}")
+            return None
+
+    # hash coverage data for easy comparison on whether a path is new
+    def hash_cov_data(self, cov_data: CoverageData):
+        path_coverage = {}  # data: (file_name, [branch arcs])
+        for filename in cov_data.measured_files():
+            lines = cov_data.arcs(filename)
+            path_coverage[filename] = lines
+
+        return self.hash_arcs(path_coverage)
+
+    def hash_arcs(self, path_coverage: Dict):
+        combined = []
+        for fname in sorted(path_coverage.keys()):
+            combined.append(fname)
+            combined.extend(
+                f"{a[0]}->{a[1]}"
+                for a in sorted(path_coverage[fname] if path_coverage[fname] else [])
+            )
+        path_str = "|".join(combined)
+        return hashlib.sha1(path_str.encode()).hexdigest()
+
     def run(self) -> None:
         """Main fuzzing loop."""
-        self.is_interesting.start_server()
+        self.start_server()
+        cov = Coverage(data_file=".coverage")
+        cov.erase()  # clear previous coverage data before starting loop
+
         logging.info("[INFO] Fuzzer started.")
+
         for _ in range(self.max_iterations):
             test_case = self.seed.chooseNext()
-            energy = self.power_schedule.assignEnergy()
+            energy = self.power_schedule.assignEnergy(test_case, self.seed.getAverage())
+            logging.info(f"seed: {self.seed.queue}")
+            logging.info(f"energy: {energy}")
 
             for _ in range(energy):
-                # Track execution
-                self.power_schedule.onExecution()
+                # increment f by 1 for this seed input
+                test_case["f"] += 1
 
                 # Mutate and test
-                mutated_test = self.mutator.mutateInput(test_case)
-                result = self.is_interesting(mutated_test)
+                mutated_test = self.mutator.mutateInput(test_case["data"])
+                logging.info(f"input: {mutated_test}")
 
-                # Handle result - new path found
-                if result:
-                    self.power_schedule.onNewPath()
-                    msg = (
-                        f"[INFO] Found new execution path with input: "
-                        f"{mutated_test}"
-                    )
-                    logging.info(msg)
+                cov.start()
+                # TODO: send concurrent requests to overload server
+                self.send_request(mutated_test)
+                cov.stop()
+
+                cov_data = cov.get_data()
+                hashed_arcs = self.hash_cov_data(cov_data)
+                cov.erase()
+
+                # add hash to list of paths found in seed and isInteresting?
+                if self.is_interesting(hashed_arcs, self.seed.paths):
+                    logging.info(f"[INFO] New path found. \nInput: {mutated_test} ")
+
+                # check for server crashes or hangs
 
         logging.info("[INFO] Fuzzer completed.")
-        self.is_interesting.stop_server()
+        self.stop_server()
 
 
 def main() -> None:
-    seed = DjSeed(queue=[{"name": "seed name", "info": "abcd", "price": 12.21}])
+    seed = DjSeed(
+        queue=[
+            {
+                "name": "abcdefghijklmnopqrstuvwxyz",
+                "info": "abcdefghijklmnopqrstuvwxyz",
+                "price": 121.23,
+            },
+            {"name": "aaaaaaaaaaaa", "info": "aaaaaaaaaaaa", "price": 1},
+            {"name": "", "info": "", "price": 0},
+        ]
+    )
     power_schedule = DjPowerSchedule()
     mutator = DjMutator()
     is_interesting = DjIsInteresting()
 
     fuzzer = DjGreyboxFuzzer(seed, power_schedule, mutator, is_interesting)
-    fuzzer.run()
+    try:
+        fuzzer.run()
+    except KeyboardInterrupt:
+        fuzzer.stop_server()
 
 
 if __name__ == "__main__":
