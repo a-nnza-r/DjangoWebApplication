@@ -5,6 +5,56 @@ from fuzzer.abstract import AbstractGreyboxFuzzer, AbstractIsInteresting, Abstra
 from smartlock.BLEClient import BLEClient
 from fuzzer.mutation.common_mutator import ByteArrayMutator
 import asyncio  # Ensure async operations work
+import logging
+import re
+
+logging.basicConfig(
+    filename='smartlock.log',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    filemode='w',  # overwrites on every run
+)
+
+STATE_CODES = {
+    "Locked": 0,
+    "Authenticating": 1,
+    "Authenticated": 2,
+    "Opening": 3,
+    "Unlocked": 4,
+    "Closing": 5
+}
+
+COMMAND_CODES = {
+    0x00: "Authenticate",
+    0x01: "Open",
+    0x02: "Close"
+}
+
+def extract_transitions(log_lines, initial_state=0):
+    current_state = initial_state
+    transitions = []
+
+    command_code = None
+    for line in log_lines:
+        cmd_match = re.search(r"Received command: 0x(\d+)", line)
+        if cmd_match:
+            cmd = int(cmd_match.group(1))
+            command_code = COMMAND_CODES.get(cmd, None)
+
+        state_match = re.search(r"\[State\].*Device state: (\w+)", line)
+        if state_match:
+            state_str = state_match.group(1)
+            next_state = STATE_CODES.get(state_str, None)
+            if command_code is not None and next_state is not None:
+                transitions.append({
+                    "from": current_state,
+                    "command": command_code,
+                    "to": next_state
+                })
+                current_state = next_state
+                command_code = None  # reset command
+
+    return transitions
 
 class Input():
     def __init__(self, value: list[int], path_id: int = -1):
@@ -114,7 +164,7 @@ class GreyboxFuzzer(AbstractGreyboxFuzzer):
                     self.seed.queue.append(t_prime)
 
 
-DEVICE_NAME = "Smart Lock [Group 4]" # <------ Modify here to match your group. Don't hijack other groups :-)
+DEVICE_NAME = "Smart Lock [Group 10]" # <------ Modify here to match your group. Don't hijack other groups :-)
 # Commands
 AUTH = [0x00]  # 7 Bytes
 OPEN = [0x01]  # 1 Byte
@@ -126,29 +176,71 @@ async def run_fuzzer():
     ble = BLEClient()
     ble.init_logs()  # Collect logs from Smart Lock (Serial Port)
 
+    logging.info(f'[1] Connecting to "{DEVICE_NAME}"...')
     print(f'[1] Connecting to "{DEVICE_NAME}"...')
     await ble.connect(DEVICE_NAME)
 
+    logging.info("[2] Authenticating...")
     print("\n[2] Authenticating...")
     await asyncio.sleep(0.5)
+
     res = await ble.write_command(AUTH+PASSCODE)
+    logging.info(f"Sent AUTH+PASSCODE: {AUTH + PASSCODE}")
+    logging.info(f"Received response: {res}")
+
     if res[0] != 0:
+        logging.error("[X] Failure: Wrong Passcode.")
         print(f"[X] Failure: Wrong Passcode.")
         await ble.disconnect()
         return
+    
+    logging.info("[!] Authenticated!!!")
     print("[!] Authenticated!!!")
-    await asyncio.sleep(2)
+    await asyncio.sleep(4)
+
+    lines = ble.read_logs()
+    if lines:
+        logging.info("[Initial BLE Logs]")
+        for line in lines:
+            logging.info(f"  {line}")
 
     async def program(x: list[int]) -> int:  # Make program asyncs
+        logging.info("-" * 60)
+        logging.info(f"\n[>] Sending command: {x}")
         print("\n[3] Running random command")
         # await ble.write_command([1, 2, 3])
+
         res = await ble.write_command(x)  # Ensure byte array
+        logging.info(f"[<] Received response: {res}")
         await asyncio.sleep(2)
         
         print(f"\n[4] Logs from Smart Lock (Serial Port):\n{'-'*50}")
         lines = ble.read_logs()  # Return a list of all log lines.
-        lines_with_error = [line for line in lines if line.startswith('[Error]')]
-        print("\nError codes:", lines_with_error)
+
+        if lines:
+            for line in lines:
+                # logging.info("[Device Logs]")
+                if line.startswith("[State]"):
+                    logging.info(line)
+                
+            transitions = extract_transitions(lines)
+            logging.info(transitions)
+
+            # for line in lines:
+            #     if line.startswith("[Error]"):
+            #         logging.warning(f"  {line}")
+            #     elif line.startswith("[State]"):
+            #         logging.info(f"  {line}")
+            #     else:
+            #         logging.debug(f"  {line}")  # general logs
+        else:
+            logging.info("No logs received from device.")
+
+        # Print to console for user feedback
+        print(f"\n[4] Logs from Smart Lock (Serial Port):\n{'-'*50}")
+        for line in lines:
+            print(line)
+
         sys.stdout.flush()
 
         response_code = int(res[0])
