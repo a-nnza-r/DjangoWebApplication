@@ -1,0 +1,336 @@
+2025-04-10 00:32:41,016 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-10 00:32:48,610 - INFO - [2] Authenticating...
+2025-04-10 00:32:49,215 - INFO - Sent AUTH+PASSCODE: [0, 1, 2, 3, 4, 5, 6]
+2025-04-10 00:32:49,215 - INFO - Received response: [0]
+2025-04-10 00:32:49,215 - INFO - [!] Authenticated!!!
+2025-04-10 00:32:53,214 - INFO - 
+[Paths] 1 discovered. (Path=()) s=0, f=1.
+2025-04-10 00:32:53,214 - INFO - ------------------------------------------------------------
+2025-04-10 00:32:53,214 - INFO - 
+[>] Sending command: [21, 1]
+2025-04-10 00:32:53,404 - INFO - [<] Received response: [2]
+2025-04-10 00:32:54,410 - INFO - [State] Device state: Authenticated
+2025-04-10 00:32:54,410 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-10 00:32:54,410 - INFO - ------------------------------------------------------------
+2025-04-10 00:32:54,414 - INFO - 
+[>] Sending command: [0]
+2025-04-10 00:32:54,542 - INFO - [<] Received response: [1]
+2025-04-10 00:32:55,558 - INFO - [State] Device state: Authenticated
+2025-04-10 00:32:55,558 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-10 00:32:55,559 - INFO - 
+[Paths] 1 discovered. (Path=()) s=1, f=2.
+2025-04-10 00:32:55,559 - INFO - ------------------------------------------------------------
+2025-04-10 00:32:55,559 - INFO - 
+[>] Sending command: [206, 2]
+2025-04-10 00:32:55,695 - INFO - [<] Received response: [2]
+2025-04-10 00:32:56,690 - INFO - [State] Device state: Authenticated
+2025-04-10 00:32:56,690 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-10 00:32:56,690 - INFO - ------------------------------------------------------------
+2025-04-10 00:32:56,691 - INFO - 
+[>] Sending command: [134]
+2025-04-10 00:32:56,795 - INFO - [<] Received response: [2]
+2025-04-10 00:32:57,791 - INFO - [State] Device state: Authenticated
+2025-04-10 00:32:57,792 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-10 00:32:57,792 - INFO - ------------------------------------------------------------
+2025-04-10 00:32:57,792 - INFO - 
+[>] Sending command: [255]
+2025-04-10 00:32:57,895 - INFO - [<] Received response: [2]
+2025-04-10 00:32:58,890 - INFO - [State] Device state: Authenticated
+2025-04-10 00:32:58,891 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-10 00:32:58,891 - INFO - ------------------------------------------------------------
+2025-04-10 00:32:58,891 - INFO - 
+[>] Sending command: [134, 2]
+2025-04-10 00:32:59,005 - INFO - [<] Received response: [2]
+2025-04-10 00:33:00,006 - INFO - [State] Device state: Authenticated
+2025-04-10 00:33:00,007 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-10 00:33:00,007 - INFO - 
+[Paths] 1 discovered. (Path=()) s=2, f=4.
+2025-04-10 00:33:00,007 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:00,009 - INFO - 
+[>] Sending command: [1, 2, 3, 228, 4, 251, 5, 41, 100, 209, 6]
+2025-04-10 00:33:00,138 - INFO - [<] Received response: [4]
+2025-04-10 00:33:01,140 - INFO - [State] Device state: Authenticated
+2025-04-10 00:33:01,140 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-10 00:33:01,141 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:01,141 - INFO - 
+[>] Sending command: [2, 242, 3, 255, 2, 2]
+2025-04-10 00:33:01,257 - INFO - [<] Received response: [0]
+2025-04-10 00:33:02,258 - INFO - [State] Device state: Authenticated
+2025-04-10 00:33:02,259 - INFO - [State] Closing the lock mechanism
+2025-04-10 00:33:02,259 - INFO - [State] Lock mechanism closed
+2025-04-10 00:33:02,261 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-10 00:33:02,262 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:02,262 - INFO - 
+[>] Sending command: [241, 240, 3, 244, 5, 131]
+2025-04-10 00:33:02,393 - INFO - [<] Received response: [2]
+2025-04-10 00:33:03,389 - INFO - [State] Device state: Authenticated
+2025-04-10 00:33:03,389 - INFO - [State] Closing the lock mechanism
+2025-04-10 00:33:03,389 - INFO - [State] Lock mechanism closed
+2025-04-10 00:33:03,390 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-10 00:33:03,390 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:03,390 - INFO - 
+[>] Sending command: [82, 133, 73, 37, 1, 2, 3, 8, 4, 5, 95, 6]
+2025-04-10 00:33:03,505 - INFO - [<] Received response: [2]
+2025-04-10 00:33:04,520 - INFO - [State] Device state: Authenticated
+2025-04-10 00:33:04,521 - INFO - [State] Closing the lock mechanism
+2025-04-10 00:33:04,522 - INFO - [State] Lock mechanism closed
+2025-04-10 00:33:04,522 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-10 00:33:04,522 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:04,522 - INFO - 
+[>] Sending command: [1, 188, 3, 39, 5, 241]
+2025-04-10 00:33:04,640 - INFO - [<] Received response: [0]
+2025-04-10 00:33:05,636 - INFO - [State] Device state: Authenticated
+2025-04-10 00:33:05,636 - INFO - [State] Closing the lock mechanism
+2025-04-10 00:33:05,636 - INFO - [State] Lock mechanism closed
+2025-04-10 00:33:05,637 - INFO - [State] Opening the lock mechanism
+2025-04-10 00:33:05,637 - INFO - [State] Lock mechanism open
+2025-04-10 00:33:05,638 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-10 00:33:05,639 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:05,639 - INFO - 
+[>] Sending command: [1, 3, 6]
+2025-04-10 00:33:05,755 - INFO - [<] Received response: [4]
+2025-04-10 00:33:06,758 - INFO - [State] Device state: Authenticated
+2025-04-10 00:33:06,759 - INFO - [State] Closing the lock mechanism
+2025-04-10 00:33:06,759 - INFO - [State] Lock mechanism closed
+2025-04-10 00:33:06,759 - INFO - [State] Opening the lock mechanism
+2025-04-10 00:33:06,759 - INFO - [State] Lock mechanism open
+2025-04-10 00:33:06,759 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-10 00:33:06,759 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:06,759 - INFO - 
+[>] Sending command: [1, 2, 3, 4, 5, 246]
+2025-04-10 00:33:06,874 - INFO - [<] Received response: [4]
+2025-04-10 00:33:07,874 - INFO - [State] Device state: Authenticated
+2025-04-10 00:33:07,874 - INFO - [State] Closing the lock mechanism
+2025-04-10 00:33:07,874 - INFO - [State] Lock mechanism closed
+2025-04-10 00:33:07,874 - INFO - [State] Opening the lock mechanism
+2025-04-10 00:33:07,874 - INFO - [State] Lock mechanism open
+2025-04-10 00:33:07,874 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-10 00:33:07,874 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:07,874 - INFO - 
+[>] Sending command: [241, 2, 243, 1, 2, 104]
+2025-04-10 00:33:07,995 - INFO - [<] Received response: [2]
+2025-04-10 00:33:09,003 - INFO - [State] Device state: Authenticated
+2025-04-10 00:33:09,004 - INFO - [State] Closing the lock mechanism
+2025-04-10 00:33:09,004 - INFO - [State] Lock mechanism closed
+2025-04-10 00:33:09,005 - INFO - [State] Opening the lock mechanism
+2025-04-10 00:33:09,005 - INFO - [State] Lock mechanism open
+2025-04-10 00:33:09,006 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-10 00:33:09,007 - INFO - 
+[Paths] 2 discovered. (Path=()) s=3, f=8. (Path=('[State] Device state: Authenticated',)) s=0, f=1.
+2025-04-10 00:33:09,007 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:09,008 - INFO - 
+[>] Sending command: []
+2025-04-10 00:33:09,122 - INFO - [<] Received response: [0]
+2025-04-10 00:33:10,118 - INFO - [State] Device state: Authenticated
+2025-04-10 00:33:10,118 - INFO - [State] Closing the lock mechanism
+2025-04-10 00:33:10,118 - INFO - [State] Lock mechanism closed
+2025-04-10 00:33:10,118 - INFO - [State] Opening the lock mechanism
+2025-04-10 00:33:10,118 - INFO - [State] Lock mechanism open
+2025-04-10 00:33:10,118 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-10 00:33:10,118 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,118 - INFO - 
+[>] Sending command: [40, 1]
+2025-04-10 00:33:10,118 - INFO - 
+[Paths] 2 discovered. (Path=()) s=3, f=8. (Path=('[State] Device state: Authenticated',)) s=1, f=2.
+2025-04-10 00:33:10,118 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,118 - INFO - 
+[>] Sending command: [2]
+2025-04-10 00:33:10,118 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,118 - INFO - 
+[>] Sending command: [0]
+2025-04-10 00:33:10,118 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,118 - INFO - 
+[>] Sending command: [0]
+2025-04-10 00:33:10,118 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,118 - INFO - 
+[>] Sending command: [0]
+2025-04-10 00:33:10,118 - INFO - 
+[Paths] 2 discovered. (Path=()) s=3, f=8. (Path=('[State] Device state: Authenticated',)) s=2, f=4.
+2025-04-10 00:33:10,118 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,118 - INFO - 
+[>] Sending command: [206, 90, 2, 171]
+2025-04-10 00:33:10,125 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,125 - INFO - 
+[>] Sending command: [206, 203, 2, 68]
+2025-04-10 00:33:10,126 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,126 - INFO - 
+[>] Sending command: [62, 242]
+2025-04-10 00:33:10,127 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,127 - INFO - 
+[>] Sending command: [206]
+2025-04-10 00:33:10,128 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,128 - INFO - 
+[>] Sending command: []
+2025-04-10 00:33:10,128 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,128 - INFO - 
+[>] Sending command: [206, 15]
+2025-04-10 00:33:10,128 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,129 - INFO - 
+[>] Sending command: [255, 249]
+2025-04-10 00:33:10,129 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,129 - INFO - 
+[>] Sending command: [206, 2]
+2025-04-10 00:33:10,131 - INFO - 
+[Paths] 2 discovered. (Path=()) s=3, f=8. (Path=('[State] Device state: Authenticated',)) s=3, f=8.
+2025-04-10 00:33:10,131 - INFO - 
+[Paths] 2 discovered. (Path=()) s=3, f=8. (Path=('[State] Device state: Authenticated',)) s=4, f=16.
+2025-04-10 00:33:10,131 - INFO - 
+[Paths] 2 discovered. (Path=()) s=3, f=8. (Path=('[State] Device state: Authenticated',)) s=5, f=16.
+2025-04-10 00:33:10,132 - INFO - 
+[Paths] 2 discovered. (Path=()) s=3, f=8. (Path=('[State] Device state: Authenticated',)) s=6, f=16.
+2025-04-10 00:33:10,132 - INFO - 
+[Paths] 3 discovered. (Path=()) s=3, f=8. (Path=('[State] Device state: Authenticated',)) s=7, f=16. (Path=('[State] Device state: Authenticated', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=0, f=1.
+2025-04-10 00:33:10,132 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,132 - INFO - 
+[>] Sending command: [242, 3, 2]
+2025-04-10 00:33:10,132 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,132 - INFO - 
+[>] Sending command: [2, 3, 2]
+2025-04-10 00:33:10,132 - INFO - 
+[Paths] 3 discovered. (Path=()) s=3, f=8. (Path=('[State] Device state: Authenticated',)) s=7, f=16. (Path=('[State] Device state: Authenticated', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=1, f=2.
+2025-04-10 00:33:10,132 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,132 - INFO - 
+[>] Sending command: [236, 240, 105, 4, 0, 131]
+2025-04-10 00:33:10,135 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,135 - INFO - 
+[>] Sending command: [241, 240, 255, 244, 5, 131]
+2025-04-10 00:33:10,136 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,136 - INFO - 
+[>] Sending command: [241, 240, 243, 244, 5, 115]
+2025-04-10 00:33:10,137 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,137 - INFO - 
+[>] Sending command: [1, 240, 3, 0, 0, 131]
+2025-04-10 00:33:10,139 - INFO - 
+[Paths] 3 discovered. (Path=()) s=3, f=8. (Path=('[State] Device state: Authenticated',)) s=7, f=16. (Path=('[State] Device state: Authenticated', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=2, f=4.
+2025-04-10 00:33:10,139 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,139 - INFO - 
+[>] Sending command: [82, 117, 73, 0, 241, 23, 243, 8, 4, 5, 91, 2]
+2025-04-10 00:33:10,140 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,140 - INFO - 
+[>] Sending command: [167, 182, 82, 133, 27, 161, 25, 73, 37, 167, 1, 183, 2, 3, 131, 8, 4, 5, 95, 136, 148, 6]
+2025-04-10 00:33:10,141 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,141 - INFO - 
+[>] Sending command: [82, 133, 73, 37, 1, 2, 3, 8, 4, 5, 95, 6]
+2025-04-10 00:33:10,141 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,142 - INFO - 
+[>] Sending command: [162, 180, 73, 255, 1, 113, 3, 8, 4, 241, 0, 6]
+2025-04-10 00:33:10,142 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,142 - INFO - 
+[>] Sending command: [82, 133, 73, 37, 1, 2, 3, 8, 4, 245, 95, 6]
+2025-04-10 00:33:10,143 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,143 - INFO - 
+[>] Sending command: [82, 133, 73, 37, 1, 2, 3, 8, 91, 4, 5, 62, 95, 138, 6]
+2025-04-10 00:33:10,144 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,144 - INFO - 
+[>] Sending command: [82, 199, 133, 111, 73, 37, 1, 2, 3, 8, 150, 4, 123, 3, 5, 95, 6]
+2025-04-10 00:33:10,145 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,145 - INFO - 
+[>] Sending command: [82, 155, 73, 118, 241, 2, 48, 46, 4, 5, 95, 47]
+2025-04-10 00:33:10,147 - INFO - 
+[Paths] 4 discovered. (Path=()) s=3, f=8. (Path=('[State] Device state: Authenticated',)) s=7, f=16. (Path=('[State] Device state: Authenticated', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=3, f=8. (Path=('[State] Device state: Authenticated', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=0, f=1.
+2025-04-10 00:33:10,147 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,147 - INFO - 
+[>] Sending command: [1, 188, 141, 39, 5, 119]
+2025-04-10 00:33:10,147 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,147 - INFO - 
+[>] Sending command: [1, 188, 3, 117, 39, 5, 241]
+2025-04-10 00:33:10,148 - INFO - 
+[Paths] 4 discovered. (Path=()) s=3, f=8. (Path=('[State] Device state: Authenticated',)) s=7, f=16. (Path=('[State] Device state: Authenticated', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=3, f=8. (Path=('[State] Device state: Authenticated', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2.
+2025-04-10 00:33:10,149 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,149 - INFO - 
+[>] Sending command: [1, 3]
+2025-04-10 00:33:10,149 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,149 - INFO - 
+[>] Sending command: [85, 243, 6]
+2025-04-10 00:33:10,150 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,150 - INFO - 
+[>] Sending command: [1, 3, 6]
+2025-04-10 00:33:10,152 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,152 - INFO - 
+[>] Sending command: [1, 3, 246]
+2025-04-10 00:33:10,154 - INFO - 
+[Paths] 4 discovered. (Path=()) s=3, f=8. (Path=('[State] Device state: Authenticated',)) s=7, f=16. (Path=('[State] Device state: Authenticated', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=3, f=8. (Path=('[State] Device state: Authenticated', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=2, f=4.
+2025-04-10 00:33:10,154 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,154 - INFO - 
+[>] Sending command: [1, 2, 3, 4, 5]
+2025-04-10 00:33:10,157 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,157 - INFO - 
+[>] Sending command: [2, 3]
+2025-04-10 00:33:10,157 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,157 - INFO - 
+[>] Sending command: [1, 2, 3, 4, 140, 239, 154, 213, 5, 246, 198]
+2025-04-10 00:33:10,158 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,158 - INFO - 
+[>] Sending command: [1, 20, 2, 3, 4, 5, 246]
+2025-04-10 00:33:10,160 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,160 - INFO - 
+[>] Sending command: [1, 2, 3, 4, 66, 5, 246, 247, 136]
+2025-04-10 00:33:10,161 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,161 - INFO - 
+[>] Sending command: [2, 3, 5, 246]
+2025-04-10 00:33:10,163 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,163 - INFO - 
+[>] Sending command: [1, 181, 3, 207, 245, 53]
+2025-04-10 00:33:10,164 - INFO - ------------------------------------------------------------
+2025-04-10 00:33:10,164 - INFO - 
+[>] Sending command: [1, 2, 3, 4, 5, 246]
+2025-04-10 00:33:10,165 - INFO - 
+[Paths] 4 discovered. (Path=()) s=3, f=8. (Path=('[State] Device state: Authenticated',)) s=7, f=16. (Path=('[State] Device state: Authenticated', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=3, f=8. (Path=('[State] Device state: Authenticated', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=3, f=8.
+2025-04-10 00:33:10,165 - INFO - 
+[Paths] 4 discovered. (Path=()) s=3, f=8. (Path=('[State] Device state: Authenticated',)) s=7, f=16. (Path=('[State] Device state: Authenticated', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=3, f=8. (Path=('[State] Device state: Authenticated', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=4, f=16.
+2025-04-10 00:33:10,165 - INFO - ['[Error] Code: 0x018374', '[Error] Code: 0x298173']
+2025-04-10 00:33:10,165 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-10 00:33:20,183 - INFO - [2] Authenticating...
+2025-04-10 00:33:20,697 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-10 00:33:30,731 - INFO - [2] Authenticating...
+2025-04-10 00:33:31,235 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-10 00:33:41,318 - INFO - [2] Authenticating...
+2025-04-10 00:33:41,821 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-10 00:33:48,006 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-4' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-10 00:33:48,012 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-5' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-10 00:33:48,014 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-6' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
