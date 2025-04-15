@@ -5,10 +5,12 @@ import hashlib
 import time
 import requests
 import logging
+import threading
+from queue import Queue
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import (
     Dict,
     List,
-    Set,
     Any,
     Callable,
     Optional,
@@ -244,6 +246,7 @@ class DjMutator(AbstractMutator):
                 self.format_string_mutation,
                 self.path_traversal_mutation,
                 self.long_string_mutation,
+                self.arith_inc_dec_str,
             ]
             # Apply 1-3 mutations
             num_mutations = random.randint(1, 3)
@@ -256,6 +259,8 @@ class DjMutator(AbstractMutator):
             num_mutation_methods: List[Callable[[Union[int, float]], float]] = [
                 self.replace_with_extreme_float,
                 self.random_float_mutation,
+                self.arith_inc_dec_num,
+                self.replace_with_extreme_int,
             ]
             mutation: Callable[[Union[int, float]], float] = random.choice(
                 num_mutation_methods
@@ -430,12 +435,12 @@ class DjMutator(AbstractMutator):
         """Replace float with extreme values."""
         return random.choice(
             [
-                float("inf"),
-                -float("inf"),
+                # float("inf"),
+                # -float("inf"),
+                # float("nan"),
                 0,
                 -9999999,
                 9999999,
-                float("nan"),
                 1e-308,
                 1e308,  # Double precision bounds
                 2.2250738585072014e-308,  # Min normal double
@@ -452,6 +457,47 @@ class DjMutator(AbstractMutator):
             return data * random.uniform(-1e5, 1e5)
         else:
             return data / random.uniform(-1e5, 1e5)
+
+    def arith_inc_dec_str(self, data: str) -> str:
+        """Perform arithmetic inc/dec mutations on characters in the string."""
+        if not data:
+            return data
+
+        s = list(data)
+        num_mutations = random.randint(1, max(1, len(s) // 4))
+        for _ in range(num_mutations):
+            pos = random.randint(0, len(s) - 1)
+            delta = random.choice([-1, +1, -2, +2])
+            new_char = chr((ord(s[pos]) + delta) % 128)  # wrap within ASCII
+            s[pos] = new_char
+        return "".join(s)
+
+    def arith_inc_dec_num(self, data: Union[int, float]) -> Union[int, float]:
+        """Perform arithmetic inc/dec on numbers."""
+        delta = random.choice([-1, +1, -10, +10, -100, +100])
+        if isinstance(data, int):
+            return data + delta
+        elif isinstance(data, float):
+            return data + float(delta)
+        return data
+
+    def replace_with_extreme_int(self, data: Union[int, float]) -> Union[int, float]:
+        """Replace integer with extreme values for boundary testing."""
+        extreme_int_values = [
+            0,  # Zero
+            -2147483648,  # Min 32-bit signed int
+            2147483647,  # Max 32-bit signed int
+            -9223372036854775808,  # Min 64-bit signed int
+            9223372036854775807,  # Max 64-bit signed int
+            -999999999999999999999999999,  # Very large negative
+            999999999999999999999999999,  # Very large positive
+            2**31,  # Overflow 32-bit int
+            -(2**31 + 1),
+            -(2**32 + 1),
+            2**63,  # Overflow 64-bit int
+            -(2**63 + 1),
+        ]
+        return random.choice(extreme_int_values)
 
 
 class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
@@ -498,6 +544,14 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
         print(".", end="", flush=True)  # Progress indicator
         base_url = "http://127.0.0.1:8000/datatb/product/add/"
         headers = {"Content-Type": "application/json"}
+
+        if self.server_process is None:
+            logging.error(f"[ERROR] server not running")
+        elif self.server_process.poll() is not None:
+            # server crashed
+            logging.error(
+                f"[ERROR] Server crashed, exit code {self.server_process.poll()}"
+            )
 
         start_time = time.time()
         try:
@@ -558,12 +612,14 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
         return hashlib.sha1(path_str.encode()).hexdigest()
 
     def run(self) -> None:
-        """Main fuzzing loop."""
+        """Main fuzzing loop with concurrent requests."""
         self.start_server()
         cov = Coverage(data_file=".coverage")
         cov.erase()  # clear previous coverage data before starting loop
 
         logging.info("[INFO] Fuzzer started.")
+
+        max_workers = 5  # Number of concurrent requests
 
         for _ in range(self.max_iterations):
             test_case = self.seed.chooseNext()
@@ -571,28 +627,43 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
             logging.info(f"seed: {self.seed.queue}")
             logging.info(f"energy: {energy}")
 
+            # Create batches of mutated inputs
+            mutated_tests = []
             for _ in range(energy):
-                # increment f by 1 for this seed input
                 test_case["f"] += 1
-
-                # Mutate and test
                 mutated_test = self.mutator.mutateInput(test_case["data"])
-                logging.info(f"input: {mutated_test}")
+                mutated_tests.append(mutated_test)
 
-                cov.start()
-                # TODO: send concurrent requests to overload server
-                self.send_request(mutated_test)
-                cov.stop()
+            # Process requests concurrently in batches
+            with ThreadPoolExecutor(max_workers=max_workers) as executor:
+                futures = []
 
-                cov_data = cov.get_data()
-                hashed_arcs = self.hash_cov_data(cov_data)
-                cov.erase()
+                for mutated_test in mutated_tests:
+                    cov.start()
+                    future = executor.submit(self.send_request, mutated_test)
+                    futures.append((future, mutated_test))
+                    cov.stop()
 
-                # add hash to list of paths found in seed and isInteresting?
-                if self.is_interesting(hashed_arcs, self.seed.paths):
-                    logging.info(f"[INFO] New path found. \nInput: {mutated_test} ")
+                    cov_data = cov.get_data()
+                    hashed_arcs = self.hash_cov_data(cov_data)
+                    cov.erase()
 
-                # check for server crashes or hangs
+                    # Check for new paths
+                    if self.is_interesting(hashed_arcs, self.seed.paths):
+                        logging.info(f"[INFO] New path found. \nInput: {mutated_test}")
+
+                # Wait for all requests to complete
+                for future, mutated_test in futures:
+                    try:
+                        response = future.result()
+                        if response is None:
+                            logging.error(
+                                f"[ERROR] Request failed, no response for input: {mutated_test}"
+                            )
+                    except Exception as e:
+                        logging.error(
+                            f"[ERROR] Exception in request: {str(e)}\nInput: {mutated_test}"
+                        )
 
         logging.info("[INFO] Fuzzer completed.")
         self.stop_server()
@@ -606,8 +677,12 @@ def main() -> None:
                 "info": "abcdefghijklmnopqrstuvwxyz",
                 "price": 121.23,
             },
-            {"name": "aaaaaaaaaaaa", "info": "aaaaaaaaaaaa", "price": 1},
-            {"name": "", "info": "", "price": 0},
+            # {"name": "aaaaaaaaaaaa", "info": "aaaaaaaaaaaa", "price": 1},
+            # {"name": "", "info": "", "price": 0},
+            # {"name": 0, "info": 0, "price": 0},
+            {"name": 1234567890, "info": 1234567890, "price": 1.3},
+            {"name": 1234567890, "info": "1234567890", "price": 1.3},
+            {"name": "1234567890", "info": 1234567890, "price": 1.3},
         ]
     )
     power_schedule = DjPowerSchedule()
