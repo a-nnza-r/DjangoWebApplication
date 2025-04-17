@@ -1,0 +1,4 @@
+nicegui
+pyserial
+bleak
+bitstring
