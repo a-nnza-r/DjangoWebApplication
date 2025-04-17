@@ -232,41 +232,123 @@ class DjMutator(AbstractMutator):
         mutated_data = input.copy()
         field = random.choice(list(mutated_data.keys()))
 
-        if isinstance(mutated_data[field], str):
+        # Combine all applicable mutation methods based on type
+        all_mutation_methods: List[Callable[[Any], Any]] = []
+        field_value = mutated_data[field]  # Get the value once
+
+        if isinstance(field_value, str):
+            # String-specific mutations
             str_mutation_methods: List[Callable[[str], str]] = [
                 self.bit_flip,
+                self.single_bit_flip,
+                self.byte_xor,
                 self.byte_insert,
                 self.byte_delete,
-                self.replace_with_extreme_string,
-                self.word_mutation,
-                self.special_char_mutation,
-                self.sql_injection_mutation,
-                self.xss_mutation,
-                self.unicode_mutation,
-                self.format_string_mutation,
-                self.path_traversal_mutation,
-                self.long_string_mutation,
-                self.arith_inc_dec_str,
+                self.block_delete,  # C++ style block delete
+                self.block_insert_clone,  # C++ style block insert/clone
+                self.block_overwrite,  # C++ style block overwrite
+                # self.replace_with_extreme_string,  # Existing extreme string
+                # self.word_mutation,  # Existing word mutation
+                # self.special_char_mutation,  # Existing special char
+                # self.sql_injection_mutation,  # Existing SQLi
+                # self.xss_mutation,  # Existing XSS
+                # self.unicode_mutation,  # Existing unicode
+                # self.format_string_mutation,  # Existing format string
+                # self.path_traversal_mutation,  # Existing path traversal
+                # self.long_string_mutation,  # Existing long string
+                self.arith_inc_dec_str,  # Existing char arithmetic
             ]
-            # Apply 1-3 mutations
-            num_mutations = random.randint(1, 3)
-            for _ in range(num_mutations):
-                mutation = random.choice(str_mutation_methods)
-                mutated_data[field] = mutation(mutated_data[field])
+            # Extend the main list with string-specific methods
+            # Mypy understands List[Callable[[str], str]] is compatible with List[Callable[[Any], Any]]
+            all_mutation_methods.extend(str_mutation_methods)
+            # Add the interesting value mutation which handles str type
+            all_mutation_methods.append(self.interesting_value_mutation)
 
-        elif isinstance(mutated_data[field], (int, float)):
-            # Type for numeric mutation methods
-            num_mutation_methods: List[Callable[[Union[int, float]], float]] = [
-                self.replace_with_extreme_float,
-                self.random_float_mutation,
-                self.arith_inc_dec_num,
-                self.replace_with_extreme_int,
+        elif isinstance(field_value, (int, float)):
+            # Numeric-specific mutations
+            num_mutation_methods: List[
+                Callable[[Union[int, float]], Union[int, float]]
+            ] = [
+                # self.replace_with_extreme_float,  # Existing extreme float
+                self.random_float_mutation,  # Existing random float
+                self.arith_inc_dec_num,  # Existing num arithmetic
+                # self.replace_with_extreme_int,  # Existing extreme int
             ]
-            mutation: Callable[[Union[int, float]], float] = random.choice(
-                num_mutation_methods
+            # Extend the main list with numeric-specific methods
+            all_mutation_methods.extend(num_mutation_methods)
+            # Add the interesting value mutation which handles numeric types
+            all_mutation_methods.append(self.interesting_value_mutation)
+        else:
+            # For other types (e.g., bool, None, lists, dicts - though unlikely in this context)
+            # only apply interesting value mutation if the type is handled within it.
+            # Currently, it only handles str, int, float.
+            # We could add more specific handlers or just skip mutation for unsupported types.
+            # Let's add a check within the loop instead.
+            pass  # No specific methods for other types yet
+
+        # Apply 1-N mutations (using AFL's stacking concept)
+        # Let's choose a random number of mutations to stack, e.g., 1 to 4
+        num_mutations_to_stack = 1 << random.randint(0, 2)  # 1, 2, or 4 mutations
+
+        if not all_mutation_methods:
+            # No applicable mutations found for this type, return original
+            logging.debug(
+                f"No applicable mutations for field '{field}' with type {type(field_value)}"
             )
-            mutated_data[field] = mutation(mutated_data[field])
+            return mutated_data
 
+        current_value = field_value
+        for _ in range(num_mutations_to_stack):
+            # Choose a mutation randomly from the applicable list
+            chosen_mutation = random.choice(all_mutation_methods)
+            try:
+                # Apply the mutation
+                current_value = chosen_mutation(current_value)
+            except TypeError as te:
+                # Catch TypeError if a mutation is applied to an incompatible type
+                # (e.g., string mutation applied after interesting_value returned an int)
+                logging.warning(
+                    f"Mutation {chosen_mutation.__name__} caused TypeError for value '{current_value}' (Type: {type(current_value)}): {te}. Skipping mutation step."
+                )
+                # Revert to value before this specific mutation attempt? Or just continue? Let's continue.
+                pass
+            except Exception as e:
+                # Log other mutation errors, but continue fuzzing
+                logging.warning(
+                    f"Mutation {chosen_mutation.__name__} failed for value '{current_value}' (Type: {type(current_value)}): {e}"
+                )
+                # Optionally, revert to original value or skip this mutation step
+                # current_value = mutated_data[field] # Revert
+                pass  # Skip
+
+        mutated_data[field] = current_value
+        return mutated_data
+
+        # Apply 1-N mutations (using AFL's stacking concept)
+        # Let's choose a random number of mutations to stack, e.g., 1 to 4
+        num_mutations_to_stack = 1 << random.randint(0, 2)  # 1, 2, or 4 mutations
+
+        if not all_mutation_methods:
+            # No applicable mutations found for this type, return original
+            return mutated_data
+
+        current_value = mutated_data[field]
+        for _ in range(num_mutations_to_stack):
+            # Choose a mutation randomly from the applicable list
+            chosen_mutation = random.choice(all_mutation_methods)
+            try:
+                # Apply the mutation
+                current_value = chosen_mutation(current_value)
+            except Exception as e:
+                # Log mutation error, but continue fuzzing
+                logging.warning(
+                    f"Mutation {chosen_mutation.__name__} failed for value '{current_value}' (Type: {type(current_value)}): {e}"
+                )
+                # Optionally, revert to original value or skip this mutation step
+                # current_value = mutated_data[field] # Revert
+                pass  # Skip
+
+        mutated_data[field] = current_value
         return mutated_data
 
     def bit_flip(self, data: str) -> str:
@@ -431,22 +513,22 @@ class DjMutator(AbstractMutator):
         )
         return pattern * (length // len(pattern))
 
-    def replace_with_extreme_float(self, data: float) -> float:
-        """Replace float with extreme values."""
-        return random.choice(
-            [
-                # float("inf"),
-                # -float("inf"),
-                # float("nan"),
-                0,
-                -9999999,
-                9999999,
-                1e-308,
-                1e308,  # Double precision bounds
-                2.2250738585072014e-308,  # Min normal double
-                1.7976931348623157e308,  # Max double
-            ]
-        )
+    # def replace_with_extreme_float(self, data: float) -> float:
+    #     """Replace float with extreme values."""
+    #     return random.choice(
+    #         [
+    #             # float("inf"),
+    #             # -float("inf"),
+    #             # float("nan"),
+    #             0,
+    #             -9999999,
+    #             9999999,
+    #             1e-308,
+    #             1e308,  # Double precision bounds
+    #             2.2250738585072014e-308,  # Min normal double
+    #             1.7976931348623157e308,  # Max double
+    #         ]
+    #     )
 
     def random_float_mutation(self, data: float) -> float:
         """Apply random float mutations."""
@@ -481,23 +563,253 @@ class DjMutator(AbstractMutator):
             return data + float(delta)
         return data
 
-    def replace_with_extreme_int(self, data: Union[int, float]) -> Union[int, float]:
-        """Replace integer with extreme values for boundary testing."""
-        extreme_int_values = [
-            0,  # Zero
-            -2147483648,  # Min 32-bit signed int
-            2147483647,  # Max 32-bit signed int
-            -9223372036854775808,  # Min 64-bit signed int
-            9223372036854775807,  # Max 64-bit signed int
-            -999999999999999999999999999,  # Very large negative
-            999999999999999999999999999,  # Very large positive
-            2**31,  # Overflow 32-bit int
-            -(2**31 + 1),
-            -(2**32 + 1),
-            2**63,  # Overflow 64-bit int
-            -(2**63 + 1),
+    # def replace_with_extreme_int(self, data: Union[int, float]) -> Union[int, float]:
+    #     """Replace integer with extreme values for boundary testing."""
+    #     extreme_int_values = [
+    #         0,  # Zero
+    #         -2147483648,  # Min 32-bit signed int
+    #         2147483647,  # Max 32-bit signed int
+    #         -9223372036854775808,  # Min 64-bit signed int
+    #         9223372036854775807,  # Max 64-bit signed int
+    #         -999999999999999999999999999,  # Very large negative
+    #         999999999999999999999999999,  # Very large positive
+    #         2**31,  # Overflow 32-bit int
+    #         -(2**31 + 1),
+    #         -(2**32 + 1),
+    #         2**63,  # Overflow 64-bit int
+    #         -(2**63 + 1),
+    #     ]
+    #     return random.choice(extreme_int_values)
+
+    # --- Start: New Mutation Methods ---
+
+    def single_bit_flip(self, data: str) -> str:
+        """Flip a single random bit in a string."""
+        if not data:
+            return data
+        s = list(data)
+        # Choose a random character position
+        char_pos = random.randint(0, len(s) - 1)
+        # Choose a random bit position within the byte (0-7)
+        bit_pos = random.randint(0, 7)
+        # Flip the bit
+        s[char_pos] = chr(ord(s[char_pos]) ^ (1 << bit_pos))
+        return "".join(s)
+
+    def byte_xor(self, data: str) -> str:
+        """XOR a random byte/char with a random value (1-255)."""
+        if not data:
+            return data
+        s = list(data)
+        pos = random.randint(0, len(s) - 1)
+        xor_val = random.randint(1, 255)  # Ensure non-zero XOR value
+        s[pos] = chr(ord(s[pos]) ^ xor_val)
+        return "".join(s)
+
+    def _choose_block_len(self, limit: int) -> int:
+        """Helper to choose block length, mimicking C++ logic."""
+        if limit <= 0:
+            return 0
+        # Simplified categories based on C++ HAVOC_BLK sizes
+        # Small (1-16), Medium (17-128), Large (129-1024), XL (1025-4096)
+        # Adjusted for typical string operations
+        r = random.randint(0, 99)
+        if r < 50:  # 50% small
+            max_len = 16
+        elif r < 80:  # 30% medium
+            max_len = 128
+        elif r < 95:  # 15% large
+            max_len = 1024
+        else:  # 5% XL
+            max_len = 4096
+
+        # Ensure max_len doesn't exceed limit
+        max_len = min(max_len, limit)
+        if max_len <= 0:
+            return 1  # Return at least 1 if limit allows
+
+        # Choose a length within the category, ensuring it's at least 1
+        chosen_len = random.randint(1, max_len)
+        return chosen_len
+
+    def block_delete(self, data: str) -> str:
+        """Delete a random block of bytes/chars."""
+        if len(data) < 2:  # Need at least 2 chars to delete a block
+            return data
+
+        block_len = self._choose_block_len(
+            len(data) - 1
+        )  # Ensure we leave at least 1 char
+        if block_len <= 0:
+            return data  # Cannot delete if length is 0 or less
+
+        del_from = random.randint(0, len(data) - block_len)
+        return data[:del_from] + data[del_from + block_len :]
+
+    def block_insert_clone(self, data: str) -> str:
+        """Clone a block or insert a block of random/existing bytes."""
+        # Max length constraint (simplified)
+        MAX_LEN = 10000
+        if len(data) >= MAX_LEN:
+            return data  # Avoid making already long strings even longer
+
+        # Choose block length
+        # Allow inserting into empty string
+        block_len = self._choose_block_len(MAX_LEN // 2)  # Limit block length
+        if block_len <= 0:
+            block_len = 1
+
+        # Ensure insertion doesn't exceed max length
+        if len(data) + block_len > MAX_LEN:
+            block_len = MAX_LEN - len(data)
+            if block_len <= 0:
+                return data  # Cannot insert
+
+        insert_pos = random.randint(0, len(data))
+
+        # 75% chance to clone, 25% chance to insert random/existing byte block
+        if data and random.randint(1, 4) <= 3:  # Clone (only if data exists)
+            clone_len_limit = min(block_len, len(data))
+            if clone_len_limit <= 0:  # Handle edge case if data became empty
+                block_to_insert = "".join(
+                    chr(random.randint(32, 126)) for _ in range(block_len)
+                )
+            else:
+                actual_clone_len = random.randint(1, clone_len_limit)
+                clone_from = random.randint(0, len(data) - actual_clone_len)
+                block_to_insert = data[clone_from : clone_from + actual_clone_len]
+                # Pad if needed
+                if len(block_to_insert) < block_len:
+                    padding_char = chr(random.randint(32, 126))
+                    block_to_insert += padding_char * (block_len - len(block_to_insert))
+
+        else:  # Insert random block or block of existing chars
+            if random.randint(1, 2) == 1 and data:  # Use existing char
+                fill_char = random.choice(data)
+            else:  # Use random char
+                fill_char = chr(random.randint(32, 126))
+            block_to_insert = fill_char * block_len
+
+        return data[:insert_pos] + block_to_insert + data[insert_pos:]
+
+    def block_overwrite(self, data: str) -> str:
+        """Overwrite a block with another block or random/existing bytes."""
+        if len(data) < 2:
+            return data
+
+        # Choose block length
+        block_len = self._choose_block_len(len(data) - 1)  # Overwrite up to len-1
+        if block_len <= 0:
+            return data  # Cannot overwrite if length is 0 or less
+
+        overwrite_pos = random.randint(0, len(data) - block_len)
+
+        # 75% chance to copy from elsewhere, 25% chance random/existing bytes
+        if random.randint(1, 4) <= 3:  # Copy from elsewhere
+            copy_from = random.randint(0, len(data) - block_len)
+            block_to_overwrite_with = data[copy_from : copy_from + block_len]
+        else:  # Random bytes or block of existing chars
+            if random.randint(1, 2) == 1 and data:  # Use existing char
+                fill_char = random.choice(data)
+            else:  # Use random char
+                fill_char = chr(random.randint(32, 126))
+            block_to_overwrite_with = fill_char * block_len
+
+        s = list(data)
+        s[overwrite_pos : overwrite_pos + block_len] = list(block_to_overwrite_with)
+        return "".join(s)
+
+    def interesting_value_mutation(
+        self, data: Union[str, int, float]
+    ) -> Union[str, int, float]:
+        """Replace data with 'interesting' values (like AFL's dictionary)."""
+        # Combined interesting values
+        interesting_values: List[Union[str, int, float]] = [
+            # Integers (8, 16, 32, 64 bit boundaries & common values)
+            0,
+            1,
+            -1,
+            127,
+            -128,
+            255,
+            -256,
+            32767,
+            -32768,
+            65535,
+            -65536,
+            2147483647,
+            -2147483648,
+            4294967295,
+            -4294967296,
+            9223372036854775807,
+            -9223372036854775808,
+            # Floats (extremes, zero) - commented out NaN/Inf due to JSON issues
+            0.0,
+            1.0,
+            -1.0,
+            1e-308,
+            1e308,
+            2.2250738585072014e-308,
+            1.7976931348623157e308,
+            # Strings (empty, nulls, common patterns, injection attempts)
+            "",
+            "\x00",
+            "\xff",
+            " ",
+            "\n",
+            "\r\n",
+            "\t",
+            "A" * 10,
+            "0" * 10,
+            "%s%n%x",
+            "../",
+            "' OR 1=1 --",
+            "<script>alert(1)</script>",
+            "NULL",
+            "None",
+            "undefined",
+            "true",
+            "false",
         ]
-        return random.choice(extreme_int_values)
+
+        original_type = type(data)
+
+        # Explicitly type compatible_values
+        compatible_values: List[Union[str, int, float]] = []
+
+        # Build the list of compatible values based on the input type
+        if isinstance(data, int):
+            compatible_values.extend(
+                v for v in interesting_values if isinstance(v, int)
+            )
+        elif isinstance(data, float):
+            compatible_values.extend(
+                float(v) for v in interesting_values if isinstance(v, (int, float))
+            )
+        elif isinstance(data, str):
+            compatible_values.extend(
+                str(v) for v in interesting_values if isinstance(v, (str, int, float))
+            )
+        # Add other type checks if necessary
+
+        # Choose from the filtered list if not empty
+        if compatible_values:
+            # Ensure the chosen value maintains some type consistency if possible,
+            # although the list itself is Union typed. Mypy might still complain,
+            # but the runtime logic is sounder.
+            chosen_value = random.choice(compatible_values)
+            # Attempt to cast back to original type if logical (e.g., float back to int if it's whole)
+            # This is complex, so let's rely on the Union type for now.
+            return chosen_value
+        else:
+            # Fallback if no compatible type found
+            # Return original data as a safe fallback instead of a random incompatible type
+            logging.warning(
+                f"No compatible interesting value found for type {original_type}, returning original."
+            )
+            return data  # Return original data
+
+    # --- End: New Mutation Methods ---
 
 
 class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
@@ -518,7 +830,7 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
         # Type for bug reports
         BugReport = Dict[str, Any]
         self.bugs: List[BugReport] = []
-        self.max_iterations = 10
+        self.max_iterations = 100
 
     def log_results(
         self, input: Dict[str, Any], output: Any, is_interesting: bool
@@ -570,6 +882,12 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
                     f"[ERROR] Unexpected response: {response.status_code}\n"
                     f"Response: {response.text}\nInput: {input}"
                 )
+                if (
+                    response.text
+                    != '{"detail": "Python int too large to convert to SQLite INTEGER", "success": false}'
+                ):
+                    return response
+
                 logging.error(msg)
 
             return response
@@ -657,9 +975,7 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
                     try:
                         response = future.result()
                         if response is None:
-                            logging.error(
-                                f"[ERROR] Request failed, no response for input: {mutated_test}"
-                            )
+                            logging.error(f"[ERROR] Request failed, no response")
                     except Exception as e:
                         logging.error(
                             f"[ERROR] Exception in request: {str(e)}\nInput: {mutated_test}"
@@ -672,17 +988,25 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
 def main() -> None:
     seed = DjSeed(
         queue=[
+            # Basic valid inputs
+            {"name": "ab", "info": "cd", "price": 10.0},
+            {"name": "a", "info": "1", "price": 1.0},
+            # Edge cases for field lengths
+            {"name": "a" * 128, "info": "b" * 1024, "price": 10000.0},
+            {"name": "", "info": "", "price": 0},
+            # Numeric edge cases
+            {"name": 2**31, "info": 2**63, "price": float("inf")},
+            {"name": -(2**31) - 1, "info": -(2**63) - 1, "price": -float("inf")},
+            # SQL/XSS test cases
+            {"name": "' OR 1=1--", "info": "<script>alert(1)</script>", "price": 100.0},
+            # ReDoS patterns
+            {"name": "a" * 100 + "!", "info": "a" * 100 + "!", "price": 100.0},
+            # Path traversal
             {
-                "name": "abcdefghijklmnopqrstuvwxyz",
-                "info": "abcdefghijklmnopqrstuvwxyz",
-                "price": 121.23,
+                "name": "../../etc/passwd",
+                "info": "../../../../../../../../../../",
+                "price": 100.0,
             },
-            # {"name": "aaaaaaaaaaaa", "info": "aaaaaaaaaaaa", "price": 1},
-            # {"name": "", "info": "", "price": 0},
-            # {"name": 0, "info": 0, "price": 0},
-            {"name": 1234567890, "info": 1234567890, "price": 1.3},
-            {"name": 1234567890, "info": "1234567890", "price": 1.3},
-            {"name": "1234567890", "info": 1234567890, "price": 1.3},
         ]
     )
     power_schedule = DjPowerSchedule()
