@@ -1,4 +1,4 @@
-from coverage import Coverage, CoverageData
+from coverage import Coverage, CoverageData, CoverageException
 import random
 import subprocess
 import hashlib
@@ -71,22 +71,67 @@ class DjSeed(AbstractSeed):
 
         return chosen_seed
 
+# --- Helper function for AFL-style bucketing ---
+def _count_to_bucket_index(count: int) -> int:
+    """Maps hit count to an AFL-like bucket index."""
+    if count <= 0: return -1 # Should not happen for actual hits
+    if count == 1: return 0
+    if count == 2: return 1
+    if count == 3: return 2
+    if count <= 7: return 3
+    if count <= 15: return 4
+    if count <= 31: return 5
+    if count <= 127: return 6
+    return 7
+# --- End Helper ---
+
 
 class DjIsInteresting(AbstractIsInteresting):
+    """
+    Determines if a run is interesting based on AFL-style hit count bucketing.
+    Updates the global coverage map if new, higher buckets are reached.
+    """
     def __init__(self) -> None:
+        # No state needed within the class itself anymore
         pass
 
-    def __call__(self, hashed_path: str, paths: List) -> bool:
+    def __call__(self, 
+                 arc_hit_counts: Dict[Tuple[str, int, int], int], 
+                 global_coverage_map: Dict[Tuple[str, int, int], int]
+                 ) -> bool:
         """
-        Check if hashed arcs are new. If new add to paths in seed.
-        Returns:
-        - bool indicating if a new path was found
-        """
-        if hashed_path not in paths:
-            paths.append(hashed_path)
-            return True
+        Checks if the current run's hit counts reveal new coverage patterns
+        based on AFL-style buckets. Updates the global map.
 
-        return False
+        Args:
+            arc_hit_counts: Hit counts for arcs from the current run.
+            global_coverage_map: The global map storing the highest bucket index seen per arc.
+
+        Returns:
+            True if the run is interesting (found a new higher bucket), False otherwise.
+        """
+        is_run_interesting = False
+        
+        if not arc_hit_counts:
+             # If coverage failed or returned nothing, it's not interesting
+            return False
+
+        for arc, current_hit_count in arc_hit_counts.items():
+            current_bucket_index = _count_to_bucket_index(current_hit_count)
+            
+            # Get the highest bucket index seen so far for this arc
+            # Default to -1 (meaning never seen) if not in the map
+            previous_max_bucket_index = global_coverage_map.get(arc, -1) 
+
+            if current_bucket_index > previous_max_bucket_index:
+                # This arc reached a higher bucket than ever before!
+                is_run_interesting = True
+                # Update the global map with the new highest bucket index
+                global_coverage_map[arc] = current_bucket_index
+                # Log the specific arc that was interesting (optional, can be verbose)
+                # logging.debug(f"[DEBUG] Interesting arc found: {arc} - New bucket: {current_bucket_index} (Count: {current_hit_count}), Previous max bucket: {previous_max_bucket_index}")
+
+        return is_run_interesting
 
 
 class DjPowerSchedule(AbstractPowerSchedule):
@@ -515,10 +560,15 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
         self.power_schedule = power_schedule
         self.mutator = mutator
         self.is_interesting = is_interesting
+        self.cov = Coverage(data_suffix=True, branch=True, auto_data=True) # Initialize Coverage object
+        # --- Global Coverage Map ---
+        # Stores the highest bucket index seen for each arc (filename, start, end)
+        self.global_coverage_map: Dict[Tuple[str, int, int], int] = {} 
+        # --- End Global Coverage Map ---
         # Type for bug reports
         BugReport = Dict[str, Any]
         self.bugs: List[BugReport] = []
-        self.max_iterations = 10
+        self.max_iterations = 30 
 
     def log_results(
         self, input: Dict[str, Any], output: Any, is_interesting: bool
@@ -611,62 +661,160 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
         path_str = "|".join(combined)
         return hashlib.sha1(path_str.encode()).hexdigest()
 
+    # --- New method to get arc hit counts ---
+    def get_arc_hit_counts(self, cov_data: Optional[CoverageData]) -> Dict[Tuple[str, int, int], int]:
+        """
+        Extracts edge hit counts from CoverageData.
+        Assumes duplicates in arcs() list represent multiple hits.
+        Returns a dictionary mapping (filename, start, end) -> hit_count.
+        """
+        hit_counts: Dict[Tuple[str, int, int], int] = {}
+        if not cov_data:
+            logging.warning("[WARNING] No coverage data provided to get_arc_hit_counts.")
+            return hit_counts
+            
+        try:
+            measured_files = cov_data.measured_files()
+            if not measured_files:
+                # This can happen if the executed code wasn't measured (e.g., only external libraries)
+                logging.debug("[DEBUG] No measured files found in coverage data.")
+                return hit_counts
+
+            for filename in measured_files:
+                arcs = cov_data.arcs(filename)
+                if arcs: # arcs can be None if no branches executed in the file
+                    for start, end in arcs:
+                        # Ensure start and end are integers
+                        if isinstance(start, int) and isinstance(end, int):
+                             # Filter out arcs indicating non-execution, like (-1, 0) or similar coverage.py internals if they appear
+                            if start >= 0 and end >= 0:
+                                arc_tuple = (filename, start, end)
+                                hit_counts[arc_tuple] = hit_counts.get(arc_tuple, 0) + 1
+                        else:
+                             logging.warning(f"[WARNING] Non-integer arc component found in {filename}: ({start}, {end})")
+
+        except Exception as e:
+            logging.error(f"[ERROR] Failed to process coverage arcs: {e}")
+            # Return potentially partial counts or empty dict? Empty seems safer.
+            return {}
+            
+        # logging.debug(f"[DEBUG] Extracted hit counts: {hit_counts}") # Optional: very verbose
+        return hit_counts
+    # --- End of new method ---
+
+    def _execute_test_case(self, test_input: Dict[str, Any]) -> Optional[requests.Response]:
+        """Executes a single test case (sends request) without individual coverage."""
+        # Coverage is now handled outside this worker function
+        response = None
+        try:
+            response = self.send_request(test_input)
+        except Exception as e:
+            # Log exceptions during request sending, but don't handle coverage here
+            logging.error(f"[ERROR] Unexpected exception during request sending: {e}\nInput: {test_input}")
+            # We might lose the response if an error occurs here, but coverage is batch-level anyway
+            
+        return response
+
+
     def run(self) -> None:
         """Main fuzzing loop with concurrent requests."""
         self.start_server()
-        cov = Coverage(data_file=".coverage")
-        cov.erase()  # clear previous coverage data before starting loop
+        self.cov.erase()  # Clear any stale coverage data before starting
 
         logging.info("[INFO] Fuzzer started.")
 
         max_workers = 5  # Number of concurrent requests
+        iteration_count = 0 # Use a separate counter for logging iterations
 
-        for _ in range(self.max_iterations):
+        while iteration_count < self.max_iterations: # Loop based on iterations for clarity
             test_case = self.seed.chooseNext()
+            # Calculate energy based on the chosen seed *before* modifying its 'f' counter
             energy = self.power_schedule.assignEnergy(test_case, self.seed.getAverage())
-            logging.info(f"seed: {self.seed.queue}")
-            logging.info(f"energy: {energy}")
+            
+            logging.info(f"[INFO] Iteration {iteration_count + 1}: Chose seed {test_case['data']} with s={test_case['s']-1}, f={test_case['f']}. Assigned energy: {energy}") # Log s before increment
 
-            # Create batches of mutated inputs
-            mutated_tests = []
+            if energy == 0:
+                logging.info(f"[INFO] Iteration {iteration_count + 1}: Seed has 0 energy, skipping mutations.")
+                iteration_count += 1
+                continue # Skip to next iteration if no energy
+
+            mutated_tests_for_batch = []
             for _ in range(energy):
-                test_case["f"] += 1
+                # Increment failure counter *before* mutation for this attempt
+                test_case["f"] += 1 
                 mutated_test = self.mutator.mutateInput(test_case["data"])
-                mutated_tests.append(mutated_test)
+                mutated_tests_for_batch.append(mutated_test)
 
-            # Process requests concurrently in batches
-            with ThreadPoolExecutor(max_workers=max_workers) as executor:
-                futures = []
+            logging.info(f"[INFO] Iteration {iteration_count + 1}: Generated {len(mutated_tests_for_batch)} mutations.")
 
-                for mutated_test in mutated_tests:
-                    cov.start()
-                    future = executor.submit(self.send_request, mutated_test)
-                    futures.append((future, mutated_test))
-                    cov.stop()
+            # --- Start Coverage for the whole batch ---
+            self.cov.erase() 
+            self.cov.start()
+            
+            batch_responses: Dict[Any, Optional[requests.Response]] = {}
+            try:
+                # Process requests concurrently
+                with ThreadPoolExecutor(max_workers=max_workers) as executor:
+                    # Map inputs to futures
+                    future_to_input = {executor.submit(self._execute_test_case, mutated_test): mutated_test for mutated_test in mutated_tests_for_batch}
 
-                    cov_data = cov.get_data()
-                    hashed_arcs = self.hash_cov_data(cov_data)
-                    cov.erase()
+                    for future in as_completed(future_to_input):
+                        mutated_test = future_to_input[future]
+                        try:
+                            # Get response from the future result
+                            response = future.result()
+                            if response is None:
+                                logging.error(f"[ERROR] Request failed (returned None) for input: {mutated_test}")
+                            # else: Process response if needed (e.g., check status codes, content for bugs)
 
-                    # Check for new paths
-                    if self.is_interesting(hashed_arcs, self.seed.paths):
-                        logging.info(f"[INFO] New path found. \nInput: {mutated_test}")
+                        except Exception as e:
+                            logging.error(f"[ERROR] Exception processing future result: {str(e)}\nInput: {mutated_test}")
+            finally:
+                 # --- Stop Coverage after the batch ---
+                try:
+                    self.cov.stop()
+                except CoverageException as ce:
+                     logging.error(f"[ERROR] Coverage stop error after batch: {ce}")
+                
+            # --- Process Batch Coverage ---
+            cov_data = self.cov.get_data()
+            arc_hit_counts = None
+            if cov_data and cov_data.measured_files():
+                arc_hit_counts = self.get_arc_hit_counts(cov_data)
+            else:
+                 logging.warning(f"[WARNING] No coverage data collected or no measured files for batch from seed {test_case['data']}")
 
-                # Wait for all requests to complete
-                for future, mutated_test in futures:
-                    try:
-                        response = future.result()
-                        if response is None:
-                            logging.error(
-                                f"[ERROR] Request failed, no response for input: {mutated_test}"
-                            )
-                    except Exception as e:
-                        logging.error(
-                            f"[ERROR] Exception in request: {str(e)}\nInput: {mutated_test}"
-                        )
+            if arc_hit_counts is not None:
+                # Check if the *entire batch* yielded interesting coverage
+                is_batch_interesting = self.is_interesting(arc_hit_counts, self.global_coverage_map)
 
-        logging.info("[INFO] Fuzzer completed.")
+                if is_batch_interesting:
+                    # If the batch was interesting, we add the *original seed* back to the queue
+                    # This isn't ideal AFL, as we don't know *which* mutation was responsible,
+                    # but it's a safer starting point than per-input coverage with threads.
+                    # We could potentially add *all* inputs from the batch, but that might bloat the queue.
+                    # Adding the original seed encourages further mutation around this area.
+                    logging.info(f"[INFO] [COVERAGE_EVOLUTION] Iteration: {iteration_count + 1}, New coverage found! Original Seed: {test_case['data']}. Total unique coverage paths/arcs discovered: {len(self.global_coverage_map)}")
+                    # Add the *original seed* back with reset counters
+                    self.seed.queue.append({"data": test_case['data'], "s": 0, "f": 0})
+                    # Note: The global_coverage_map was already updated inside is_interesting
+            # --- End Batch Coverage Processing ---
+
+
+            # Log coverage status update after processing all mutations for this seed/iteration
+            logging.info(f"[INFO] [COVERAGE_STATUS] Iteration: {iteration_count + 1} completed. Total unique coverage paths/arcs discovered: {len(self.global_coverage_map)}")
+            iteration_count += 1 # Increment iteration counter
+
+        logging.info(f"[INFO] Fuzzer completed {self.max_iterations} iterations. Final unique coverage paths/arcs discovered: {len(self.global_coverage_map)}")
         self.stop_server()
+        # Optionally combine coverage data from suffixed files if needed for a final report
+        # try:
+        #     final_coverage = Coverage(data_file=".coverage") # Specify the main file
+        #     final_coverage.combine() 
+        #     logging.info("[INFO] Combined coverage data.")
+        #     # Generate report (e.g., final_coverage.html_report(directory='covhtml'))
+        # except CoverageException as e:
+        #     logging.error(f"[ERROR] Failed to combine coverage data: {e}")
 
 
 def main() -> None:
@@ -677,17 +825,18 @@ def main() -> None:
                 "info": "abcdefghijklmnopqrstuvwxyz",
                 "price": 121.23,
             },
-            # {"name": "aaaaaaaaaaaa", "info": "aaaaaaaaaaaa", "price": 1},
-            # {"name": "", "info": "", "price": 0},
-            # {"name": 0, "info": 0, "price": 0},
-            {"name": 1234567890, "info": 1234567890, "price": 1.3},
-            {"name": 1234567890, "info": "1234567890", "price": 1.3},
-            {"name": "1234567890", "info": 1234567890, "price": 1.3},
+            # {"name": "aaaaaaaaaaaa", "info": "aaaaaaaaaaaa", "price": 1}, # Example seeds
+            # {"name": "", "info": "", "price": 0}, # Example seeds
+            # {"name": 0, "info": 0, "price": 0}, # Example seeds
+            {"name": 1234567890, "info": 1234567890, "price": 1.3}, # Example seeds
+            {"name": 1234567890, "info": "1234567890", "price": 1.3}, # Example seeds
+            {"name": "1234567890", "info": 1234567890, "price": 1.3}, # Example seeds
         ]
     )
     power_schedule = DjPowerSchedule()
     mutator = DjMutator()
-    is_interesting = DjIsInteresting()
+    # is_interesting instance is now stateless, just holds the logic
+    is_interesting = DjIsInteresting() 
 
     fuzzer = DjGreyboxFuzzer(seed, power_schedule, mutator, is_interesting)
     try:
