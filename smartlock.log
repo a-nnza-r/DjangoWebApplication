@@ -1,0 +1,785 @@
+2025-04-17 19:09:53,143 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:09:54,041 - INFO - [2] Authenticating...
+2025-04-17 19:09:56,073 - INFO - Sent AUTH+PASSCODE: [0, 1, 2, 3, 4, 5, 6]
+2025-04-17 19:09:56,073 - INFO - Received response: [0]
+2025-04-17 19:09:56,073 - INFO - [!] Authenticated!!!
+2025-04-17 19:10:00,058 - INFO - 
+[Paths] 1 discovered. (Path=()) s=0, f=1.
+2025-04-17 19:10:00,058 - INFO - ------------------------------------------------------------
+2025-04-17 19:10:00,058 - INFO - 
+[>] Sending command: [189, 1]
+2025-04-17 19:10:00,231 - INFO - [<] Received response: [2]
+2025-04-17 19:10:02,231 - INFO - [State] Device state: Authenticated
+2025-04-17 19:10:02,233 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-17 19:10:02,233 - INFO - ------------------------------------------------------------
+2025-04-17 19:10:02,233 - INFO - 
+[>] Sending command: [1]
+2025-04-17 19:10:02,399 - INFO - [<] Received response: [0]
+2025-04-17 19:10:04,406 - INFO - [State] Device state: Authenticated
+2025-04-17 19:10:04,406 - INFO - [State] Opening the lock mechanism
+2025-04-17 19:10:04,406 - INFO - [State] Lock mechanism open
+2025-04-17 19:10:04,406 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-17 19:10:04,406 - INFO - 
+[Paths] 1 discovered. (Path=()) s=1, f=2.
+2025-04-17 19:10:04,406 - INFO - ------------------------------------------------------------
+2025-04-17 19:10:04,406 - INFO - 
+[>] Sending command: [2]
+2025-04-17 19:10:04,584 - INFO - [<] Received response: [0]
+2025-04-17 19:10:06,588 - INFO - [State] Device state: Authenticated
+2025-04-17 19:10:06,588 - INFO - [State] Opening the lock mechanism
+2025-04-17 19:10:06,588 - INFO - [State] Lock mechanism open
+2025-04-17 19:10:06,588 - INFO - [State] Closing the lock mechanism
+2025-04-17 19:10:06,588 - INFO - [State] Lock mechanism closed
+2025-04-17 19:10:06,588 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-17 19:10:06,588 - INFO - ------------------------------------------------------------
+2025-04-17 19:10:06,588 - INFO - 
+[>] Sending command: [2]
+2025-04-17 19:10:06,760 - INFO - [<] Received response: [4]
+2025-04-17 19:10:08,750 - INFO - [State] Device state: Authenticated
+2025-04-17 19:10:08,750 - INFO - [State] Opening the lock mechanism
+2025-04-17 19:10:08,750 - INFO - [State] Lock mechanism open
+2025-04-17 19:10:08,750 - INFO - [State] Closing the lock mechanism
+2025-04-17 19:10:08,750 - INFO - [State] Lock mechanism closed
+2025-04-17 19:10:08,750 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-17 19:10:08,750 - INFO - ------------------------------------------------------------
+2025-04-17 19:10:08,750 - INFO - 
+[>] Sending command: [2]
+2025-04-17 19:10:08,860 - INFO - [<] Received response: [4]
+2025-04-17 19:10:10,863 - INFO - [State] Device state: Authenticated
+2025-04-17 19:10:10,863 - INFO - [State] Opening the lock mechanism
+2025-04-17 19:10:10,863 - INFO - [State] Lock mechanism open
+2025-04-17 19:10:10,863 - INFO - [State] Closing the lock mechanism
+2025-04-17 19:10:10,863 - INFO - [State] Lock mechanism closed
+2025-04-17 19:10:10,863 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-17 19:10:10,863 - INFO - ------------------------------------------------------------
+2025-04-17 19:10:10,863 - INFO - 
+[>] Sending command: [2]
+2025-04-17 19:10:11,044 - INFO - [<] Received response: [4]
+2025-04-17 19:10:13,058 - INFO - [State] Device state: Authenticated
+2025-04-17 19:10:13,058 - INFO - [State] Opening the lock mechanism
+2025-04-17 19:10:13,059 - INFO - [State] Lock mechanism open
+2025-04-17 19:10:13,059 - INFO - [State] Closing the lock mechanism
+2025-04-17 19:10:13,059 - INFO - [State] Lock mechanism closed
+2025-04-17 19:10:13,060 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-17 19:10:13,060 - INFO - 
+[Paths] 2 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated',)) s=0, f=1.
+2025-04-17 19:10:13,060 - INFO - ------------------------------------------------------------
+2025-04-17 19:10:13,060 - INFO - 
+[>] Sending command: []
+2025-04-17 19:10:13,246 - INFO - [<] Received response: [0]
+2025-04-17 19:10:15,240 - INFO - [State] Device state: Authenticated
+2025-04-17 19:10:15,240 - INFO - [State] Opening the lock mechanism
+2025-04-17 19:10:15,240 - INFO - [State] Lock mechanism open
+2025-04-17 19:10:15,240 - INFO - [State] Closing the lock mechanism
+2025-04-17 19:10:15,240 - INFO - [State] Lock mechanism closed
+2025-04-17 19:10:15,240 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-17 19:10:15,240 - INFO - ------------------------------------------------------------
+2025-04-17 19:10:15,240 - INFO - 
+[>] Sending command: [189, 252, 1]
+2025-04-17 19:10:15,240 - INFO - 
+[Paths] 3 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated',)) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=0, f=1.
+2025-04-17 19:10:15,240 - INFO - ------------------------------------------------------------
+2025-04-17 19:10:15,240 - INFO - 
+[>] Sending command: [1]
+2025-04-17 19:10:15,240 - INFO - ------------------------------------------------------------
+2025-04-17 19:10:15,240 - INFO - 
+[>] Sending command: [86]
+2025-04-17 19:10:15,240 - INFO - 
+[Paths] 4 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated',)) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=0, f=1.
+2025-04-17 19:10:15,240 - INFO - ------------------------------------------------------------
+2025-04-17 19:10:15,240 - INFO - 
+[>] Sending command: [2]
+2025-04-17 19:10:15,240 - INFO - ------------------------------------------------------------
+2025-04-17 19:10:15,248 - INFO - 
+[>] Sending command: [1]
+2025-04-17 19:10:15,248 - INFO - 
+[Paths] 4 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated',)) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=1, f=2.
+2025-04-17 19:10:15,250 - INFO - 
+[Paths] 4 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated',)) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=2, f=4.
+2025-04-17 19:10:15,251 - INFO - 
+[Paths] 4 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated',)) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=3, f=4.
+2025-04-17 19:10:15,251 - INFO - 
+[Paths] 4 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated',)) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=4, f=4.
+2025-04-17 19:10:15,362 - INFO - ['[Error] Code: 0x298173']
+2025-04-17 19:10:15,362 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:10:25,379 - INFO - [2] Authenticating...
+2025-04-17 19:10:27,387 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:10:37,421 - INFO - [2] Authenticating...
+2025-04-17 19:10:39,429 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:10:49,446 - INFO - [2] Authenticating...
+2025-04-17 19:10:51,442 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:11:01,465 - INFO - [2] Authenticating...
+2025-04-17 19:11:03,459 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:11:13,488 - INFO - [2] Authenticating...
+2025-04-17 19:11:15,468 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:11:25,496 - INFO - [2] Authenticating...
+2025-04-17 19:11:27,500 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:11:37,510 - INFO - [2] Authenticating...
+2025-04-17 19:11:39,512 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:11:49,545 - INFO - [2] Authenticating...
+2025-04-17 19:11:51,557 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:12:01,572 - INFO - [2] Authenticating...
+2025-04-17 19:12:03,587 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:12:13,600 - INFO - [2] Authenticating...
+2025-04-17 19:12:15,600 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:12:24,775 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-5' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:12:24,775 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-6' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:12:24,775 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-7' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:12:24,775 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-8' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:12:24,791 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:12:24,791 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-10' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:12:24,791 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-11' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:12:24,791 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-12' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:12:24,791 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-13' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:12:25,610 - INFO - [2] Authenticating...
+2025-04-17 19:12:27,626 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:12:37,656 - INFO - [2] Authenticating...
+2025-04-17 19:12:39,670 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:12:49,691 - INFO - [2] Authenticating...
+2025-04-17 19:12:51,693 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:13:01,712 - INFO - [2] Authenticating...
+2025-04-17 19:13:03,717 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:13:13,756 - INFO - [2] Authenticating...
+2025-04-17 19:13:15,763 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:13:25,784 - INFO - [2] Authenticating...
+2025-04-17 19:13:27,792 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:13:37,820 - INFO - [2] Authenticating...
+2025-04-17 19:13:39,804 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:13:49,795 - INFO - [2] Authenticating...
+2025-04-17 19:13:51,818 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:14:01,837 - INFO - [2] Authenticating...
+2025-04-17 19:14:03,839 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:14:13,873 - INFO - [2] Authenticating...
+2025-04-17 19:14:15,849 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:14:25,864 - INFO - [2] Authenticating...
+2025-04-17 19:14:27,880 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:14:37,894 - INFO - [2] Authenticating...
+2025-04-17 19:14:39,905 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:14:49,925 - INFO - [2] Authenticating...
+2025-04-17 19:14:51,929 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:15:00,707 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-15' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:15:00,707 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-16' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:15:00,707 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-17' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:15:00,707 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-18' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:15:00,707 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-19' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:15:00,707 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-20' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:15:00,707 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-21' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:15:00,707 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-22' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:15:00,716 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-23' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:15:00,716 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-24' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:15:00,716 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-25' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:15:00,716 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-26' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:15:01,940 - INFO - [2] Authenticating...
+2025-04-17 19:15:03,944 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:15:13,973 - INFO - [2] Authenticating...
+2025-04-17 19:15:15,998 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:15:26,026 - INFO - [2] Authenticating...
+2025-04-17 19:15:28,015 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:15:38,052 - INFO - [2] Authenticating...
+2025-04-17 19:15:40,055 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:15:50,077 - INFO - [2] Authenticating...
+2025-04-17 19:15:52,095 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:16:02,124 - INFO - [2] Authenticating...
+2025-04-17 19:16:04,138 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:16:14,159 - INFO - [2] Authenticating...
+2025-04-17 19:16:16,160 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:16:26,201 - INFO - [2] Authenticating...
+2025-04-17 19:16:28,192 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:16:38,211 - INFO - [2] Authenticating...
+2025-04-17 19:16:40,209 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:16:50,241 - INFO - [2] Authenticating...
+2025-04-17 19:16:52,265 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:17:02,291 - INFO - [2] Authenticating...
+2025-04-17 19:17:04,296 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:17:14,299 - INFO - [2] Authenticating...
+2025-04-17 19:17:16,310 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:17:26,342 - INFO - [2] Authenticating...
+2025-04-17 19:17:28,351 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:17:38,381 - INFO - [2] Authenticating...
+2025-04-17 19:17:40,378 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:17:46,786 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-4' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:17:46,786 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-14' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:17:46,786 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-27' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:17:46,786 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-28' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:17:46,786 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-29' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:17:46,786 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-30' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:17:46,786 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-31' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:17:46,786 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-32' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:17:46,786 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-33' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:17:46,786 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-34' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:17:46,786 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-35' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:17:46,786 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-36' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:17:46,786 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-37' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:17:46,786 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-38' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:17:46,786 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-39' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:17:46,786 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-40' coro=<BLEClient._serialport_task() done, defined at U:\DjangoWebApplication\smartlock\BLEClient.py:72> exception=SerialException("could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)")>
+Traceback (most recent call last):
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 74, in _serialport_task
+    port = self.open_serialport()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\smartlock\BLEClient.py", line 55, in open_serialport
+    self.serialport = serial.Serial(
+                      ^^^^^^^^^^^^^^
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "U:\DjangoWebApplication\.venv\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM8': PermissionError(13, 'Access is denied.', None, 5)
+2025-04-17 19:17:50,397 - INFO - [2] Authenticating...
+2025-04-17 19:17:52,412 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:18:02,423 - INFO - [2] Authenticating...
+2025-04-17 19:18:04,448 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:18:14,485 - INFO - [2] Authenticating...
+2025-04-17 19:18:16,501 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:18:26,529 - INFO - [2] Authenticating...
+2025-04-17 19:18:28,522 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:18:38,543 - INFO - [2] Authenticating...
+2025-04-17 19:18:40,538 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:18:50,552 - INFO - [2] Authenticating...
+2025-04-17 19:18:52,565 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:19:02,592 - INFO - [2] Authenticating...
+2025-04-17 19:19:04,608 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-17 19:19:14,640 - INFO - [2] Authenticating...

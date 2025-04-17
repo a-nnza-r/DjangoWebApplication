@@ -129,7 +129,7 @@ class GreyboxFuzzer(AbstractGreyboxFuzzer):
 
 async def run_fuzzer():
     try:
-        initial_inputs = [Input(OPEN), Input(CLOSE), Input(PASSCODE)]
+        initial_inputs = [Input(OPEN), Input(CLOSE)]
         seed = Seed(queue=initial_inputs)
         power_schedule = PowerSchedule()
         mutator = ByteArrayMutator()
@@ -143,12 +143,47 @@ async def run_fuzzer():
                 ble.init_logs()
                 await connect_client_to_smartlock(ble)
 
+                async def ble_program(x: list[int]) -> tuple:
+                    logging.info("-" * 60)
+                    logging.info(f"\n[>] Sending command: {x}")
+                    print("\n[3] Running random command")
+
+                    res = await ble.write_command(x)
+                    logging.info(f"[<] Received response: {res}")
+                    await asyncio.sleep(2)
+
+                    # print(f"\n[4] Logs from Smart Lock (Serial Port):\n{'-'*50}")
+                    lines = ble.read_logs()
+
+                    current_state = []
+                    if lines:
+                        for line in lines:
+                            if line.startswith("[State]"):
+                                logging.info(line)
+                                current_state.append(line)
+
+                        transitions = extract_transitions(lines)
+                        logging.info(transitions)
+                    else:
+                        logging.info("No logs received from device.")
+
+                    sys.stdout.flush()
+                    return tuple(current_state)
+
+
                 try:
-                    fuzzer.program = lambda x: ble_program(x, ble)
+                    initial_inputs = [Input(OPEN), Input(CLOSE)]
+                    seed = Seed(queue=initial_inputs)
+                    power_schedule = PowerSchedule()
+                    mutator = ByteArrayMutator()
+                    is_interesting = IsInteresting()
+                    fuzzer = GreyboxFuzzer(seed, power_schedule, mutator, is_interesting, ble_program)
                     await fuzzer.run()
                 except Exception as ex:
                     print("\nProgram cannot be run. Exception:", ex)
                     print(traceback.format_exc())
+                finally:
+                    await ble.disconnect()
 
                 error_codes = [line for line in ble.read_logs() if line.startswith("[Error]")]
                 print(error_codes)
@@ -159,6 +194,8 @@ async def run_fuzzer():
                 await ble.disconnect()
                 print(traceback.format_exc())
                 print("Re-running program in a few seconds.")
+            finally:
+                await ble.disconnect()
 
     except KeyboardInterrupt:
         print("Stopping fuzzer.")

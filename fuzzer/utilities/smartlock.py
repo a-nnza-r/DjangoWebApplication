@@ -41,7 +41,7 @@ async def connect_client_to_smartlock(ble) -> None:
 
     logging.info("[2] Authenticating...")
     print("\n[2] Authenticating...")
-    await asyncio.sleep(0.5)
+    await asyncio.sleep(2)
 
     res = await ble.write_command(AUTH+PASSCODE)
     logging.info(f"Sent AUTH+PASSCODE: {AUTH+PASSCODE}")
