@@ -247,15 +247,15 @@ class DjMutator(AbstractMutator):
                 self.block_delete,  # C++ style block delete
                 self.block_insert_clone,  # C++ style block insert/clone
                 self.block_overwrite,  # C++ style block overwrite
-                # self.replace_with_extreme_string,  # Existing extreme string
-                # self.word_mutation,  # Existing word mutation
-                # self.special_char_mutation,  # Existing special char
-                # self.sql_injection_mutation,  # Existing SQLi
-                # self.xss_mutation,  # Existing XSS
-                # self.unicode_mutation,  # Existing unicode
-                # self.format_string_mutation,  # Existing format string
-                # self.path_traversal_mutation,  # Existing path traversal
-                # self.long_string_mutation,  # Existing long string
+                self.replace_with_extreme_string,  # Existing extreme string
+                self.word_mutation,  # Existing word mutation
+                self.special_char_mutation,  # Existing special char
+                self.sql_injection_mutation,  # Existing SQLi
+                self.xss_mutation,  # Existing XSS
+                self.unicode_mutation,  # Existing unicode
+                self.format_string_mutation,  # Existing format string
+                self.path_traversal_mutation,  # Existing path traversal
+                self.long_string_mutation,  # Existing long string
                 self.arith_inc_dec_str,  # Existing char arithmetic
             ]
             # Extend the main list with string-specific methods
@@ -269,10 +269,10 @@ class DjMutator(AbstractMutator):
             num_mutation_methods: List[
                 Callable[[Union[int, float]], Union[int, float]]
             ] = [
-                # self.replace_with_extreme_float,  # Existing extreme float
+                self.replace_with_extreme_float,  # Existing extreme float
                 self.random_float_mutation,  # Existing random float
                 self.arith_inc_dec_num,  # Existing num arithmetic
-                # self.replace_with_extreme_int,  # Existing extreme int
+                self.replace_with_extreme_int,  # Existing extreme int
             ]
             # Extend the main list with numeric-specific methods
             all_mutation_methods.extend(num_mutation_methods)
@@ -513,22 +513,22 @@ class DjMutator(AbstractMutator):
         )
         return pattern * (length // len(pattern))
 
-    # def replace_with_extreme_float(self, data: float) -> float:
-    #     """Replace float with extreme values."""
-    #     return random.choice(
-    #         [
-    #             # float("inf"),
-    #             # -float("inf"),
-    #             # float("nan"),
-    #             0,
-    #             -9999999,
-    #             9999999,
-    #             1e-308,
-    #             1e308,  # Double precision bounds
-    #             2.2250738585072014e-308,  # Min normal double
-    #             1.7976931348623157e308,  # Max double
-    #         ]
-    #     )
+    def replace_with_extreme_float(self, data: float) -> float:
+        """Replace float with extreme values."""
+        return random.choice(
+            [
+                # float("inf"),
+                # -float("inf"),
+                # float("nan"),
+                0,
+                -9999999,
+                9999999,
+                1e-308,
+                1e308,  # Double precision bounds
+                2.2250738585072014e-308,  # Min normal double
+                1.7976931348623157e308,  # Max double
+            ]
+        )
 
     def random_float_mutation(self, data: float) -> float:
         """Apply random float mutations."""
@@ -563,23 +563,23 @@ class DjMutator(AbstractMutator):
             return data + float(delta)
         return data
 
-    # def replace_with_extreme_int(self, data: Union[int, float]) -> Union[int, float]:
-    #     """Replace integer with extreme values for boundary testing."""
-    #     extreme_int_values = [
-    #         0,  # Zero
-    #         -2147483648,  # Min 32-bit signed int
-    #         2147483647,  # Max 32-bit signed int
-    #         -9223372036854775808,  # Min 64-bit signed int
-    #         9223372036854775807,  # Max 64-bit signed int
-    #         -999999999999999999999999999,  # Very large negative
-    #         999999999999999999999999999,  # Very large positive
-    #         2**31,  # Overflow 32-bit int
-    #         -(2**31 + 1),
-    #         -(2**32 + 1),
-    #         2**63,  # Overflow 64-bit int
-    #         -(2**63 + 1),
-    #     ]
-    #     return random.choice(extreme_int_values)
+    def replace_with_extreme_int(self, data: Union[int, float]) -> Union[int, float]:
+        """Replace integer with extreme values for boundary testing."""
+        extreme_int_values = [
+            0,  # Zero
+            -2147483648,  # Min 32-bit signed int
+            2147483647,  # Max 32-bit signed int
+            -9223372036854775808,  # Min 64-bit signed int
+            9223372036854775807,  # Max 64-bit signed int
+            -999999999999999999999999999,  # Very large negative
+            999999999999999999999999999,  # Very large positive
+            2**31,  # Overflow 32-bit int
+            -(2**31 + 1),
+            -(2**32 + 1),
+            2**63,  # Overflow 64-bit int
+            -(2**63 + 1),
+        ]
+        return random.choice(extreme_int_values)
 
     # --- Start: New Mutation Methods ---
 
