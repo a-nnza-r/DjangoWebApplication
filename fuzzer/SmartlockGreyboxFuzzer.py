@@ -83,8 +83,10 @@ class IsInteresting(AbstractIsInteresting):
     def __init__(self):
         self.seen_path_states = set()
         self.seen_errors = set()
+        self.illegal_transitions = set()
 
     def __call__(self, input: Input) -> bool:
+        # Check for new path discovery
         is_new_path = input.path_state not in self.seen_path_states
         if is_new_path:
             self.seen_path_states.add(input.path_state)
@@ -98,7 +100,10 @@ class IsInteresting(AbstractIsInteresting):
                 if log not in self.seen_errors:
                     self.seen_errors.add(log)
                     logging.info(f"[INTERESTING] New error discovered: {log}")
-                    return True
+                    return False  # might not want to keep exploring the same error
+                
+        # Check for illegal state transitions
+
 
         return False
 

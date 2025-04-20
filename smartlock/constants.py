@@ -27,3 +27,11 @@ VALID_COMMANDS = [AUTH, OPEN, CLOSE, PASSCODE]
 
 # Generate a list of all 256 possible 1-byte values: [0x00, 0x01, ..., 0xFF]
 UNKNOWN_COMMANDS = [[i] for i in range(256) if i not in VALID_COMMANDS]
+
+WEIGHTED_UNKNOWN_COMMANDS = [
+    0x03, 0x04, 0x05,  # near known commands
+    0x10, 0x20, 0x30,  # arbitrary intervals
+    0x41, 0x44, 0x54,  # ASCII letters like A, D, T
+    0x7F, 0x80, 0xF0,  # suspicious values
+    0xFE, 0xFF          # boundary bytes
+]
