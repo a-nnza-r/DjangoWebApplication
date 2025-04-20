@@ -204,7 +204,9 @@ async def run_fuzzer():
                 finally:
                     await ble.disconnect()
 
-                error_codes = [line for line in ble.read_logs() if line.startswith("[Error]")]
+                error_codes = list(set(
+                    line for line in ble.read_logs() if line.startswith("[Error]")
+                ))
                 print(error_codes)
                 logging.info(error_codes)
 
