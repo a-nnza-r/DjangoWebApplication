@@ -6,9 +6,10 @@
 
 import copy
 import random
+import logging
 from bitstring import BitArray
 from fuzzer.abstract import AbstractMutator
-
+from smartlock.constants import VALID_COMMANDS, UNKNOWN_COMMANDS
 
 class ByteMutator():
     @staticmethod
@@ -84,10 +85,29 @@ class ByteArrayMutator(AbstractMutator):
         fs = [
             self.mutateRandomBytes,
             self.deleteRandomBytes,
-            self.insertRandomBytes
+            self.insertRandomBytes,
+            self.repeat_valid_command,
+            self.inject_unknown_command,
+            self.valid_command_out_of_order,
         ]
         mutation_operator = random.choice(fs)
-        return mutation_operator(copy_of_input)
+        mutated = mutation_operator(copy_of_input)
+
+        # Log the mutation strategy
+        logging.info(f"[MUTATION] Mutation strategy for next input: {mutation_operator.__name__} | Original: {copy_of_input} | Mutated: {mutated}")
+        
+        return mutated    
+    
+    def repeat_valid_command(self, input: list[int]) -> list[int]:
+        return random.choice(VALID_COMMANDS) * random.randint(1, 10)
+
+    def inject_unknown_command(self, input: list[int]) -> list[int]:
+        return random.choice(UNKNOWN_COMMANDS) + input
+
+    def valid_command_out_of_order(self, input: list[int]) -> list[int]:
+        valid_commands = copy.deepcopy(VALID_COMMANDS)
+        random.shuffle(valid_commands)
+        return [byte for command in valid_commands for byte in command] # concatenate the arrays
         
 
 if __name__ == '__main__':

@@ -75,6 +75,10 @@ async def ble_program(x: list[int], ble: BLEClient) -> tuple:
             if line.startswith("[State]"):
                 logging.info(line)
                 current_state.append(line)
+            elif line.startswith("[Error]"):
+                logging.error(f"[ERROR] {line}")
+            elif line.startswith("[Bluetooth]") or line.startswith("[Auth]"):
+                logging.info(f"[LOG] {line}")
 
         transitions = extract_transitions(lines)
         logging.info(transitions)

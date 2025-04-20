@@ -80,8 +80,27 @@ class PowerSchedule(AbstractPowerSchedule):
         return path.e
 
 class IsInteresting(AbstractIsInteresting):
-    def __call__(self, *args, **kwds) -> bool:
-        return True
+    def __init__(self):
+        self.seen_path_states = set()
+        self.seen_errors = set()
+
+    def __call__(self, input: Input) -> bool:
+        is_new_path = input.path_state not in self.seen_path_states
+        if is_new_path:
+            self.seen_path_states.add(input.path_state)
+            logging.info(f"[INTERESTING] New path discovered: {input.path_state}")
+            return True
+
+        # Check for error discovery (from logs)
+        logs = input.path_state
+        for log in logs:
+            if "[Error]" in log:
+                if log not in self.seen_errors:
+                    self.seen_errors.add(log)
+                    logging.info(f"[INTERESTING] New error discovered: {log}")
+                    return True
+
+        return False
 
 class GreyboxFuzzer(AbstractGreyboxFuzzer):
     def __init__(self, seed: AbstractSeed, power_schedule: AbstractPowerSchedule, mutator: AbstractMutator, is_interesting: IsInteresting, program):

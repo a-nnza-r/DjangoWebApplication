@@ -22,3 +22,8 @@ COMMAND_CODES = {
     0x01: "Open",
     0x02: "Close"
 }
+
+VALID_COMMANDS = [AUTH, OPEN, CLOSE, PASSCODE]
+
+# Generate a list of all 256 possible 1-byte values: [0x00, 0x01, ..., 0xFF]
+UNKNOWN_COMMANDS = [[i] for i in range(256) if i not in VALID_COMMANDS]
