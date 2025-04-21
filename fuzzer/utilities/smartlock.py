@@ -4,6 +4,7 @@ import asyncio
 import logging
 import re
 import sys
+from smartlock.constants import STATE_LABEL_CODES
 from smartlock.BLEClient import BLEClient
 from smartlock.constants import AUTH, COMMAND_CODES, DEVICE_NAME, PASSCODE, STATE_CODES
 
@@ -32,6 +33,23 @@ def extract_transitions(log_lines, initial_state=0):
                 current_state = next_state
                 command_code = None  # reset command
 
+    return transitions
+
+def extract_transitions_as_integers(log_lines: list[str]) -> list[tuple[int, int]]:
+    transitions = []
+    state_sequence = []
+
+    for line in log_lines:
+        if line.startswith("[State]"):
+            label = line.strip()
+            if label in STATE_LABEL_CODES:
+                state_sequence.append(STATE_LABEL_CODES[label])
+
+    # Convert to (from, to) pairs
+    for i in range(len(state_sequence) - 1):
+        transitions.append((state_sequence[i], state_sequence[i + 1]))
+
+    print(f"State transitions: {transitions}")
     return transitions
 
 async def connect_client_to_smartlock(ble) -> None:
@@ -80,7 +98,7 @@ async def ble_program(x: list[int], ble: BLEClient) -> tuple:
             elif line.startswith("[Bluetooth]") or line.startswith("[Auth]"):
                 logging.info(f"[LOG] {line}")
 
-        transitions = extract_transitions(lines)
+        transitions = extract_transitions_as_integers(lines)
         logging.info(transitions)
     else:
         logging.info("No logs received from device.")

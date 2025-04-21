@@ -3,12 +3,12 @@ import random
 import sys
 import traceback
 from fuzzer.abstract import AbstractGreyboxFuzzer, AbstractIsInteresting, AbstractMutator, AbstractPowerSchedule, AbstractSeed
-from fuzzer.utilities.smartlock import ble_program, connect_client_to_smartlock, extract_transitions
+from fuzzer.utilities.smartlock import ble_program, connect_client_to_smartlock, extract_transitions_as_integers
 from smartlock.BLEClient import BLEClient
+from smartlock.constants import LEGAL_STATE_TRANSITIONS
 from fuzzer.mutation.common_mutator import ByteArrayMutator
 import asyncio  # Ensure async operations work
 import logging
-import re
 
 from smartlock.constants import AUTH, CLOSE, DEVICE_NAME, OPEN, PASSCODE
 
@@ -90,7 +90,7 @@ class IsInteresting(AbstractIsInteresting):
         is_new_path = input.path_state not in self.seen_path_states
         if is_new_path:
             self.seen_path_states.add(input.path_state)
-            logging.info(f"[INTERESTING] New path discovered: {input.path_state}")
+            logging.info(f"Is interesting: New path discovered: {input.path_state}")
             return True
 
         # Check for error discovery (from logs)
@@ -99,11 +99,17 @@ class IsInteresting(AbstractIsInteresting):
             if "[Error]" in log:
                 if log not in self.seen_errors:
                     self.seen_errors.add(log)
-                    logging.info(f"[INTERESTING] New error discovered: {log}")
+                    logging.info(f"Is interesting: New error discovered: {log}")
                     return False  # might not want to keep exploring the same error
                 
         # Check for illegal state transitions
-
+        transitions = extract_transitions_as_integers(input.path_state)
+        for (src, dst) in transitions:
+            allowed = LEGAL_STATE_TRANSITIONS.get(src, [])
+            if dst not in allowed:
+                print(f"Illegal state transition: {src} -> {dst} not allowed. Allowed: {src} -> {allowed}")
+                logging.info(f"Illegal state transition: {src} -> {dst} not allowed. Allowed: {src} -> {allowed}")
+                return True
 
         return False
 
@@ -186,8 +192,8 @@ async def run_fuzzer():
                                 logging.info(line)
                                 current_state.append(line)
 
-                        transitions = extract_transitions(lines)
-                        logging.info(transitions)
+                        transitions = extract_transitions_as_integers(lines)
+                        logging.info(f"State transitions: {transitions}")
                     else:
                         logging.info("No logs received from device.")
 

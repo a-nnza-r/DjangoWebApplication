@@ -17,6 +17,26 @@ STATE_CODES = {
     "Closing": 5
 }
 
+STATE_LABEL_CODES = {
+    "[State] Device state: Locked": 0,
+    "[State] Device state: Authenticating": 1,
+    "[State] Device state: Authenticated": 2,
+    "[State] Opening the lock mechanism": 3,
+    "[State] Lock mechanism open": 4,
+    "[State] Closing the lock mechanism": 5,
+    "[State] Lock mechanism closed": 6,
+}
+
+LEGAL_STATE_TRANSITIONS = { # referring to the state diagram in README.pdf and [State] log patterns
+    0: [1],    # Locked → Authenticating
+    1: [2, 6], # Authenticating → Authenticated, or → Locked
+    2: [5, 3], # Authenticated → Opening, or → Closing
+    3: [4],    # Opening → Unlocked
+    4: [5, 4], # Unlocked → Closing, or → Unlocked
+    5: [6],    # Closing → Closed
+    6: [0],    # Closed → Locked
+}
+
 COMMAND_CODES = {
     0x00: "Authenticate",
     0x01: "Open",
