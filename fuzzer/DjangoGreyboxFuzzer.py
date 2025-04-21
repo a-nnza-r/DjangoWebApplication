@@ -135,7 +135,7 @@ class DjIsInteresting(AbstractIsInteresting):
 
 
 class DjPowerSchedule(AbstractPowerSchedule):
-    # TODO: metrics should be measured based on the type of mutation? to see which mutation is producing the best
+    # Metrics should be measured based on the type of mutation? to see which mutation is producing the best
     def __init__(self) -> None:
         self.energy_const = 1000
         self.p = 0.95
@@ -155,6 +155,7 @@ class DjPowerSchedule(AbstractPowerSchedule):
 
 
 class DjMutator(AbstractMutator):
+    # TODO: consider adding PSO for mutations, probability distribution of mutations should be based on their success in the explore phase
     def __init__(self) -> None:
         # Common words for word-based mutations
         self.common_words = [
@@ -293,7 +294,7 @@ class DjMutator(AbstractMutator):
                 self.long_string_mutation,
                 self.arith_inc_dec_str,
             ]
-            # Apply 1-3 mutations
+            # Apply 1-3 mutations TODO: should we change to just one?
             num_mutations = random.randint(1, 3)
             for _ in range(num_mutations):
                 mutation = random.choice(str_mutation_methods)
@@ -754,7 +755,7 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
             batch_responses: Dict[Any, Optional[requests.Response]] = {}
             try:
                 # Process requests concurrently
-                with ThreadPoolExecutor(max_workers=max_workers) as executor:
+                with ThreadPoolExecutor(max_workers=max_workers) as executor: #TODO: Try without concurrency, just need to send requests very quickly to trigger race conditions 
                     # Map inputs to futures
                     future_to_input = {executor.submit(self._execute_test_case, mutated_test): mutated_test for mutated_test in mutated_tests_for_batch}
 
