@@ -1,0 +1,55 @@
+# Fuzzer Configuration for DjangoWebApplication Target - RANDOM Baseline Configuration
+
+# --- Experiment Settings ---
+experiment_name: "random"
+target_name: "django"
+output_base_dir: "evaluation_runs/django/random/"
+run_duration_hours: 0.17 # Approx 10 minutes for testing
+
+# --- Fuzzer Feature Flags ---
+use_coverage_feedback: false   # Disabled for random baseline
+use_constraint_mutation: false # Disabled for random baseline
+use_seed_prioritization: false # Disabled for random baseline
+
+# --- Fuzzer Settings ---
+target_endpoint: "http://127.0.0.1:8001/datatb/product/add/" # Use Port 8001
+max_iterations: 1000000   # Set high, rely on duration or mutation limit
+total_mutation_limit: 1000000 # Set high, rely on duration
+request_timeout: 2        # Timeout in seconds for individual HTTP requests
+memory_threshold_mb: 1024 # Memory usage threshold (MB) for detecting potential DoS during timeouts
+seed_file_path: "fuzzer/initial_seeds.jsonl" # Path to the initial seeds file (JSON Lines format)
+unique_errors_file: "unique_errors.jsonl" # Output file for unique errors found (JSON Lines format) - Will be placed in run-specific dir
+
+# --- Target Execution Settings ---
+target_script: "django/manage.py" # Path to the python script to run under coverage
+target_args: ["runserver", "8001", "--noreload"]       # List of arguments for the target script (Using Port 8001)
+coverage_source: "django"         # Optional: Path for coverage --source flag (can be empty or omitted)
+coverage_data_file: ".coverage_django_random"          # Specific coverage data file base name
+
+# --- Power Schedule Settings ---
+# These settings are ignored when use_seed_prioritization is false, but kept for structure
+energy_const: 100
+max_energy: 15000
+
+# --- Input Structure & Constraints ---
+# These settings are ignored when use_constraint_mutation is false, but kept for structure
+input_structure:
+  name: # Field name
+    type: string # Data type (string, integer, float, boolean, etc.)
+    constraints:
+      # allowed_chars: "abcdefg..." # Example: Regex or list of chars
+      # forbidden_chars: "<>\"'" # Example
+      # min_length: 1 # Minimum length of the string
+      # max_length: 100 # Example
+  info:
+    type: string
+    constraints:
+      # allowed_chars: "abcdefg..."
+      # forbidden_chars: "<>\"'"
+      # min_length: 1 # Minimum length of the string
+      # max_length: 1
+  price:
+    type: integer
+    constraints:
+      # min_value: 0 # Minimum value
+      # max_value: 1000000 # Example
