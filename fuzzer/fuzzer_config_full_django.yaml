@@ -4,7 +4,7 @@
 experiment_name: "full"
 target_name: "django"
 output_base_dir: "evaluation_runs/django/full/" # Base directory for this config's runs
-run_duration_hours: 0.17 # Approx 10 minutes for testing
+run_duration_hours: 2
 
 # --- Fuzzer Feature Flags ---
 use_coverage_feedback: true

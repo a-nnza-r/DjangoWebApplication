@@ -4,7 +4,7 @@
 experiment_name: "no_coverage"
 target_name: "django"
 output_base_dir: "evaluation_runs/django/no_coverage/" # Base directory for this config's runs
-run_duration_hours: 0.17 # Approx 10 minutes for testing
+run_duration_hours: 2
 
 # --- Fuzzer Feature Flags ---
 use_coverage_feedback: false   # Disabled for this ablation

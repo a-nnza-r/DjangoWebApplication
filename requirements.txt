@@ -28,3 +28,12 @@ nicegui
 pyserial
 bleak
 bitstring
+
+# jupyter notebook 
+jupyter
+
+# Evaluation 
+pandas
+matplotlib
+seaborn
+tabulate
