@@ -1,0 +1,7 @@
+{"name": "ProductA", "info": "Info A", "price": 10.99}
+{"name": "Test", "info": "More Info", "price": 0.01}
+{"name": "", "info": "", "price": 0.0}
+{"name": "XXXXX", "info": "YYYYY", "price": 123.45}
+{"name": "LongName", "info": "LongInfoLongInfoLongInfoLongInfoLongInfoLongInfoLongInfoLongInfoLongInfoLongInfo", "price": 9999.99}
+{"name": "Special!@#", "info": "Chars$%^", "price": -5.50}
+{"name": "<script>", "info": "' OR 1=1 --", "price": 1.0}

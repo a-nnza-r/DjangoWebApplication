@@ -15,13 +15,25 @@ whitenoise==6.5.0
 gunicorn==21.2.0
 bs4
 requests
+PyYAML>=6.0 # Added for fuzzer configuration parsing
+
 # DB Layer
 # psycopg2-binary
 # mysqlclient
 
 coverage==7.6.12
+psutil # Added for fuzzer memory checking
 
 nicegui
 pyserial
 bleak
 bitstring
+
+# jupyter notebook 
+jupyter
+
+# Evaluation 
+pandas
+matplotlib
+seaborn
+tabulate
