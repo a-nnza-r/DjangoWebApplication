@@ -3,7 +3,7 @@
 1. Create new env by `python -m venv .venv`
 2. Activate env by `.venv\Scripts\activate` or (bash/zsh: `source .venv/bin/activate`)
 3. Run `pip install -r requirements.txt`
-4. To fuzz django, run `python -m fuzzer.DjangoGreyboxFuzzer`
+4. To fuzz django, run `python fuzzer/DjangoGreyboxFuzzer.py --config fuzzer/fuzzer_config_full_django.yaml`
 5. To fuzz smart lock, run `python -m fuzzer.SmartlockGreyboxFuzzer`. Press `Ctrl+C` to stop the script.
 
 # Fuzzing and Experimentation
