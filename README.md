@@ -35,10 +35,26 @@ You can run a fuzzer directly using a specific configuration file. This is usefu
 
 ```bash
 # Example for Django fuzzer with the 'full' configuration
-python -m fuzzer.DjangoGreyboxFuzzer --config fuzzer/fuzzer_config_full_django.yaml
+python fuzzer/DjangoGreyboxFuzzer.py --config fuzzer/fuzzer_config_full_django.yaml
 ```
 
 The fuzzer will run based on the settings in the specified YAML file. Output (logs, errors, coverage data) will typically be placed in a directory defined by `output_base_dir` within the config file, often combined with a `run_id` if provided.
+
+## Measuring Fuzzer Efficiency
+
+A separate script, `fuzzer/DjangoGreyboxFuzzerEfficiencyMeasure.py`, is provided to measure the time spent on mutation and execution during a fuzzing run. This script is a modified version of the main fuzzer.
+
+To run the efficiency measurement:
+
+1.  Ensure you have a dedicated configuration file for this measurement (e.g., `fuzzer/fuzzer_config_full_django_efficiency_measure.yaml`). This config should point to a distinct `output_base_dir` to avoid overwriting regular experiment results.
+2.  Run the script, specifying the efficiency config:
+
+```bash
+# Example using the dedicated efficiency config
+python fuzzer/DjangoGreyboxFuzzerEfficiencyMeasure.py --config fuzzer_config_full_django_efficiency_measure.yaml --run_id run_0
+```
+
+The script will execute the fuzzing process and log additional timing information (`mutation_time_ms`, `execution_time_ms`) within the `fuzz_exp.jsonl` file located in the specified output directory (e.g., `efficiency_measure/django/full/efficiency_run_1/`). This data can then be analyzed to understand the fuzzer's performance characteristics.
 
 ## Running Experiments
 
