@@ -18,4 +18,8 @@ env
 .coverage
 __pycache__
 
+django/fuzz_report.log
 **/fuzz_report.log
+
+/memory-bank/
+

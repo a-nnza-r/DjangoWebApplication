@@ -2,8 +2,18 @@ from collections import deque
 import random
 import sys
 import traceback
-from fuzzer.abstract import AbstractGreyboxFuzzer, AbstractIsInteresting, AbstractMutator, AbstractPowerSchedule, AbstractSeed
-from fuzzer.utilities.smartlock import ble_program, connect_client_to_smartlock, extract_transitions_as_integers
+from fuzzer.abstract import (
+    AbstractGreyboxFuzzer,
+    AbstractIsInteresting,
+    AbstractMutator,
+    AbstractPowerSchedule,
+    AbstractSeed,
+)
+from fuzzer.utilities.smartlock import (
+    ble_program,
+    connect_client_to_smartlock,
+    extract_transitions_as_integers,
+)
 from smartlock.BLEClient import BLEClient
 from smartlock.constants import LEGAL_STATE_TRANSITIONS
 from fuzzer.mutation.common_mutator import ByteArrayMutator
@@ -13,17 +23,18 @@ import logging
 from smartlock.constants import AUTH, CLOSE, DEVICE_NAME, OPEN, PASSCODE
 
 logging.basicConfig(
-    filename='smartlock.log',
+    filename="smartlock.log",
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    filemode='w',  # overwrites on every run
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    filemode="w",  # overwrites on every run
 )
 
 
-class Input():
+class Input:
     def __init__(self, value: list[int], path_state: tuple = ()):
         self.value: list[int] = value
         self.path_state: int = path_state
+
 
 class Path:
     def __init__(self, state):
@@ -36,7 +47,8 @@ class Path:
         self.s = self.s + 1
         self.f = self.f + self.e
 
-class Paths: # sort of like a graph
+
+class Paths:  # sort of like a graph
     def __init__(self):
         self.paths = {}
 
@@ -49,10 +61,15 @@ class Paths: # sort of like a graph
 
     def get_mean_f(self) -> int:
         return int(sum([path.f for path in self.paths.values()]) / len(self.paths))
-    
+
     def __str__(self):
-        s = f'\n[Paths] {len(self.paths)} discovered.'
-        s += ''.join([f" (Path={state}) s={path.s}, f={path.f}." for (state, path) in sorted(self.paths.items())])
+        s = f"\n[Paths] {len(self.paths)} discovered."
+        s += "".join(
+            [
+                f" (Path={state}) s={path.s}, f={path.f}."
+                for (state, path) in sorted(self.paths.items())
+            ]
+        )
         return s
 
 
@@ -63,21 +80,23 @@ class Seed(AbstractSeed):
     def chooseNext(self) -> Input:
         return self.queue.popleft()
 
+
 class PowerSchedule(AbstractPowerSchedule):
     e0 = 1
     M = 34000
 
     def __init__(self):
-        self.paths = Paths() # 1 response code = 1 path
+        self.paths = Paths()  # 1 response code = 1 path
 
     def assignEnergy(self, t: Input = None):
         path = self.paths.get_path(t.path_state)
         path.update()
         if path.f <= self.paths.get_mean_f():
-            path.e = min(int(PowerSchedule.e0 * (2 ** path.s)), PowerSchedule.M)
+            path.e = min(int(PowerSchedule.e0 * (2**path.s)), PowerSchedule.M)
         else:
             path.e = 0
         return path.e
+
 
 class IsInteresting(AbstractIsInteresting):
     def __init__(self):
@@ -101,20 +120,32 @@ class IsInteresting(AbstractIsInteresting):
                     self.seen_errors.add(log)
                     logging.info(f"Is interesting: New error discovered: {log}")
                     return False  # might not want to keep exploring the same error
-                
+
         # Check for illegal state transitions
         transitions = extract_transitions_as_integers(input.path_state)
-        for (src, dst) in transitions:
+        for src, dst in transitions:
             allowed = LEGAL_STATE_TRANSITIONS.get(src, [])
             if dst not in allowed:
-                print(f"Illegal state transition: {src} -> {dst} not allowed. Allowed: {src} -> {allowed}")
-                logging.info(f"Illegal state transition: {src} -> {dst} not allowed. Allowed: {src} -> {allowed}")
+                print(
+                    f"Illegal state transition: {src} -> {dst} not allowed. Allowed: {src} -> {allowed}"
+                )
+                logging.info(
+                    f"Illegal state transition: {src} -> {dst} not allowed. Allowed: {src} -> {allowed}"
+                )
                 return True
 
         return False
 
+
 class GreyboxFuzzer(AbstractGreyboxFuzzer):
-    def __init__(self, seed: AbstractSeed, power_schedule: AbstractPowerSchedule, mutator: AbstractMutator, is_interesting: IsInteresting, program):
+    def __init__(
+        self,
+        seed: AbstractSeed,
+        power_schedule: AbstractPowerSchedule,
+        mutator: AbstractMutator,
+        is_interesting: IsInteresting,
+        program,
+    ):
         self.seed = seed
         self.power_schedule = power_schedule
         self.mutator = mutator
@@ -125,7 +156,9 @@ class GreyboxFuzzer(AbstractGreyboxFuzzer):
 
     async def check_program_for_bugs(self, input) -> tuple[bool, int]:
         try:
-            path_state = await self.program(input)  # Ensure the program function is awaited
+            path_state = await self.program(
+                input
+            )  # Ensure the program function is awaited
             return (False, path_state)
         except Exception as error:
             self.bugs.append((input, error))
@@ -135,7 +168,7 @@ class GreyboxFuzzer(AbstractGreyboxFuzzer):
     async def run(self):
         while len(self.seed.queue) > 0:
             t: Input = self.seed.chooseNext()
-            
+
             self.power_schedule.paths.append_if_not_exist(t.path_state)
             sys.stdout.flush()
             print(self.power_schedule.paths)
@@ -156,6 +189,7 @@ class GreyboxFuzzer(AbstractGreyboxFuzzer):
 
                 if self.is_interesting(t_prime):
                     self.seed.queue.append(t_prime)
+
 
 async def run_fuzzer():
     try:
@@ -200,14 +234,15 @@ async def run_fuzzer():
                     sys.stdout.flush()
                     return tuple(current_state)
 
-
                 try:
                     initial_inputs = [Input(OPEN), Input(CLOSE)]
                     seed = Seed(queue=initial_inputs)
                     power_schedule = PowerSchedule()
                     mutator = ByteArrayMutator()
                     is_interesting = IsInteresting()
-                    fuzzer = GreyboxFuzzer(seed, power_schedule, mutator, is_interesting, ble_program)
+                    fuzzer = GreyboxFuzzer(
+                        seed, power_schedule, mutator, is_interesting, ble_program
+                    )
                     await fuzzer.run()
                 except Exception as ex:
                     print("\nProgram cannot be run. Exception:", ex)
@@ -215,9 +250,9 @@ async def run_fuzzer():
                 finally:
                     await ble.disconnect()
 
-                error_codes = list(set(
-                    line for line in ble.read_logs() if line.startswith("[Error]")
-                ))
+                error_codes = list(
+                    set(line for line in ble.read_logs() if line.startswith("[Error]"))
+                )
                 print(error_codes)
                 logging.info(error_codes)
 
@@ -232,5 +267,6 @@ async def run_fuzzer():
     except KeyboardInterrupt:
         print("Stopping fuzzer.")
 
+
 if __name__ == "__main__":
-    asyncio.run(run_fuzzer()) 
+    asyncio.run(run_fuzzer())

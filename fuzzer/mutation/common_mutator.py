@@ -1,17 +1,20 @@
-
-
-
-
-
-
 import copy
 import random
 import logging
 from bitstring import BitArray
 from fuzzer.abstract import AbstractMutator
-from smartlock.constants import AUTH, OPEN, CLOSE, PASSCODE, VALID_COMMANDS, UNKNOWN_COMMANDS, WEIGHTED_UNKNOWN_COMMANDS
+from smartlock.constants import (
+    AUTH,
+    OPEN,
+    CLOSE,
+    PASSCODE,
+    VALID_COMMANDS,
+    UNKNOWN_COMMANDS,
+    WEIGHTED_UNKNOWN_COMMANDS,
+)
 
-class ByteMutator():
+
+class ByteMutator:
     @staticmethod
     def _convert_input_to_bitarray(input: int) -> BitArray:
         """Convert integer input to a BitArray."""
@@ -36,11 +39,11 @@ class ByteMutator():
         idxs_to_invert = range(0, min(n, len(arr)), stepover)
         arr.invert(idxs_to_invert)
         return arr
-    
+
     @staticmethod
     def _setToRandomByte(input: int) -> int:
         return random.randint(0, 255)
-    
+
     @staticmethod
     def _setToInterestingByte(input: int) -> int:
         return random.choice([0, 1, 2, 255])
@@ -51,12 +54,15 @@ class ByteMutator():
         fs = [
             # lambda inp: ByteMutator._mutate(lambda arr: ByteMutator._bitflip(arr, 1, 1), inp),
             # lambda inp: ByteMutator._mutate(lambda arr: ByteMutator._bitflip(arr, 2, 1), inp),
-            lambda inp: ByteMutator._mutate(lambda arr: ByteMutator._bitflip(arr, 4, 1), inp),
+            lambda inp: ByteMutator._mutate(
+                lambda arr: ByteMutator._bitflip(arr, 4, 1), inp
+            ),
             ByteMutator._setToRandomByte,
-            ByteMutator._setToInterestingByte
+            ByteMutator._setToInterestingByte,
         ]
         return random.choice(fs)(input)
-    
+
+
 class ByteArrayMutator(AbstractMutator):
     def __init__(self):
         self.explorer = StateExplorationStrategies()
@@ -72,7 +78,7 @@ class ByteArrayMutator(AbstractMutator):
         if use_state_jump:
             mutated = self.explore_state_jump(copy_of_input)
             strategy_name = f"explore_state_jump_{self.current_strategy_index - 1}"  # Already incremented
-        
+
         else:
             fs = [
                 self.mutateRandomBytes,
@@ -91,9 +97,11 @@ class ByteArrayMutator(AbstractMutator):
             strategy_name = mutation_operator.__name__
 
         # honestly I find the original input printed different from expected and not sure where the original input comes from
-        logging.info(f"Mutation strategy for next input: {strategy_name} | Original: {input} | Mutated: {mutated}")
-        
-        return mutated    
+        logging.info(
+            f"Mutation strategy for next input: {strategy_name} | Original: {input} | Mutated: {mutated}"
+        )
+
+        return mutated
 
     def mutateRandomBytes(self, input: list[int]) -> list[int]:
         num_bytes_to_mutate = random.randint(1, len(input))
@@ -101,65 +109,85 @@ class ByteArrayMutator(AbstractMutator):
         for i in idxs_to_mutate:
             input[i] = ByteMutator.mutate(input[i])
         return input
-    
+
     def deleteRandomBytes(self, input: list[int]) -> list[int]:
         if len(input) == 1:
             return input
         num_to_delete = random.randint(0, len(input) // 2 + 1)
-        idxs_to_delete = random.sample(range(len(input)), num_to_delete)  # Select random indices
+        idxs_to_delete = random.sample(
+            range(len(input)), num_to_delete
+        )  # Select random indices
         return [b for i, b in enumerate(input) if i not in idxs_to_delete]
-    
+
     def insertRandomBytes(self, input: list[int]) -> list[int]:
         num_to_insert = random.randint(1, len(input) * 1)
         for _ in range(num_to_insert):
-            random_byte = random.randint(0, 255)  # Generate a random byte (0x00 to 0xFF)
-            insert_position = random.randint(0, len(input))  # Choose a random insertion index
-            input.insert(insert_position, random_byte)  # Insert the byte at the random position
+            random_byte = random.randint(
+                0, 255
+            )  # Generate a random byte (0x00 to 0xFF)
+            insert_position = random.randint(
+                0, len(input)
+            )  # Choose a random insertion index
+            input.insert(
+                insert_position, random_byte
+            )  # Insert the byte at the random position
         return input
-      
+
     def repeat_valid_command(self, input: list[int]) -> list[int]:
         return random.choice(VALID_COMMANDS) * random.randint(1, 10)
 
     def valid_command_out_of_order(self, input: list[int]) -> list[int]:
         valid_commands = copy.deepcopy(VALID_COMMANDS)
         random.shuffle(valid_commands)
-        return [byte for command in valid_commands for byte in command] # concatenate the arrays
-    
+        return [
+            byte for command in valid_commands for byte in command
+        ]  # concatenate the arrays
+
     def weighted_unknown_command(self, input: list[int]) -> list[int]:
         weighted_byte = random.choice(WEIGHTED_UNKNOWN_COMMANDS)
         return [weighted_byte] + input
 
     def inject_unknown_command(self, input: list[int]) -> list[int]:
         return random.choice(UNKNOWN_COMMANDS) + input
-    
+
     def sequence_valid_commands(self, input: list[int]) -> list[int]:
-        sequence = [AUTH + PASSCODE, OPEN, AUTH + PASSCODE, CLOSE] * random.randint(1, 10)
+        sequence = [AUTH + PASSCODE, OPEN, AUTH + PASSCODE, CLOSE] * random.randint(
+            1, 10
+        )
         flat = [b for cmd in sequence for b in cmd]
         return flat
 
     def rapid_toggle_open_close(self, input: list[int]) -> list[int]:
-        return [b for _ in range(random.randint(10, 50)) for b in random.choice([OPEN, CLOSE])]
-    
+        return [
+            b
+            for _ in range(random.randint(10, 50))
+            for b in random.choice([OPEN, CLOSE])
+        ]
+
     def mutate_command(self, input: list[int]) -> list[int]:
         """Mutate only command and not passcode. Since passcode (6 bytes) is longer than command (1 byte), the normal
-        mutations are more likely to mutate passcode and not command. So this function focuses on mutating just the command."""
+        mutations are more likely to mutate passcode and not command. So this function focuses on mutating just the command.
+        """
         if len(input) < 7:
             return input
 
         mutated_command = random.randint(0, 255)
-        
+
         # Keep the rest of the input (e.g., passcode) untouched
         return [mutated_command] + input[1:]
-    
+
     def explore_state_jump(self, input: list[int]) -> list[int]:
         # Get the current strategy
         strategy = self.state_strategies[self.current_strategy_index]
-        
+
         # Increment index, wrap around when reaching the end
-        self.current_strategy_index = (self.current_strategy_index + 1) % len(self.state_strategies)
-        
+        self.current_strategy_index = (self.current_strategy_index + 1) % len(
+            self.state_strategies
+        )
+
         return strategy()
-        
+
+
 class StateExplorationStrategies:
     def __init__(self):
         self.auth = AUTH + PASSCODE
@@ -198,7 +226,9 @@ class StateExplorationStrategies:
     def repeated_toggle(self):
         """Repeat OPEN and CLOSE to cause race conditions or state inconsistencies"""
         reps = random.randint(5, 20)
-        sequence = self.auth + [cmd for _ in range(reps) for cmd in random.choice([self.open, self.close])]
+        sequence = self.auth + [
+            cmd for _ in range(reps) for cmd in random.choice([self.open, self.close])
+        ]
         return self._log("repeated_toggle", sequence)
 
     def unknown_before_auth(self):
@@ -247,10 +277,13 @@ class StateExplorationStrategies:
         ]
 
     def _log(self, strategy_name, sequence):
-        logging.info(f"State exploration strategy: {strategy_name} | Sequence: {sequence}")
+        logging.info(
+            f"State exploration strategy: {strategy_name} | Sequence: {sequence}"
+        )
         return sequence
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     input = [0, 1, 2, 3, 4, 5, 6]
     for i in range(10):
         print(ByteArrayMutator().mutateInput(input))
