@@ -1,6 +1,7 @@
 from collections import deque
 import random
 import sys
+import time
 import traceback
 from fuzzer.abstract import AbstractGreyboxFuzzer, AbstractIsInteresting, AbstractMutator, AbstractPowerSchedule, AbstractSeed
 from fuzzer.utilities.smartlock import ble_program, connect_client_to_smartlock, extract_transitions_as_integers
@@ -114,7 +115,7 @@ class IsInteresting(AbstractIsInteresting):
         return False
 
 class GreyboxFuzzer(AbstractGreyboxFuzzer):
-    def __init__(self, seed: AbstractSeed, power_schedule: AbstractPowerSchedule, mutator: AbstractMutator, is_interesting: IsInteresting, program):
+    def __init__(self, seed: AbstractSeed, power_schedule: AbstractPowerSchedule, mutator: AbstractMutator, is_interesting: IsInteresting, program, generate_input_timings=[], run_input_timings=[], interesting_inputs=[]):
         self.seed = seed
         self.power_schedule = power_schedule
         self.mutator = mutator
@@ -122,6 +123,9 @@ class GreyboxFuzzer(AbstractGreyboxFuzzer):
         self.program = program
         self.bugs = []  # failure queue
         self.paths = set()
+        self.generate_input_timings = generate_input_timings
+        self.run_input_timings = run_input_timings
+        self.interesting_inputs = interesting_inputs
 
     async def check_program_for_bugs(self, input) -> tuple[bool, int]:
         try:
@@ -145,9 +149,14 @@ class GreyboxFuzzer(AbstractGreyboxFuzzer):
             e = self.power_schedule.assignEnergy(t)
 
             for i in range(1, e + 1):
+                start = time.time()
                 mutated_value = self.mutator.mutateInput(t.value)
+                self.generate_input_timings.append((start, time.time()))
 
+                start = time.time()
                 is_buggy, path_state = await self.check_program_for_bugs(mutated_value)
+                self.run_input_timings.append((start, time.time()))
+
                 if is_buggy:
                     continue
                 sys.stdout.flush()
@@ -156,17 +165,12 @@ class GreyboxFuzzer(AbstractGreyboxFuzzer):
 
                 if self.is_interesting(t_prime):
                     self.seed.queue.append(t_prime)
+                    self.interesting_inputs.append(time.time())
 
-async def run_fuzzer():
+async def run_fuzzer(logs=[], generate_input_timings=[], run_input_timings=[], mutation_mask=(), strategy_mask=(), interesting_inputs=[], crashes=[]):
+    global all_error_codes 
+    all_error_codes = set()
     try:
-        initial_inputs = [Input(OPEN), Input(CLOSE)]
-        seed = Seed(queue=initial_inputs)
-        power_schedule = PowerSchedule()
-        mutator = ByteArrayMutator()
-        is_interesting = IsInteresting()
-
-        fuzzer = GreyboxFuzzer(seed, power_schedule, mutator, is_interesting, None)
-
         while True:
             try:
                 ble = BLEClient()
@@ -174,6 +178,7 @@ async def run_fuzzer():
                 await connect_client_to_smartlock(ble)
 
                 async def ble_program(x: list[int]) -> tuple:
+                    global all_error_codes
                     logging.info("-" * 60)
                     logging.info(f"\n[>] Sending command: {x}")
                     print("\n[3] Running random command")
@@ -191,6 +196,12 @@ async def run_fuzzer():
                             if line.startswith("[State]"):
                                 logging.info(line)
                                 current_state.append(line)
+                        error_codes = set(
+                            line.replace('[Error] Code: ','') for line in ble.read_logs() if line.startswith("[Error]")
+                        )
+                        for i in range(len(error_codes - all_error_codes)):
+                            crashes.append(time.time())
+                        all_error_codes = error_codes.union(all_error_codes)
 
                         transitions = extract_transitions_as_integers(lines)
                         logging.info(f"State transitions: {transitions}")
@@ -205,9 +216,9 @@ async def run_fuzzer():
                     initial_inputs = [Input(OPEN), Input(CLOSE)]
                     seed = Seed(queue=initial_inputs)
                     power_schedule = PowerSchedule()
-                    mutator = ByteArrayMutator()
+                    mutator = ByteArrayMutator(mutation_mask, strategy_mask)
                     is_interesting = IsInteresting()
-                    fuzzer = GreyboxFuzzer(seed, power_schedule, mutator, is_interesting, ble_program)
+                    fuzzer = GreyboxFuzzer(seed, power_schedule, mutator, is_interesting, ble_program, generate_input_timings, run_input_timings, interesting_inputs)
                     await fuzzer.run()
                 except Exception as ex:
                     print("\nProgram cannot be run. Exception:", ex)
@@ -227,6 +238,7 @@ async def run_fuzzer():
                 print(traceback.format_exc())
                 print("Re-running program in a few seconds.")
             finally:
+                logs += ble.read_logs()
                 await ble.disconnect()
 
     except KeyboardInterrupt:
