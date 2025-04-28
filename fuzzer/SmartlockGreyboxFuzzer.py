@@ -82,34 +82,53 @@ class Seed(AbstractSeed):
 
 
 class PowerSchedule(AbstractPowerSchedule):
-    e0 = 1
-    M = 34000
-
-    def __init__(self):
+    def __init__(self, config):
         self.paths = Paths()  # 1 response code = 1 path
+        self.energy_const = config.get("power_schedule_settings", {}).get(
+            "energy_const", 1
+        )
+        self.max_energy = config.get("power_schedule_settings", {}).get(
+            "max_energy", 34000
+        )
 
     def assignEnergy(self, t: Input = None):
         path = self.paths.get_path(t.path_state)
         path.update()
         if path.f <= self.paths.get_mean_f():
-            path.e = min(int(PowerSchedule.e0 * (2**path.s)), PowerSchedule.M)
+            path.e = min(int(self.energy_const * (2**path.s)), self.max_energy)
         else:
             path.e = 0
         return path.e
 
 
+import json  # Import json for logging unique errors
+import os  # Import os for path joining
+
+
 class IsInteresting(AbstractIsInteresting):
-    def __init__(self):
+    def __init__(self, config, run_output_dir):
         self.seen_path_states = set()
         self.seen_errors = set()
         self.illegal_transitions = set()
+        self.config = config
+        self.run_output_dir = run_output_dir
+        self.unique_errors_file_path = os.path.join(
+            self.run_output_dir,
+            self.config.get("unique_errors_file", "unique_errors_smartlock.jsonl"),
+        )
+        # Ensure the unique errors file is empty at the start of the run
+        if os.path.exists(self.unique_errors_file_path):
+            with open(self.unique_errors_file_path, "w") as f:
+                pass  # Clear the file
 
     def __call__(self, input: Input) -> bool:
         # Check for new path discovery
         is_new_path = input.path_state not in self.seen_path_states
         if is_new_path:
             self.seen_path_states.add(input.path_state)
-            logging.info(f"Is interesting: New path discovered: {input.path_state}")
+            logger.info(
+                f"Is interesting: New path discovered: {input.path_state}"
+            )  # Use logger instance
             return True
 
         # Check for error discovery (from logs)
@@ -118,7 +137,16 @@ class IsInteresting(AbstractIsInteresting):
             if "[Error]" in log:
                 if log not in self.seen_errors:
                     self.seen_errors.add(log)
-                    logging.info(f"Is interesting: New error discovered: {log}")
+                    logger.info(
+                        f"Is interesting: New error discovered: {log}"
+                    )  # Use logger instance
+                    # Log the unique error to file
+                    try:
+                        with open(self.unique_errors_file_path, "a") as f:
+                            json.dump({"error": log, "input": input.value}, f)
+                            f.write("\n")
+                    except Exception as e:
+                        logger.error(f"Error writing unique error to file: {e}")
                     return False  # might not want to keep exploring the same error
 
         # Check for illegal state transitions
@@ -129,9 +157,19 @@ class IsInteresting(AbstractIsInteresting):
                 print(
                     f"Illegal state transition: {src} -> {dst} not allowed. Allowed: {src} -> {allowed}"
                 )
-                logging.info(
+                logger.info(  # Use logger instance
                     f"Illegal state transition: {src} -> {dst} not allowed. Allowed: {src} -> {allowed}"
                 )
+                # Log the illegal transition as a unique error
+                error_msg = f"Illegal state transition: {src} -> {dst} not allowed. Allowed: {src} -> {allowed}"
+                if error_msg not in self.seen_errors:
+                    self.seen_errors.add(error_msg)
+                    try:
+                        with open(self.unique_errors_file_path, "a") as f:
+                            json.dump({"error": error_msg, "input": input.value}, f)
+                            f.write("\n")
+                    except Exception as e:
+                        logger.error(f"Error writing unique error to file: {e}")
                 return True
 
         return False
@@ -191,13 +229,23 @@ class GreyboxFuzzer(AbstractGreyboxFuzzer):
                     self.seed.queue.append(t_prime)
 
 
-async def run_fuzzer():
+logger = logging.getLogger(__name__)
+
+
+async def run_fuzzer(config, run_output_dir):
     try:
-        initial_inputs = [Input(OPEN), Input(CLOSE)]
+        # Load initial seeds from config
+        initial_seeds_values = config.get("seed_settings", {}).get(
+            "initial_seeds", [[1], [2]]
+        )
+        initial_inputs = [Input(seed_value) for seed_value in initial_seeds_values]
         seed = Seed(queue=initial_inputs)
-        power_schedule = PowerSchedule()
+
+        power_schedule = PowerSchedule(config=config)
         mutator = ByteArrayMutator()
-        is_interesting = IsInteresting()
+        is_interesting = IsInteresting(
+            config=config, run_output_dir=run_output_dir
+        )  # Pass config and output dir
 
         fuzzer = GreyboxFuzzer(seed, power_schedule, mutator, is_interesting, None)
 
@@ -208,12 +256,12 @@ async def run_fuzzer():
                 await connect_client_to_smartlock(ble)
 
                 async def ble_program(x: list[int]) -> tuple:
-                    logging.info("-" * 60)
-                    logging.info(f"\n[>] Sending command: {x}")
+                    logger.info("-" * 60)
+                    logger.info(f"\n[>] Sending command: {x}")
                     print("\n[3] Running random command")
 
                     res = await ble.write_command(x)
-                    logging.info(f"[<] Received response: {res}")
+                    logger.info(f"[<] Received response: {res}")
                     await asyncio.sleep(2)
 
                     # print(f"\n[4] Logs from Smart Lock (Serial Port):\n{'-'*50}")
@@ -223,23 +271,28 @@ async def run_fuzzer():
                     if lines:
                         for line in lines:
                             if line.startswith("[State]"):
-                                logging.info(line)
+                                logger.info(line)
                                 current_state.append(line)
 
                         transitions = extract_transitions_as_integers(lines)
-                        logging.info(f"State transitions: {transitions}")
+                        logger.info(f"State transitions: {transitions}")
                     else:
-                        logging.info("No logs received from device.")
+                        logger.info("No logs received from device.")
 
                     sys.stdout.flush()
                     return tuple(current_state)
 
                 try:
-                    initial_inputs = [Input(OPEN), Input(CLOSE)]
-                    seed = Seed(queue=initial_inputs)
-                    power_schedule = PowerSchedule()
-                    mutator = ByteArrayMutator()
-                    is_interesting = IsInteresting()
+                    # Re-instantiate components inside the connection loop
+                    # This might be necessary if BLEClient needs to be re-initialized
+                    # However, passing config and output_dir should be done once outside the loop
+                    # Let's keep the instantiation outside the loop for now and pass necessary info
+                    # initial_inputs = [Input(OPEN), Input(CLOSE)] # Remove hardcoded seeds
+                    # seed = Seed(queue=initial_inputs) # Re-use the seed queue from outer scope
+                    # power_schedule = PowerSchedule(config=config) # Re-use from outer scope
+                    # mutator = ByteArrayMutator() # Re-use from outer scope
+                    # is_interesting = IsInteresting(config=config, run_output_dir=run_output_dir) # Re-use from outer scope
+
                     fuzzer = GreyboxFuzzer(
                         seed, power_schedule, mutator, is_interesting, ble_program
                     )
@@ -254,7 +307,7 @@ async def run_fuzzer():
                     set(line for line in ble.read_logs() if line.startswith("[Error]"))
                 )
                 print(error_codes)
-                logging.info(error_codes)
+                logger.info(error_codes)  # Use logger instance
 
             except Exception as ex:
                 print("\nClient cannot be connected. Exception:", ex)
@@ -269,4 +322,6 @@ async def run_fuzzer():
 
 
 if __name__ == "__main__":
-    asyncio.run(run_fuzzer())
+    # Need to pass config and run_output_dir from fuzzer.py
+    # This part will be called by fuzzer.py, so we don't run it directly here anymore
+    pass
