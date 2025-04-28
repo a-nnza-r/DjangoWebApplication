@@ -8,7 +8,7 @@ import logging
 import json # Added for structured logging and safe repr
 import threading
 from queue import Queue
-# Removed ThreadPoolExecutor, as_completed for sequential execution
+
 import sys
 import os
 import yaml
@@ -491,7 +491,8 @@ class DjMutator(AbstractMutator):
             lambda: " " * random.randint(min_len, min(500, int(max_len)) if max_len != float('inf') else 500),
             lambda: "\n" * random.randint(min_len, min(50, int(max_len)) if max_len != float('inf') else 50),
             lambda: "../" * random.randint(min(min_len // 3, 1), min(20, int(max_len // 3)) if max_len != float('inf') else 20),
-            lambda: "%s%n" * random.randint(min(min_len // 3, 1), min(20, int(max_len // 3)) if max_len != float('inf') else 20),
+            lambda: "%s%n" * random.randint(min(min_len // 4, 1), min(20, int(max_len // 4)) if max_len != float('inf') else 20),
+            lambda: ''.join(random.choices(string.digits, k=random.randint(min_len, min(1000, int(max_len)) if max_len != float('inf') else 1000))),
         ]
 
         # Try to generate a valid extreme value
@@ -707,7 +708,7 @@ class DjMutator(AbstractMutator):
             0.0, -1.0, 1.0,
             sys.float_info.min, sys.float_info.max,
             -sys.float_info.max, sys.float_info.epsilon,
-            -sys.float_info.epsilon
+            -sys.float_info.epsilon,
         ]
 
         potential_values = default_values
@@ -890,7 +891,9 @@ class DjMutator(AbstractMutator):
             0, -1, 1,
             # Common boundaries
             2**15 - 1, -(2**15), 2**16 - 1, -(2**16 -1), # Standard 16-bit limits
+            2**15, -(2**15), 2**16, -(2**16),
             2**31 - 1, -(2**31), 2**32 - 1, -(2**32 -1), # Standard 32-bit limits
+            2**31, -(2**31), 2**32, -(2**32),
             2**63 - 1, -(2**63), # Standard 64-bit limits
         ]
 
@@ -2131,9 +2134,6 @@ def main() -> None:
     seed_queue = DjSeed(queue=initial_seeds) # Use loaded seeds
     # Pass loaded config to PowerSchedule
     power_schedule = DjPowerSchedule(config=config)
-    # Mutator loads its own part of the config, pass the path
-    # The use_constraints flag will be read from the loaded config inside the fuzzer __init__
-    mutator = DjMutator(config_path=config_path if config_path else "fuzzer_config.yaml") # Pass original path or default
     is_interesting = DjIsInteresting()
 
     # Pass the instantiated components and config path/run_id to the fuzzer
