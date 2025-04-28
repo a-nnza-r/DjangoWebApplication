@@ -1,0 +1,196 @@
+2025-04-21 18:50:50,537 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-21 18:50:51,801 - INFO - [2] Authenticating...
+2025-04-21 18:50:53,838 - INFO - Sent AUTH+PASSCODE: [0, 1, 2, 3, 4, 5, 6]
+2025-04-21 18:50:53,838 - INFO - Received response: [0]
+2025-04-21 18:50:53,838 - INFO - [!] Authenticated!!!
+2025-04-21 18:50:57,829 - INFO - 
+[Paths] 1 discovered. (Path=()) s=0, f=1.
+2025-04-21 18:50:57,829 - INFO - State exploration strategy: open_without_auth | Sequence: [1]
+2025-04-21 18:50:57,829 - INFO - Mutation strategy for next input: explore_state_jump_0 | Original: [1] | Mutated: [1]
+2025-04-21 18:50:57,829 - INFO - ------------------------------------------------------------
+2025-04-21 18:50:57,829 - INFO - 
+[>] Sending command: [1]
+2025-04-21 18:50:58,013 - INFO - [<] Received response: [0]
+2025-04-21 18:51:00,018 - INFO - [State] Device state: Authenticated
+2025-04-21 18:51:00,018 - INFO - [State] Opening the lock mechanism
+2025-04-21 18:51:00,019 - INFO - [State] Lock mechanism open
+2025-04-21 18:51:00,019 - INFO - State transitions: [(2, 3), (3, 4)]
+2025-04-21 18:51:00,020 - INFO - Is interesting: New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')
+2025-04-21 18:51:00,020 - INFO - State exploration strategy: close_without_auth | Sequence: [2]
+2025-04-21 18:51:00,020 - INFO - Mutation strategy for next input: explore_state_jump_1 | Original: [1] | Mutated: [2]
+2025-04-21 18:51:00,020 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:00,020 - INFO - 
+[>] Sending command: [2]
+2025-04-21 18:51:00,180 - INFO - [<] Received response: [0]
+2025-04-21 18:51:02,198 - INFO - [State] Device state: Authenticated
+2025-04-21 18:51:02,198 - INFO - [State] Opening the lock mechanism
+2025-04-21 18:51:02,198 - INFO - [State] Lock mechanism open
+2025-04-21 18:51:02,198 - INFO - [State] Closing the lock mechanism
+2025-04-21 18:51:02,198 - INFO - [State] Lock mechanism closed
+2025-04-21 18:51:02,198 - INFO - State transitions: [(2, 3), (3, 4), (4, 5), (5, 6)]
+2025-04-21 18:51:02,198 - INFO - Is interesting: New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')
+2025-04-21 18:51:02,198 - INFO - 
+[Paths] 1 discovered. (Path=()) s=1, f=2.
+2025-04-21 18:51:02,198 - INFO - State exploration strategy: partial_auth | Sequence: [0, 4, 244, 244, 91, 125]
+2025-04-21 18:51:02,198 - INFO - Mutation strategy for next input: explore_state_jump_2 | Original: [2] | Mutated: [0, 4, 244, 244, 91, 125]
+2025-04-21 18:51:02,198 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:02,198 - INFO - 
+[>] Sending command: [0, 4, 244, 244, 91, 125]
+2025-04-21 18:51:03,481 - INFO - State exploration strategy: spam_auth | Sequence: [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6]
+2025-04-21 18:51:03,481 - INFO - Mutation strategy for next input: explore_state_jump_3 | Original: [2] | Mutated: [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6]
+2025-04-21 18:51:03,481 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:03,481 - INFO - 
+[>] Sending command: [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6]
+2025-04-21 18:51:03,481 - INFO - Mutation strategy for next input: repeat_valid_command | Original: [2] | Mutated: [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]
+2025-04-21 18:51:03,497 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:03,497 - INFO - 
+[>] Sending command: [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]
+2025-04-21 18:51:03,497 - INFO - Mutation strategy for next input: insertRandomBytes | Original: [2] | Mutated: [91, 2]
+2025-04-21 18:51:03,497 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:03,497 - INFO - 
+[>] Sending command: [91, 2]
+2025-04-21 18:51:03,497 - INFO - 
+[Paths] 2 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=0, f=1.
+2025-04-21 18:51:03,497 - INFO - Mutation strategy for next input: repeat_valid_command | Original: [1] | Mutated: [1, 1, 1, 1]
+2025-04-21 18:51:03,497 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:03,497 - INFO - 
+[>] Sending command: [1, 1, 1, 1]
+2025-04-21 18:51:03,503 - INFO - State exploration strategy: spam_open_without_close | Sequence: [0, 1, 2, 3, 4, 5, 6, 1, 1, 1, 1, 1, 1]
+2025-04-21 18:51:03,503 - INFO - Mutation strategy for next input: explore_state_jump_4 | Original: [1] | Mutated: [0, 1, 2, 3, 4, 5, 6, 1, 1, 1, 1, 1, 1]
+2025-04-21 18:51:03,503 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:03,503 - INFO - 
+[>] Sending command: [0, 1, 2, 3, 4, 5, 6, 1, 1, 1, 1, 1, 1]
+2025-04-21 18:51:03,507 - INFO - 
+[Paths] 3 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=0, f=1.
+2025-04-21 18:51:03,507 - INFO - Mutation strategy for next input: inject_unknown_command | Original: [2] | Mutated: [159, 2]
+2025-04-21 18:51:03,507 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:03,509 - INFO - 
+[>] Sending command: [159, 2]
+2025-04-21 18:51:03,510 - INFO - State exploration strategy: auth_open_unknown_close | Sequence: [0, 1, 2, 3, 4, 5, 6, 1, 222, 2]
+2025-04-21 18:51:03,510 - INFO - Mutation strategy for next input: explore_state_jump_5 | Original: [2] | Mutated: [0, 1, 2, 3, 4, 5, 6, 1, 222, 2]
+2025-04-21 18:51:03,510 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:03,510 - INFO - 
+[>] Sending command: [0, 1, 2, 3, 4, 5, 6, 1, 222, 2]
+2025-04-21 18:51:03,612 - INFO - ['[Error] Code: 0x010203']
+2025-04-21 18:51:03,612 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-21 18:51:05,735 - INFO - [2] Authenticating...
+2025-04-21 18:51:07,763 - INFO - Sent AUTH+PASSCODE: [0, 1, 2, 3, 4, 5, 6]
+2025-04-21 18:51:07,763 - INFO - Received response: [0]
+2025-04-21 18:51:07,763 - INFO - [!] Authenticated!!!
+2025-04-21 18:51:11,775 - INFO - 
+[Paths] 1 discovered. (Path=()) s=0, f=1.
+2025-04-21 18:51:11,775 - INFO - Mutation strategy for next input: mutateRandomBytes | Original: [1] | Mutated: [0]
+2025-04-21 18:51:11,775 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:11,775 - INFO - 
+[>] Sending command: [0]
+2025-04-21 18:51:11,948 - INFO - [<] Received response: [1]
+2025-04-21 18:51:13,950 - INFO - [State] Device state: Authenticated
+2025-04-21 18:51:13,950 - INFO - [State] Opening the lock mechanism
+2025-04-21 18:51:13,951 - INFO - [State] Lock mechanism open
+2025-04-21 18:51:13,951 - INFO - [State] Closing the lock mechanism
+2025-04-21 18:51:13,951 - INFO - [State] Lock mechanism closed
+2025-04-21 18:51:13,951 - INFO - [State] Device state: Authenticated
+2025-04-21 18:51:13,951 - INFO - State transitions: [(2, 3), (3, 4), (4, 5), (5, 6), (6, 2)]
+2025-04-21 18:51:13,951 - INFO - Is interesting: New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated')
+2025-04-21 18:51:13,951 - INFO - State exploration strategy: open_without_auth | Sequence: [1]
+2025-04-21 18:51:13,951 - INFO - Mutation strategy for next input: explore_state_jump_0 | Original: [1] | Mutated: [1]
+2025-04-21 18:51:13,951 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:13,951 - INFO - 
+[>] Sending command: [1]
+2025-04-21 18:51:14,134 - INFO - [<] Received response: [0]
+2025-04-21 18:51:16,150 - INFO - [State] Device state: Authenticated
+2025-04-21 18:51:16,150 - INFO - [State] Opening the lock mechanism
+2025-04-21 18:51:16,150 - INFO - [State] Lock mechanism open
+2025-04-21 18:51:16,150 - INFO - [State] Closing the lock mechanism
+2025-04-21 18:51:16,150 - INFO - [State] Lock mechanism closed
+2025-04-21 18:51:16,150 - INFO - [State] Device state: Authenticated
+2025-04-21 18:51:16,150 - INFO - [State] Opening the lock mechanism
+2025-04-21 18:51:16,150 - INFO - [State] Lock mechanism open
+2025-04-21 18:51:16,150 - INFO - State transitions: [(2, 3), (3, 4), (4, 5), (5, 6), (6, 2), (2, 3), (3, 4)]
+2025-04-21 18:51:16,150 - INFO - Is interesting: New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')
+2025-04-21 18:51:16,150 - INFO - 
+[Paths] 1 discovered. (Path=()) s=1, f=2.
+2025-04-21 18:51:16,150 - INFO - Mutation strategy for next input: mutateRandomBytes | Original: [2] | Mutated: [117]
+2025-04-21 18:51:16,150 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:16,150 - INFO - 
+[>] Sending command: [117]
+2025-04-21 18:51:16,328 - INFO - [<] Received response: [2]
+2025-04-21 18:51:18,340 - INFO - [State] Device state: Authenticated
+2025-04-21 18:51:18,340 - INFO - [State] Opening the lock mechanism
+2025-04-21 18:51:18,340 - INFO - [State] Lock mechanism open
+2025-04-21 18:51:18,341 - INFO - [State] Closing the lock mechanism
+2025-04-21 18:51:18,341 - INFO - [State] Lock mechanism closed
+2025-04-21 18:51:18,341 - INFO - [State] Device state: Authenticated
+2025-04-21 18:51:18,341 - INFO - [State] Opening the lock mechanism
+2025-04-21 18:51:18,341 - INFO - [State] Lock mechanism open
+2025-04-21 18:51:18,341 - INFO - State transitions: [(2, 3), (3, 4), (4, 5), (5, 6), (6, 2), (2, 3), (3, 4)]
+2025-04-21 18:51:18,341 - INFO - Illegal state transition: 6 -> 2 not allowed. Allowed: 6 -> [0]
+2025-04-21 18:51:18,341 - INFO - State exploration strategy: close_without_auth | Sequence: [2]
+2025-04-21 18:51:18,341 - INFO - Mutation strategy for next input: explore_state_jump_1 | Original: [2] | Mutated: [2]
+2025-04-21 18:51:18,341 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:18,341 - INFO - 
+[>] Sending command: [2]
+2025-04-21 18:51:18,519 - INFO - [<] Received response: [0]
+2025-04-21 18:51:20,532 - INFO - [State] Device state: Authenticated
+2025-04-21 18:51:20,533 - INFO - [State] Opening the lock mechanism
+2025-04-21 18:51:20,533 - INFO - [State] Lock mechanism open
+2025-04-21 18:51:20,533 - INFO - [State] Closing the lock mechanism
+2025-04-21 18:51:20,533 - INFO - [State] Lock mechanism closed
+2025-04-21 18:51:20,533 - INFO - [State] Device state: Authenticated
+2025-04-21 18:51:20,533 - INFO - [State] Opening the lock mechanism
+2025-04-21 18:51:20,533 - INFO - [State] Lock mechanism open
+2025-04-21 18:51:20,533 - INFO - [State] Closing the lock mechanism
+2025-04-21 18:51:20,533 - INFO - [State] Lock mechanism closed
+2025-04-21 18:51:20,533 - INFO - State transitions: [(2, 3), (3, 4), (4, 5), (5, 6), (6, 2), (2, 3), (3, 4), (4, 5), (5, 6)]
+2025-04-21 18:51:20,533 - INFO - Is interesting: New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')
+2025-04-21 18:51:20,533 - INFO - State exploration strategy: partial_auth | Sequence: [0, 223]
+2025-04-21 18:51:20,533 - INFO - Mutation strategy for next input: explore_state_jump_2 | Original: [2] | Mutated: [0, 223]
+2025-04-21 18:51:20,533 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:20,533 - INFO - 
+[>] Sending command: [0, 223]
+2025-04-21 18:51:21,826 - INFO - State exploration strategy: spam_auth | Sequence: [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6]
+2025-04-21 18:51:21,826 - INFO - Mutation strategy for next input: explore_state_jump_3 | Original: [2] | Mutated: [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6]
+2025-04-21 18:51:21,826 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:21,826 - INFO - 
+[>] Sending command: [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6]
+2025-04-21 18:51:21,826 - INFO - 
+[Paths] 2 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated')) s=0, f=1.
+2025-04-21 18:51:21,826 - INFO - State exploration strategy: spam_open_without_close | Sequence: [0, 1, 2, 3, 4, 5, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+2025-04-21 18:51:21,826 - INFO - Mutation strategy for next input: explore_state_jump_4 | Original: [0] | Mutated: [0, 1, 2, 3, 4, 5, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+2025-04-21 18:51:21,826 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:21,826 - INFO - 
+[>] Sending command: [0, 1, 2, 3, 4, 5, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+2025-04-21 18:51:21,826 - INFO - State exploration strategy: auth_open_unknown_close | Sequence: [0, 1, 2, 3, 4, 5, 6, 1, 52, 2]
+2025-04-21 18:51:21,826 - INFO - Mutation strategy for next input: explore_state_jump_5 | Original: [0] | Mutated: [0, 1, 2, 3, 4, 5, 6, 1, 52, 2]
+2025-04-21 18:51:21,826 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:21,826 - INFO - 
+[>] Sending command: [0, 1, 2, 3, 4, 5, 6, 1, 52, 2]
+2025-04-21 18:51:21,838 - INFO - 
+[Paths] 3 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=0, f=1.
+2025-04-21 18:51:21,838 - INFO - Mutation strategy for next input: inject_unknown_command | Original: [1] | Mutated: [166, 1]
+2025-04-21 18:51:21,838 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:21,838 - INFO - 
+[>] Sending command: [166, 1]
+2025-04-21 18:51:21,838 - INFO - State exploration strategy: repeated_toggle | Sequence: [0, 1, 2, 3, 4, 5, 6, 2, 1, 1, 2, 2, 2, 2, 2, 1, 2, 1, 2, 1, 2, 1, 2, 2, 2, 2]
+2025-04-21 18:51:21,838 - INFO - Mutation strategy for next input: explore_state_jump_6 | Original: [1] | Mutated: [0, 1, 2, 3, 4, 5, 6, 2, 1, 1, 2, 2, 2, 2, 2, 1, 2, 1, 2, 1, 2, 1, 2, 2, 2, 2]
+2025-04-21 18:51:21,838 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:21,838 - INFO - 
+[>] Sending command: [0, 1, 2, 3, 4, 5, 6, 2, 1, 1, 2, 2, 2, 2, 2, 1, 2, 1, 2, 1, 2, 1, 2, 2, 2, 2]
+2025-04-21 18:51:21,843 - INFO - 
+[Paths] 3 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2.
+2025-04-21 18:51:21,843 - INFO - 
+[Paths] 4 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=0, f=1.
+2025-04-21 18:51:21,843 - INFO - Mutation strategy for next input: weighted_unknown_command | Original: [2] | Mutated: [48, 2]
+2025-04-21 18:51:21,843 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:21,843 - INFO - 
+[>] Sending command: [48, 2]
+2025-04-21 18:51:21,846 - INFO - Mutation strategy for next input: insertRandomBytes | Original: [2] | Mutated: [2, 15]
+2025-04-21 18:51:21,846 - INFO - ------------------------------------------------------------
+2025-04-21 18:51:21,846 - INFO - 
+[>] Sending command: [2, 15]
+2025-04-21 18:51:21,959 - INFO - ['[Error] Code: 0x018374', '[Error] Code: 0x010203']
+2025-04-21 18:51:21,959 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-21 18:51:24,061 - INFO - [2] Authenticating...
+2025-04-21 18:51:26,105 - INFO - Sent AUTH+PASSCODE: [0, 1, 2, 3, 4, 5, 6]
+2025-04-21 18:51:26,105 - INFO - Received response: [0]
+2025-04-21 18:51:26,105 - INFO - [!] Authenticated!!!

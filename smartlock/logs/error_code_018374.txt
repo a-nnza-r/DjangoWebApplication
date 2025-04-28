@@ -1,0 +1,541 @@
+2025-04-20 16:06:56,178 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-20 16:06:57,416 - INFO - [2] Authenticating...
+2025-04-20 16:06:59,472 - INFO - Sent AUTH+PASSCODE: [0, 1, 2, 3, 4, 5, 6]
+2025-04-20 16:06:59,477 - INFO - Received response: [0]
+2025-04-20 16:06:59,477 - INFO - [!] Authenticated!!!
+2025-04-20 16:07:03,479 - INFO - 
+[Paths] 1 discovered. (Path=()) s=0, f=1.
+2025-04-20 16:07:03,479 - INFO - [MUTATION] Mutation strategy for next input: valid_command_out_of_order | Original: [1] | Mutated: [1, 2, 0, 1, 2, 3, 4, 5, 6]
+2025-04-20 16:07:03,479 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:03,479 - INFO - 
+[>] Sending command: [1, 2, 0, 1, 2, 3, 4, 5, 6]
+2025-04-20 16:07:03,655 - INFO - [<] Received response: [0]
+2025-04-20 16:07:05,654 - INFO - [State] Device state: Authenticated
+2025-04-20 16:07:05,654 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:05,654 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:05,655 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:07:05,655 - INFO - [INTERESTING] New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')
+2025-04-20 16:07:05,655 - INFO - [MUTATION] Mutation strategy for next input: deleteRandomBytes | Original: [1] | Mutated: [1]
+2025-04-20 16:07:05,655 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:05,655 - INFO - 
+[>] Sending command: [1]
+2025-04-20 16:07:05,771 - INFO - [<] Received response: [4]
+2025-04-20 16:07:07,764 - INFO - [State] Device state: Authenticated
+2025-04-20 16:07:07,764 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:07,764 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:07,764 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:07:07,764 - INFO - 
+[Paths] 1 discovered. (Path=()) s=1, f=2.
+2025-04-20 16:07:07,764 - INFO - [MUTATION] Mutation strategy for next input: repeat_valid_command | Original: [2] | Mutated: [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]
+2025-04-20 16:07:07,764 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:07,764 - INFO - 
+[>] Sending command: [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]
+2025-04-20 16:07:07,939 - INFO - [<] Received response: [4]
+2025-04-20 16:07:09,917 - INFO - [State] Device state: Authenticated
+2025-04-20 16:07:09,917 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:09,917 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:09,917 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:07:09,917 - INFO - [MUTATION] Mutation strategy for next input: valid_command_out_of_order | Original: [2] | Mutated: [2, 1, 2, 3, 4, 5, 6, 0, 1]
+2025-04-20 16:07:09,917 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:09,917 - INFO - 
+[>] Sending command: [2, 1, 2, 3, 4, 5, 6, 0, 1]
+2025-04-20 16:07:10,044 - INFO - [<] Received response: [0]
+2025-04-20 16:07:12,061 - INFO - [State] Device state: Authenticated
+2025-04-20 16:07:12,061 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:12,061 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:12,061 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:12,061 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:12,061 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:07:12,061 - INFO - [INTERESTING] New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')
+2025-04-20 16:07:12,061 - INFO - [MUTATION] Mutation strategy for next input: valid_command_out_of_order | Original: [2] | Mutated: [1, 2, 1, 2, 3, 4, 5, 6, 0]
+2025-04-20 16:07:12,061 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:12,061 - INFO - 
+[>] Sending command: [1, 2, 1, 2, 3, 4, 5, 6, 0]
+2025-04-20 16:07:12,240 - INFO - [<] Received response: [0]
+2025-04-20 16:07:14,243 - INFO - [State] Device state: Authenticated
+2025-04-20 16:07:14,243 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:14,244 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:14,244 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:14,244 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:14,244 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:14,244 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:14,244 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:07:14,244 - INFO - [INTERESTING] New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open')
+2025-04-20 16:07:14,244 - INFO - [MUTATION] Mutation strategy for next input: repeat_valid_command | Original: [2] | Mutated: [1, 1, 1, 1, 1]
+2025-04-20 16:07:14,244 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:14,244 - INFO - 
+[>] Sending command: [1, 1, 1, 1, 1]
+2025-04-20 16:07:14,423 - INFO - [<] Received response: [4]
+2025-04-20 16:07:16,433 - INFO - [State] Device state: Authenticated
+2025-04-20 16:07:16,433 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:16,433 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:16,433 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:16,433 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:16,433 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:16,433 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:16,433 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:07:16,437 - INFO - 
+[Paths] 2 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=0, f=1.
+2025-04-20 16:07:16,437 - INFO - [MUTATION] Mutation strategy for next input: repeat_valid_command | Original: [1, 2, 0, 1, 2, 3, 4, 5, 6] | Mutated: [1, 1, 1, 1]
+2025-04-20 16:07:16,437 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:16,437 - INFO - 
+[>] Sending command: [1, 1, 1, 1]
+2025-04-20 16:07:16,616 - INFO - [<] Received response: [4]
+2025-04-20 16:07:18,620 - INFO - [State] Device state: Authenticated
+2025-04-20 16:07:18,620 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:18,620 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:18,620 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:18,620 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:18,622 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:18,622 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:18,622 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:07:18,622 - INFO - [MUTATION] Mutation strategy for next input: deleteRandomBytes | Original: [1, 2, 0, 1, 2, 3, 4, 5, 6] | Mutated: [1, 2, 2, 3, 4, 5, 6]
+2025-04-20 16:07:18,622 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:18,622 - INFO - 
+[>] Sending command: [1, 2, 2, 3, 4, 5, 6]
+2025-04-20 16:07:18,803 - INFO - [<] Received response: [4]
+2025-04-20 16:07:20,812 - INFO - [State] Device state: Authenticated
+2025-04-20 16:07:20,812 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:20,812 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:20,812 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:20,812 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:20,812 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:20,812 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:20,812 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:07:20,812 - INFO - 
+[Paths] 3 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=0, f=1.
+2025-04-20 16:07:20,812 - INFO - [MUTATION] Mutation strategy for next input: mutateRandomBytes | Original: [215, 1, 235, 243, 4, 5, 0, 0, 1] | Mutated: [215, 1, 235, 243, 4, 5, 0, 0, 1]
+2025-04-20 16:07:20,812 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:20,812 - INFO - 
+[>] Sending command: [215, 1, 235, 243, 4, 5, 0, 0, 1]
+2025-04-20 16:07:20,992 - INFO - [<] Received response: [2]
+2025-04-20 16:07:22,994 - INFO - [State] Device state: Authenticated
+2025-04-20 16:07:22,994 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:22,994 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:22,994 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:22,994 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:22,994 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:22,994 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:22,994 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:07:22,994 - INFO - [MUTATION] Mutation strategy for next input: deleteRandomBytes | Original: [2, 1, 2, 3, 4, 5, 6, 0, 1] | Mutated: [2, 1, 2, 3, 4, 6, 0]
+2025-04-20 16:07:22,998 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:22,998 - INFO - 
+[>] Sending command: [2, 1, 2, 3, 4, 6, 0]
+2025-04-20 16:07:23,170 - INFO - [<] Received response: [0]
+2025-04-20 16:07:25,170 - INFO - [State] Device state: Authenticated
+2025-04-20 16:07:25,170 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:25,170 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:25,170 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:25,170 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:25,170 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:25,170 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:25,170 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:25,170 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:25,170 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:07:25,170 - INFO - [INTERESTING] New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')
+2025-04-20 16:07:25,170 - INFO - 
+[Paths] 4 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=0, f=1.
+2025-04-20 16:07:25,170 - INFO - [MUTATION] Mutation strategy for next input: deleteRandomBytes | Original: [1, 2, 1, 2, 3, 4, 5, 6, 0] | Mutated: [2, 2, 3, 4, 5, 6]
+2025-04-20 16:07:25,170 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:25,170 - INFO - 
+[>] Sending command: [2, 2, 3, 4, 5, 6]
+2025-04-20 16:07:25,345 - INFO - [<] Received response: [4]
+2025-04-20 16:07:27,332 - INFO - [State] Device state: Authenticated
+2025-04-20 16:07:27,332 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:27,332 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:27,332 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:27,332 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:27,332 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:27,332 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:27,332 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:27,332 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:27,332 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:07:27,332 - INFO - [MUTATION] Mutation strategy for next input: mutateRandomBytes | Original: [1, 2, 1, 2, 0, 149, 5, 0, 240] | Mutated: [1, 2, 1, 2, 0, 149, 5, 0, 240]
+2025-04-20 16:07:27,333 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:27,333 - INFO - 
+[>] Sending command: [1, 2, 1, 2, 0, 149, 5, 0, 240]
+2025-04-20 16:07:27,450 - INFO - [<] Received response: [0]
+2025-04-20 16:07:29,465 - INFO - [State] Device state: Authenticated
+2025-04-20 16:07:29,465 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:29,465 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:29,465 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:29,465 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:29,465 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:29,465 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:29,465 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:29,465 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:29,465 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:29,465 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:29,465 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:07:29,465 - INFO - [INTERESTING] New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open')
+2025-04-20 16:07:29,465 - INFO - 
+[Paths] 5 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=0, f=1.
+2025-04-20 16:07:29,465 - INFO - [MUTATION] Mutation strategy for next input: mutateRandomBytes | Original: [2, 1, 2, 243, 4, 6, 0] | Mutated: [2, 1, 2, 243, 4, 6, 0]
+2025-04-20 16:07:29,465 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:29,465 - INFO - 
+[>] Sending command: [2, 1, 2, 243, 4, 6, 0]
+2025-04-20 16:07:29,641 - INFO - [<] Received response: [0]
+2025-04-20 16:07:31,638 - INFO - [State] Device state: Authenticated
+2025-04-20 16:07:31,638 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:31,638 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:31,638 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:31,638 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:31,638 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:31,638 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:31,639 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:31,639 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:31,639 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:31,639 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:31,639 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:31,639 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:31,639 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:07:31,639 - INFO - [INTERESTING] New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')
+2025-04-20 16:07:31,639 - INFO - [MUTATION] Mutation strategy for next input: insertRandomBytes | Original: [90, 2, 1, 112, 62, 2, 3, 4, 6, 0] | Mutated: [90, 2, 1, 112, 62, 2, 3, 4, 6, 0]
+2025-04-20 16:07:31,639 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:31,639 - INFO - 
+[>] Sending command: [90, 2, 1, 112, 62, 2, 3, 4, 6, 0]
+2025-04-20 16:07:31,783 - INFO - [<] Received response: [2]
+2025-04-20 16:07:33,785 - INFO - [State] Device state: Authenticated
+2025-04-20 16:07:33,786 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:33,786 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:33,786 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:33,786 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:33,786 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:33,786 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:33,786 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:33,786 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:33,786 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:33,786 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:33,786 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:33,786 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:33,786 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:07:33,787 - INFO - 
+[Paths] 6 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=0, f=1.
+2025-04-20 16:07:33,787 - INFO - [MUTATION] Mutation strategy for next input: inject_unknown_command | Original: [1, 2, 1, 2, 0, 149, 5, 0, 240] | Mutated: [100, 1, 2, 1, 2, 0, 149, 5, 0, 240]
+2025-04-20 16:07:33,787 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:33,787 - INFO - 
+[>] Sending command: [100, 1, 2, 1, 2, 0, 149, 5, 0, 240]
+2025-04-20 16:07:33,961 - INFO - [<] Received response: [2]
+2025-04-20 16:07:35,951 - INFO - [State] Device state: Authenticated
+2025-04-20 16:07:35,951 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:35,951 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:35,951 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:35,951 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:35,953 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:35,954 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:35,954 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:35,954 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:35,955 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:35,955 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:35,955 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:35,955 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:35,955 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:07:35,956 - INFO - [MUTATION] Mutation strategy for next input: mutateRandomBytes | Original: [2, 196, 1, 17, 98, 149, 2, 122, 240] | Mutated: [2, 196, 1, 17, 98, 149, 2, 122, 240]
+2025-04-20 16:07:35,957 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:35,957 - INFO - 
+[>] Sending command: [2, 196, 1, 17, 98, 149, 2, 122, 240]
+2025-04-20 16:07:36,061 - INFO - [<] Received response: [4]
+2025-04-20 16:07:38,055 - INFO - [State] Device state: Authenticated
+2025-04-20 16:07:38,055 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:38,055 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:38,055 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:38,055 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:38,055 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:38,055 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:38,055 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:38,055 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:38,055 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:38,055 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:38,055 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:38,055 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:38,055 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:07:38,055 - INFO - 
+[Paths] 7 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=0, f=1.
+2025-04-20 16:07:38,055 - INFO - [MUTATION] Mutation strategy for next input: valid_command_out_of_order | Original: [2, 1, 2, 243, 4, 6, 0] | Mutated: [0, 1, 2, 1, 2, 3, 4, 5, 6]
+2025-04-20 16:07:38,055 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:38,055 - INFO - 
+[>] Sending command: [0, 1, 2, 1, 2, 3, 4, 5, 6]
+2025-04-20 16:07:39,286 - INFO - [MUTATION] Mutation strategy for next input: insertRandomBytes | Original: [2, 113, 216, 1, 209, 2, 243, 4, 6, 0] | Mutated: [2, 113, 216, 1, 209, 2, 243, 4, 6, 0]
+2025-04-20 16:07:39,286 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:39,286 - INFO - 
+[>] Sending command: [2, 113, 216, 1, 209, 2, 243, 4, 6, 0]
+2025-04-20 16:07:39,405 - INFO - ['[Error] Code: 0x010203']
+2025-04-20 16:07:39,405 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-20 16:07:41,437 - INFO - [2] Authenticating...
+2025-04-20 16:07:43,472 - INFO - Sent AUTH+PASSCODE: [0, 1, 2, 3, 4, 5, 6]
+2025-04-20 16:07:43,472 - INFO - Received response: [0]
+2025-04-20 16:07:43,473 - INFO - [!] Authenticated!!!
+2025-04-20 16:07:47,471 - INFO - 
+[Paths] 1 discovered. (Path=()) s=0, f=1.
+2025-04-20 16:07:47,471 - INFO - [MUTATION] Mutation strategy for next input: deleteRandomBytes | Original: [1] | Mutated: [1]
+2025-04-20 16:07:47,471 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:47,471 - INFO - 
+[>] Sending command: [1]
+2025-04-20 16:07:47,645 - INFO - [<] Received response: [0]
+2025-04-20 16:07:49,647 - INFO - [State] Device state: Authenticated
+2025-04-20 16:07:49,647 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:49,647 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:49,647 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:49,647 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:49,647 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:49,647 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:49,649 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:49,649 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:49,649 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:49,649 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:49,649 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:49,649 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:49,649 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:07:49,649 - INFO - [INTERESTING] New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')
+2025-04-20 16:07:49,649 - INFO - [MUTATION] Mutation strategy for next input: insertRandomBytes | Original: [83, 1] | Mutated: [83, 1]
+2025-04-20 16:07:49,649 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:49,649 - INFO - 
+[>] Sending command: [83, 1]
+2025-04-20 16:07:49,827 - INFO - [<] Received response: [2]
+2025-04-20 16:07:51,836 - INFO - [State] Device state: Authenticated
+2025-04-20 16:07:51,836 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:51,836 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:51,836 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:51,836 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:51,836 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:51,836 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:51,836 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:51,836 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:51,836 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:51,836 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:51,836 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:07:51,836 - INFO - [State] Lock mechanism closed
+2025-04-20 16:07:51,836 - INFO - [State] Device state: Authenticated
+2025-04-20 16:07:51,836 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:07:51,836 - INFO - [State] Lock mechanism open
+2025-04-20 16:07:51,836 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}, {'from': 2, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:07:51,836 - INFO - [INTERESTING] New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')
+2025-04-20 16:07:51,836 - INFO - 
+[Paths] 1 discovered. (Path=()) s=1, f=2.
+2025-04-20 16:07:51,836 - INFO - [MUTATION] Mutation strategy for next input: repeat_valid_command | Original: [2] | Mutated: [0, 0, 0, 0, 0, 0, 0, 0]
+2025-04-20 16:07:51,836 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:51,836 - INFO - 
+[>] Sending command: [0, 0, 0, 0, 0, 0, 0, 0]
+2025-04-20 16:07:53,129 - INFO - [MUTATION] Mutation strategy for next input: repeat_valid_command | Original: [2] | Mutated: [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]
+2025-04-20 16:07:53,129 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:53,129 - INFO - 
+[>] Sending command: [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]
+2025-04-20 16:07:53,129 - INFO - [MUTATION] Mutation strategy for next input: deleteRandomBytes | Original: [2] | Mutated: [2]
+2025-04-20 16:07:53,129 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:53,129 - INFO - 
+[>] Sending command: [2]
+2025-04-20 16:07:53,133 - INFO - [MUTATION] Mutation strategy for next input: insertRandomBytes | Original: [2, 232] | Mutated: [2, 232]
+2025-04-20 16:07:53,136 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:53,136 - INFO - 
+[>] Sending command: [2, 232]
+2025-04-20 16:07:53,139 - INFO - 
+[Paths] 2 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=0, f=1.
+2025-04-20 16:07:53,139 - INFO - [MUTATION] Mutation strategy for next input: repeat_valid_command | Original: [1] | Mutated: [2, 2, 2, 2, 2, 2, 2, 2, 2]
+2025-04-20 16:07:53,139 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:53,139 - INFO - 
+[>] Sending command: [2, 2, 2, 2, 2, 2, 2, 2, 2]
+2025-04-20 16:07:53,141 - INFO - [MUTATION] Mutation strategy for next input: inject_unknown_command | Original: [1] | Mutated: [14, 1]
+2025-04-20 16:07:53,141 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:53,141 - INFO - 
+[>] Sending command: [14, 1]
+2025-04-20 16:07:53,141 - INFO - 
+[Paths] 3 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=0, f=1.
+2025-04-20 16:07:53,145 - INFO - [MUTATION] Mutation strategy for next input: mutateRandomBytes | Original: [83, 46] | Mutated: [83, 46]
+2025-04-20 16:07:53,145 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:53,145 - INFO - 
+[>] Sending command: [83, 46]
+2025-04-20 16:07:53,145 - INFO - [MUTATION] Mutation strategy for next input: valid_command_out_of_order | Original: [83, 1] | Mutated: [2, 1, 2, 3, 4, 5, 6, 0, 1]
+2025-04-20 16:07:53,145 - INFO - ------------------------------------------------------------
+2025-04-20 16:07:53,145 - INFO - 
+[>] Sending command: [2, 1, 2, 3, 4, 5, 6, 0, 1]
+2025-04-20 16:07:53,238 - INFO - ['[Error] Code: 0x010203', '[Error] Code: 0x010203']
+2025-04-20 16:07:53,238 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-20 16:07:55,511 - INFO - [2] Authenticating...
+2025-04-20 16:07:57,545 - INFO - Sent AUTH+PASSCODE: [0, 1, 2, 3, 4, 5, 6]
+2025-04-20 16:07:57,545 - INFO - Received response: [0]
+2025-04-20 16:07:57,545 - INFO - [!] Authenticated!!!
+2025-04-20 16:08:01,544 - INFO - 
+[Paths] 1 discovered. (Path=()) s=0, f=1.
+2025-04-20 16:08:01,544 - INFO - [MUTATION] Mutation strategy for next input: repeat_valid_command | Original: [1] | Mutated: [0, 0]
+2025-04-20 16:08:01,544 - INFO - ------------------------------------------------------------
+2025-04-20 16:08:01,544 - INFO - 
+[>] Sending command: [0, 0]
+2025-04-20 16:08:01,717 - INFO - [<] Received response: [1]
+2025-04-20 16:08:03,734 - INFO - [State] Device state: Authenticated
+2025-04-20 16:08:03,734 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:03,734 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:03,734 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:08:03,734 - INFO - [State] Lock mechanism closed
+2025-04-20 16:08:03,734 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:03,734 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:03,734 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:08:03,734 - INFO - [State] Lock mechanism closed
+2025-04-20 16:08:03,734 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:03,734 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:03,734 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:08:03,734 - INFO - [State] Lock mechanism closed
+2025-04-20 16:08:03,734 - INFO - [State] Device state: Authenticated
+2025-04-20 16:08:03,734 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:03,734 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:03,734 - INFO - [State] Device state: Authenticated
+2025-04-20 16:08:03,735 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}, {'from': 2, 'command': 'Authenticate', 'to': 2}, {'from': 2, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:08:03,735 - INFO - [INTERESTING] New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Device state: Authenticated')
+2025-04-20 16:08:03,735 - INFO - [MUTATION] Mutation strategy for next input: insertRandomBytes | Original: [1, 167] | Mutated: [1, 167]
+2025-04-20 16:08:03,735 - INFO - ------------------------------------------------------------
+2025-04-20 16:08:03,735 - INFO - 
+[>] Sending command: [1, 167]
+2025-04-20 16:08:03,912 - INFO - [<] Received response: [0]
+2025-04-20 16:08:05,908 - INFO - [State] Device state: Authenticated
+2025-04-20 16:08:05,908 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:05,908 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:05,908 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:08:05,908 - INFO - [State] Lock mechanism closed
+2025-04-20 16:08:05,908 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:05,908 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:05,908 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:08:05,909 - INFO - [State] Lock mechanism closed
+2025-04-20 16:08:05,909 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:05,909 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:05,909 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:08:05,909 - INFO - [State] Lock mechanism closed
+2025-04-20 16:08:05,909 - INFO - [State] Device state: Authenticated
+2025-04-20 16:08:05,909 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:05,909 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:05,909 - INFO - [State] Device state: Authenticated
+2025-04-20 16:08:05,909 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:05,909 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:05,909 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}, {'from': 2, 'command': 'Authenticate', 'to': 2}, {'from': 2, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:08:05,909 - INFO - [INTERESTING] New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')
+2025-04-20 16:08:05,909 - INFO - 
+[Paths] 1 discovered. (Path=()) s=1, f=2.
+2025-04-20 16:08:05,909 - INFO - [MUTATION] Mutation strategy for next input: valid_command_out_of_order | Original: [2] | Mutated: [1, 2, 3, 4, 5, 6, 2, 1, 0]
+2025-04-20 16:08:05,909 - INFO - ------------------------------------------------------------
+2025-04-20 16:08:05,909 - INFO - 
+[>] Sending command: [1, 2, 3, 4, 5, 6, 2, 1, 0]
+2025-04-20 16:08:06,022 - INFO - [<] Received response: [4]
+2025-04-20 16:08:08,019 - INFO - [State] Device state: Authenticated
+2025-04-20 16:08:08,019 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:08,019 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:08,019 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:08:08,019 - INFO - [State] Lock mechanism closed
+2025-04-20 16:08:08,019 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:08,019 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:08,019 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:08:08,019 - INFO - [State] Lock mechanism closed
+2025-04-20 16:08:08,019 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:08,019 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:08,019 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:08:08,019 - INFO - [State] Lock mechanism closed
+2025-04-20 16:08:08,019 - INFO - [State] Device state: Authenticated
+2025-04-20 16:08:08,019 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:08,019 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:08,019 - INFO - [State] Device state: Authenticated
+2025-04-20 16:08:08,019 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:08,019 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:08,019 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}, {'from': 2, 'command': 'Authenticate', 'to': 2}, {'from': 2, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:08:08,021 - INFO - [MUTATION] Mutation strategy for next input: mutateRandomBytes | Original: [8] | Mutated: [8]
+2025-04-20 16:08:08,021 - INFO - ------------------------------------------------------------
+2025-04-20 16:08:08,021 - INFO - 
+[>] Sending command: [8]
+2025-04-20 16:08:08,135 - INFO - [<] Received response: [2]
+2025-04-20 16:08:10,135 - INFO - [State] Device state: Authenticated
+2025-04-20 16:08:10,135 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:10,136 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:10,136 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:08:10,136 - INFO - [State] Lock mechanism closed
+2025-04-20 16:08:10,136 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:10,136 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:10,136 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:08:10,136 - INFO - [State] Lock mechanism closed
+2025-04-20 16:08:10,136 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:10,136 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:10,136 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:08:10,136 - INFO - [State] Lock mechanism closed
+2025-04-20 16:08:10,136 - INFO - [State] Device state: Authenticated
+2025-04-20 16:08:10,136 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:10,136 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:10,136 - INFO - [State] Device state: Authenticated
+2025-04-20 16:08:10,136 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:10,136 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:10,136 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}, {'from': 2, 'command': 'Authenticate', 'to': 2}, {'from': 2, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:08:10,136 - INFO - [MUTATION] Mutation strategy for next input: insertRandomBytes | Original: [114, 2] | Mutated: [114, 2]
+2025-04-20 16:08:10,136 - INFO - ------------------------------------------------------------
+2025-04-20 16:08:10,136 - INFO - 
+[>] Sending command: [114, 2]
+2025-04-20 16:08:10,323 - INFO - [<] Received response: [2]
+2025-04-20 16:08:12,326 - INFO - [State] Device state: Authenticated
+2025-04-20 16:08:12,326 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:12,326 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:12,326 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:08:12,326 - INFO - [State] Lock mechanism closed
+2025-04-20 16:08:12,326 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:12,326 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:12,326 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:08:12,326 - INFO - [State] Lock mechanism closed
+2025-04-20 16:08:12,326 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:12,326 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:12,326 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:08:12,326 - INFO - [State] Lock mechanism closed
+2025-04-20 16:08:12,329 - INFO - [State] Device state: Authenticated
+2025-04-20 16:08:12,329 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:12,329 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:12,329 - INFO - [State] Device state: Authenticated
+2025-04-20 16:08:12,329 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:12,329 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:12,329 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}, {'from': 2, 'command': 'Authenticate', 'to': 2}, {'from': 2, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:08:12,329 - INFO - [MUTATION] Mutation strategy for next input: inject_unknown_command | Original: [2] | Mutated: [155, 2]
+2025-04-20 16:08:12,329 - INFO - ------------------------------------------------------------
+2025-04-20 16:08:12,329 - INFO - 
+[>] Sending command: [155, 2]
+2025-04-20 16:08:12,506 - INFO - [<] Received response: [2]
+2025-04-20 16:08:14,503 - INFO - [State] Device state: Authenticated
+2025-04-20 16:08:14,503 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:14,503 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:14,503 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:08:14,503 - INFO - [State] Lock mechanism closed
+2025-04-20 16:08:14,503 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:14,503 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:14,503 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:08:14,503 - INFO - [State] Lock mechanism closed
+2025-04-20 16:08:14,503 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:14,503 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:14,503 - INFO - [State] Closing the lock mechanism
+2025-04-20 16:08:14,503 - INFO - [State] Lock mechanism closed
+2025-04-20 16:08:14,503 - INFO - [State] Device state: Authenticated
+2025-04-20 16:08:14,503 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:14,503 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:14,503 - INFO - [State] Device state: Authenticated
+2025-04-20 16:08:14,503 - INFO - [State] Opening the lock mechanism
+2025-04-20 16:08:14,503 - INFO - [State] Lock mechanism open
+2025-04-20 16:08:14,503 - INFO - [{'from': 0, 'command': 'Authenticate', 'to': 2}, {'from': 2, 'command': 'Authenticate', 'to': 2}, {'from': 2, 'command': 'Authenticate', 'to': 2}]
+2025-04-20 16:08:14,503 - INFO - 
+[Paths] 2 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Device state: Authenticated')) s=0, f=1.
+2025-04-20 16:08:14,503 - INFO - [MUTATION] Mutation strategy for next input: mutateRandomBytes | Original: [0, 153] | Mutated: [0, 153]
+2025-04-20 16:08:14,503 - INFO - ------------------------------------------------------------
+2025-04-20 16:08:14,503 - INFO - 
+[>] Sending command: [0, 153]
+2025-04-20 16:08:15,784 - INFO - [MUTATION] Mutation strategy for next input: inject_unknown_command | Original: [0, 0] | Mutated: [38, 0, 0]
+2025-04-20 16:08:15,785 - INFO - ------------------------------------------------------------
+2025-04-20 16:08:15,785 - INFO - 
+[>] Sending command: [38, 0, 0]
+2025-04-20 16:08:15,787 - INFO - 
+[Paths] 3 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Device state: Authenticated')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=0, f=1.
+2025-04-20 16:08:15,787 - INFO - [MUTATION] Mutation strategy for next input: insertRandomBytes | Original: [1, 73, 167] | Mutated: [1, 73, 167]
+2025-04-20 16:08:15,787 - INFO - ------------------------------------------------------------
+2025-04-20 16:08:15,787 - INFO - 
+[>] Sending command: [1, 73, 167]
+2025-04-20 16:08:15,787 - INFO - [MUTATION] Mutation strategy for next input: repeat_valid_command | Original: [1, 167] | Mutated: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+2025-04-20 16:08:15,787 - INFO - ------------------------------------------------------------
+2025-04-20 16:08:15,787 - INFO - 
+[>] Sending command: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+2025-04-20 16:08:15,907 - INFO - ['[Error] Code: 0x010203', '[Error] Code: 0x010203', '[Error] Code: 0x018374', '[Error] Code: 0x010203']
+2025-04-20 16:08:15,907 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-20 16:08:17,966 - INFO - [2] Authenticating...
+2025-04-20 16:08:19,987 - INFO - Sent AUTH+PASSCODE: [0, 1, 2, 3, 4, 5, 6]
+2025-04-20 16:08:19,987 - INFO - Received response: [0]
+2025-04-20 16:08:19,987 - INFO - [!] Authenticated!!!
+2025-04-20 16:08:23,988 - INFO - 
+[Paths] 1 discovered. (Path=()) s=0, f=1.
+2025-04-20 16:08:23,988 - INFO - [MUTATION] Mutation strategy for next input: insertRandomBytes | Original: [124, 1] | Mutated: [124, 1]
+2025-04-20 16:08:23,988 - INFO - ------------------------------------------------------------
+2025-04-20 16:08:23,988 - INFO - 

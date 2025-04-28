@@ -1,0 +1,47 @@
+# Fuzzer Configuration for Smartlock Target
+
+# --- Experiment Settings ---
+experiment_name: "smartlock_default" # Default experiment name for Smart Lock
+target_name: "smartlock"
+output_base_dir: "evaluation_runs/smartlock/default/" # Base directory for Smart Lock runs
+run_duration_hours: 1 # Default run duration for Smart Lock
+
+# --- Fuzzer Feature Flags ---
+# Note: These flags might not be directly used by the current SmartlockGreyboxFuzzer
+# implementation in the same way as the Django fuzzer, but are kept for structure.
+use_coverage_feedback: false # Smartlock fuzzer uses path state (state transitions), not code coverage files.
+use_constraint_mutation: false # Smartlock fuzzer uses a simpler ByteArrayMutator.
+use_seed_prioritization: true # Smartlock fuzzer implements its own PowerSchedule based on path discovery.
+
+# --- Fuzzer Settings ---
+# target_endpoint: Not applicable for BLE communication.
+max_iterations: 500000 # High limit, likely constrained by duration or manual stop.
+total_mutation_limit: 500000 # High limit.
+# request_timeout: Not applicable for direct BLE interaction model used.
+# memory_threshold_mb: Not applicable in the same way as HTTP server monitoring.
+# seed_file_path: Initial seeds ([OPEN], [CLOSE]) are currently hardcoded in SmartlockGreyboxFuzzer.py.
+unique_errors_file: "unique_errors_smartlock.jsonl" # File to log unique errors found (will be placed in run-specific output dir).
+
+# --- Power Schedule Settings ---
+power_schedule_settings:
+  energy_const: 1
+  max_energy: 34000
+
+# --- Seed Settings ---
+seed_settings:
+  initial_seeds: [[1], [2]]
+# --- Target Execution Settings ---
+# These are not applicable as the fuzzer interacts directly with BLE, not by running a separate script.
+# target_script: null
+# target_args: null
+# coverage_source: null
+# coverage_data_file: null
+
+# --- Power Schedule Settings ---
+# The specific parameters (e0, M) are currently hardcoded within SmartlockGreyboxFuzzer.PowerSchedule.
+# energy_const: 1 # (Reference: e0 in code)
+# max_energy: 34000 # (Reference: M in code)
+
+# --- Input Structure & Constraints ---
+# Input is a list of integers (byte commands), not complex JSON. Constraints are not defined in this config.
+# input_structure: null
