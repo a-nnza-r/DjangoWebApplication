@@ -8,7 +8,7 @@ import logging
 import json # Added for structured logging and safe repr
 import threading
 from queue import Queue
-
+# Removed ThreadPoolExecutor, as_completed for sequential execution
 import sys
 import os
 import yaml
@@ -216,7 +216,7 @@ class DjPowerSchedule(AbstractPowerSchedule):
 
 class DjMutator(AbstractMutator):
     # TODO: consider adding PSO for mutations, probability distribution of mutations should be based on their success in the explore phase
-    def __init__(self, config_path: str = "DjangoWebApplication/fuzzer/fuzzer_config.yaml", use_constraints: bool = True) -> None:
+    def __init__(self, config_path: str = "fuzzer/fuzzer_config.yaml", use_constraints: bool = True) -> None:
         """
         Initialize the mutator, loading input structure constraints if enabled.
 
@@ -229,7 +229,7 @@ class DjMutator(AbstractMutator):
 
         if self.use_constraints:
             try:
-                if os.path.exists(config_path):
+                if config_path and os.path.exists(config_path):
                     with open(config_path, 'r') as f:
                         full_config = yaml.safe_load(f) # Load the full config temporarily
                     if full_config and 'input_structure' in full_config:
@@ -486,13 +486,13 @@ class DjMutator(AbstractMutator):
             lambda: "", # Empty string
             lambda: "\x00" * random.randint(min_len, min(50, int(max_len)) if max_len != float('inf') else 50),
             lambda: "\xff" * random.randint(min_len, min(50, int(max_len)) if max_len != float('inf') else 50),
-            lambda: "A" * random.randint(min_len, min(2000, int(max_len)) if max_len != float('inf') else 2000),
-            lambda: "Z" * random.randint(min_len, min(4000, int(max_len)) if max_len != float('inf') else 4000),
+            lambda: ''.join(random.choices(string.ascii_lowercase, k=random.randint(min_len, min(2000, int(max_len)) if max_len != float('inf') else 2000))),
+            lambda: ''.join(random.choices(string.ascii_uppercase, k=random.randint(min_len, min(4000, int(max_len)) if max_len != float('inf') else 4000))),
             lambda: " " * random.randint(min_len, min(500, int(max_len)) if max_len != float('inf') else 500),
             lambda: "\n" * random.randint(min_len, min(50, int(max_len)) if max_len != float('inf') else 50),
             lambda: "../" * random.randint(min(min_len // 3, 1), min(20, int(max_len // 3)) if max_len != float('inf') else 20),
-            lambda: "%s%n" * random.randint(min(min_len // 4, 1), min(20, int(max_len // 4)) if max_len != float('inf') else 20),
-            lambda: ''.join(random.choices(string.digits, k=random.randint(min_len, min(1000, int(max_len)) if max_len != float('inf') else 1000))),
+            lambda: "%s%n" * random.randint(min(min_len // 3, 1), min(20, int(max_len // 3)) if max_len != float('inf') else 20),
+            lambda: ''.join(random.choices(string.digits, k=random.randint(min_len, min(1000, int(max_len)) if max_len != float('inf') else 1000))),        
         ]
 
         # Try to generate a valid extreme value
@@ -1033,7 +1033,7 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
         seed: DjSeed,
         power_schedule: DjPowerSchedule,
         is_interesting: DjIsInteresting,
-        config_path: str = "DjangoWebApplication/fuzzer/fuzzer_config.yaml", # Default config path
+        config_path: str = "fuzzer/fuzzer_config.yaml",
         run_id: str = "run_0" # Add run_id for output directory structuring
     ) -> None:
         self.config = self._load_config(config_path) # Load config
@@ -1200,7 +1200,7 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
         """Loads the YAML configuration file."""
         config = {}
         try:
-            if os.path.exists(config_path):
+            if config_path and os.path.exists(config_path):
                 with open(config_path, 'r') as f:
                     config = yaml.safe_load(f) or {} # Ensure it's a dict even if file is empty
                 logging.info(f"Fuzzer loaded configuration from: {config_path}")
@@ -1283,10 +1283,18 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
         logging.info(f"Starting target with command: {' '.join(cmd)}")
         try:
             # Start process, redirect stdout/stderr to avoid polluting fuzzer logs unless debugging
+            # Define log file paths within the run directory
+            stdout_log_path = os.path.join(self.get_run_output_dir(), 'runner_stdout.log')
+            stderr_log_path = os.path.join(self.get_run_output_dir(), 'runner_stderr.log')
+
+            # Open log files for writing
+            self.stdout_log_file = open(stdout_log_path, 'w')
+            self.stderr_log_file = open(stderr_log_path, 'w')
+
             self.server_process = subprocess.Popen(
                 cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
+                stdout=self.stdout_log_file,
+                stderr=self.stderr_log_file,
                 text=True,
                 # Set process group ID to easily kill the whole group later if needed
                 preexec_fn=os.setsid if sys.platform != "win32" else None
@@ -1301,14 +1309,22 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
                 logging.info(f"Server started successfully (PID: {self.server_process.pid}).")
             else:
                 logging.error(f"Server failed to start or exited immediately with code {poll_result}.")
-                self._log_server_output() # Log output on failure
                 self.server_process = None
         except Exception as e:
             logging.error(f"Failed to start server process: {e}", exc_info=True)
             self.server_process = None
+        finally:
+            # Ensure log files are closed if server fails to start
+            if self.server_process is None:
+                if hasattr(self, 'stdout_log_file') and self.stdout_log_file:
+                    self.stdout_log_file.close()
+                if hasattr(self, 'stderr_log_file') and self.stderr_log_file:
+                    self.stderr_log_file.close()
+
 
     def _log_server_output(self):
         """Logs stdout/stderr from the server process if available."""
+        # This method is less useful now as output goes to files, but kept for potential direct debugging
         if not self.server_process: return
         try:
             stdout_data, stderr_data = self.server_process.communicate(timeout=0.1) # Short timeout
@@ -1326,6 +1342,13 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
         if not self.server_process or self.server_process.poll() is not None:
             logging.debug("Server process already stopped or not started.")
             self.server_process = None
+            # Ensure log files are closed if they exist
+            if hasattr(self, 'stdout_log_file') and self.stdout_log_file:
+                try: self.stdout_log_file.close()
+                except Exception as e: logging.warning(f"Error closing stdout log: {e}")
+            if hasattr(self, 'stderr_log_file') and self.stderr_log_file:
+                try: self.stderr_log_file.close()
+                except Exception as e: logging.warning(f"Error closing stderr log: {e}")
             return
 
         pid = self.server_process.pid
@@ -1336,20 +1359,17 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
             os.killpg(os.getpgid(pid), signal.SIGINT)
             self.server_process.wait(timeout=10) # Wait for graceful shutdown
             logging.info(f"Server process (PID: {pid}) terminated after SIGINT.")
-            self._log_server_output() # Log any final output
         except subprocess.TimeoutExpired:
             logging.warning(f"Server process (PID: {pid}) did not terminate after SIGINT. Sending SIGTERM...")
             try:
                 os.killpg(os.getpgid(pid), signal.SIGTERM)
                 self.server_process.wait(timeout=2)
                 logging.info(f"Server process (PID: {pid}) terminated after SIGTERM.")
-                self._log_server_output()
             except subprocess.TimeoutExpired:
                 logging.error(f"Server process (PID: {pid}) did not terminate after SIGTERM. Sending SIGKILL.")
                 os.killpg(os.getpgid(pid), signal.SIGKILL)
                 self.server_process.wait(timeout=1) # Wait briefly after kill
                 logging.info(f"Server process (PID: {pid}) terminated after SIGKILL.")
-                self._log_server_output() # Attempt to log output even after kill
             except Exception as e:
                  logging.error(f"Error sending SIGTERM/SIGKILL to server (PID: {pid}): {e}", exc_info=True)
         except Exception as e:
@@ -1362,8 +1382,15 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
                     self.server_process.wait(timeout=1)
             except Exception as kill_err:
                  logging.error(f"Error during final force kill (PID: {pid}): {kill_err}")
-
-        self.server_process = None # Mark as stopped
+        finally:
+            # Ensure log files are closed after stopping
+            if hasattr(self, 'stdout_log_file') and self.stdout_log_file:
+                try: self.stdout_log_file.close()
+                except Exception as e: logging.warning(f"Error closing stdout log: {e}")
+            if hasattr(self, 'stderr_log_file') and self.stderr_log_file:
+                try: self.stderr_log_file.close()
+                except Exception as e: logging.warning(f"Error closing stderr log: {e}")
+            self.server_process = None # Mark as stopped
 
     def send_request(self, input_data: Dict[str, Any]) -> Optional[requests.Response]:
         """Sends a single POST request to the target Django endpoint read from config."""
@@ -1431,12 +1458,12 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
 
         except requests.exceptions.Timeout:
             elapsed_time = time.time() - start_time
-            elapsed_time = time.time() - start_time
             logging.error(f"Request timed out after {elapsed_time:.2f}s. Input: {input_repr}")
 
             # --- Investigate Timeout ---
             timeout_type = "timeout_alive" # Assume alive initially
             exit_code = None
+            memory_usage_mb = None # Initialize memory usage
             if self.server_process and self.server_process.poll() is not None:
                 # Server process terminated during the request
                 exit_code = self.server_process.poll()
@@ -1448,7 +1475,6 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
                 # Server process is still running, but request timed out
                 logging.warning(f"Server process still running after request timeout. Input: {input_repr}")
                 # --- Check Memory Usage (if psutil is available) ---
-                memory_usage_mb = None
                 if psutil and self.server_process:
                     try:
                         pid = self.server_process.pid
@@ -1496,7 +1522,6 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
             exit_code = None # Initialize exit_code here
             if self.server_process and self.server_process.poll() is not None:
                  exit_code = self.server_process.poll()
-                 exit_code = self.server_process.poll() # Get the exit code
                  logging.error(f"Server confirmed crashed after ConnectionError (exit code: {exit_code}). Input: {input_repr}")
                  # Attribute crash to the input that triggered the connection error, using last known good path
                  bug_report = {"type": "crash", "input": input_data, "exit_code": exit_code, "trigger": "connection_error", "path_hash": self.last_successful_input_path_hash}
@@ -1604,7 +1629,7 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
             logging.info(f"Fuzzer started (Sequential Mode). Max iterations: {self.max_iterations}, Max mutations: {self.total_mutation_limit}")
             # Log header for the experiment log file
             exp_logger.info(json.dumps({"event": "start", "mode": "sequential", "max_iterations": self.max_iterations, "total_mutation_limit": self.total_mutation_limit}))
-            exp_logger.info(json.dumps({"event": "header", "columns": ["iteration", "mutation_index_total", "seed_data", "seed_s_pre", "seed_f_pre", "mutated_input", "execution_success", "mutation_path_hash", "mutation_unique_arcs_count", "new_unique_arcs_count", "is_mutation_interesting", "added_to_queue", "total_unique_arcs", "total_unique_paths"]}))
+            exp_logger.info(json.dumps({"event": "header", "columns": ["iteration", "mutation_index_total", "seed_data", "seed_s_pre", "seed_f_pre", "mutated_input", "execution_success", "mutation_path_hash", "mutation_unique_arcs_count", "new_unique_arcs_count", "is_mutation_interesting", "added_to_queue", "total_unique_arcs", "total_unique_paths", "mutation_time_ms", "execution_time_ms"]}))
 
 
             # Main loop: Continues until max iterations, total mutation limit, or duration reached, or queue empty
@@ -1663,7 +1688,8 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
                         "mutated_input": "N/A (Skipped)", "execution_success": False,
                         "mutation_path_hash": "N/A", "mutation_unique_arcs_count": 0, "new_unique_arcs_count": 0,
                         "is_mutation_interesting": False, "added_to_queue": False,
-                        "total_unique_arcs": len(self.global_unique_arcs), "total_unique_paths": len(self.global_unique_path_hashes)
+                        "total_unique_arcs": len(self.global_unique_arcs), "total_unique_paths": len(self.global_unique_path_hashes),
+                        "mutation_time_ms": 0.0, "execution_time_ms": 0.0 # Add 0 timings for skipped
                     }
                     exp_logger.info(json.dumps(log_entry, ensure_ascii=False))
                     continue # Go to next iteration
@@ -1681,9 +1707,13 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
                     # Increment seed's failure counter *for each mutation attempt*
                     chosen_seed_dict["f"] = chosen_seed_dict.get("f", 0) + 1
 
+                    mutation_start_time = time.perf_counter()
                     mutated_input = self.mutator.mutateInput(seed_data)
+                    mutation_end_time = time.perf_counter()
+                    mutation_time_ms = (mutation_end_time - mutation_start_time) * 1000
+
                     mutated_input_repr = self.safe_repr(mutated_input)
-                    logging.debug(f"Iter {iteration_count}, Mut #{self.mutation_count_total}: Input {mutated_input_repr}")
+                    logging.debug(f"Iter {iteration_count}, Mut #{self.mutation_count_total}: Input {mutated_input_repr} (Mutation took {mutation_time_ms:.2f} ms)")
 
                     # --- Execute Single Mutation & Collect Coverage ---
                     execution_success = False
@@ -1696,6 +1726,7 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
                     is_mutation_interesting = False
                     added_to_queue = False
                     server_crashed_this_run = False
+                    execution_time_ms = 0.0 # Initialize execution time
 
                     # Check for crash *before* sending request
                     if self.server_process is None or self.server_process.poll() is not None:
@@ -1722,7 +1753,8 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
                                 "seed_data": seed_data_repr, "seed_s_pre": seed_s_pre_select, "seed_f_pre": seed_f_pre_mutate,
                                 "mutated_input": mutated_input_repr, "execution_success": False, "mutation_path_hash": "CRASH_RESTART_FAIL",
                                 "mutation_unique_arcs_count": 0, "new_unique_arcs_count": 0, "is_mutation_interesting": False, "added_to_queue": False,
-                                "total_unique_arcs": len(self.global_unique_arcs), "total_unique_paths": len(self.global_unique_path_hashes)
+                                "total_unique_arcs": len(self.global_unique_arcs), "total_unique_paths": len(self.global_unique_path_hashes),
+                                "mutation_time_ms": mutation_time_ms, "execution_time_ms": 0.0 # Log timings
                             }
                             exp_logger.info(json.dumps(log_entry, ensure_ascii=False))
                             break # Stop fuzzing run entirely
@@ -1734,7 +1766,11 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
                         self.cov.erase() # Erase data for this specific run
                         self.cov.start()
                         try:
+                            execution_start_time = time.perf_counter()
                             response = self.send_request(mutated_input)
+                            execution_end_time = time.perf_counter()
+                            execution_time_ms = (execution_end_time - execution_start_time) * 1000
+
                             if response is not None:
                                 # Consider request successful if we got any response (error or not)
                                 # Specific bug logging (timeout, http_error, connection_error) happens in send_request
@@ -1746,6 +1782,8 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
                             # else: response is None, bug logged by send_request (timeout, conn error, etc.)
 
                         except Exception as e:
+                            execution_end_time = time.perf_counter()
+                            execution_time_ms = (execution_end_time - execution_start_time) * 1000 if 'execution_start_time' in locals() else 0.0
                             logging.error(f"Unexpected exception during send_request call for mutation {self.mutation_count_total}: {e}\nInput: {mutated_input_repr}", exc_info=True)
                             # Use last known good path hash for this unexpected error
                             bug_report = {"type": "send_request_call_exception", "input": mutated_input, "error": str(e), "path_hash": self.last_successful_input_path_hash}
@@ -1764,7 +1802,6 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
                             except Exception as e:
                                 logging.error(f"Unexpected error during coverage stop/combine: {e}", exc_info=True)
 
-                        # Check for crash *after* the request attempt
                         # Check for crash *after* the request attempt
                         if self.server_process and self.server_process.poll() is not None:
                             exit_code = self.server_process.poll()
@@ -1787,7 +1824,8 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
                                     "seed_data": seed_data_repr, "seed_s_pre": seed_s_pre_select, "seed_f_pre": seed_f_pre_mutate,
                                     "mutated_input": mutated_input_repr, "execution_success": False, "mutation_path_hash": "CRASH_RESTART_FAIL",
                                     "mutation_unique_arcs_count": 0, "new_unique_arcs_count": 0, "is_mutation_interesting": False, "added_to_queue": False,
-                                    "total_unique_arcs": len(self.global_unique_arcs), "total_unique_paths": len(self.global_unique_path_hashes)
+                                    "total_unique_arcs": len(self.global_unique_arcs), "total_unique_paths": len(self.global_unique_path_hashes),
+                                    "mutation_time_ms": mutation_time_ms, "execution_time_ms": execution_time_ms # Log timings
                                 }
                                 exp_logger.info(json.dumps(log_entry, ensure_ascii=False))
                                 break # Stop fuzzing run entirely
@@ -1899,7 +1937,9 @@ class DjGreyboxFuzzer(AbstractGreyboxFuzzer):
                         "is_mutation_interesting": is_mutation_interesting if not server_crashed_this_run else False,
                         "added_to_queue": added_to_queue,
                         "total_unique_arcs": len(self.global_unique_arcs),
-                        "total_unique_paths": len(self.global_unique_path_hashes)
+                        "total_unique_paths": len(self.global_unique_path_hashes),
+                        "mutation_time_ms": mutation_time_ms,
+                        "execution_time_ms": execution_time_ms
                     }
                     exp_logger.info(json.dumps(log_entry, ensure_ascii=False))
                     # --- End Mutation Logging ---
@@ -2046,7 +2086,7 @@ def load_seeds_from_jsonl(file_path: str) -> List[Dict[str, Any]]:
 def main() -> None:
     # --- Argument Parsing ---
     parser = argparse.ArgumentParser(description="Run Django Greybox Fuzzer with specific configuration.")
-    parser.add_argument('--config', type=str, default="DjangoWebApplication/fuzzer/fuzzer_config.yaml",
+    parser.add_argument('--config', type=str, default="fuzzer/fuzzer_config.yaml",
                         help='Path to the YAML configuration file.')
     parser.add_argument('--run_id', type=str, default="run_0",
                         help='Identifier for this specific run (used for output directory).')
@@ -2124,7 +2164,7 @@ def main() -> None:
 
     # --- Load Initial Seeds ---
     # Use config_path only if it was successfully loaded
-    seed_file_path_cfg = config.get('seed_file_path', 'DjangoWebApplication/fuzzer/initial_seeds.jsonl')
+    seed_file_path_cfg = config.get('seed_file_path', 'fuzzer/initial_seeds.jsonl') # Adjusted default path
     initial_seeds = load_seeds_from_jsonl(seed_file_path_cfg)
     if not initial_seeds:
         logging.critical("No initial seeds loaded. Cannot start fuzzing. Exiting.")
@@ -2134,6 +2174,9 @@ def main() -> None:
     seed_queue = DjSeed(queue=initial_seeds) # Use loaded seeds
     # Pass loaded config to PowerSchedule
     power_schedule = DjPowerSchedule(config=config)
+    # Mutator loads its own part of the config, pass the path
+    # The use_constraints flag will be read from the loaded config inside the fuzzer __init__
+    mutator = DjMutator(config_path=config_path if config_path else "fuzzer/fuzzer_config.yaml")
     is_interesting = DjIsInteresting()
 
     # Pass the instantiated components and config path/run_id to the fuzzer
@@ -2141,7 +2184,7 @@ def main() -> None:
         seed=seed_queue,
         power_schedule=power_schedule,
         is_interesting=is_interesting,
-        config_path=config_path if config_path else "fuzzer_config.yaml", # Pass original path or default
+        config_path=config_path if config_path else "fuzzer/fuzzer_config.yaml", # Pass original path or default
         run_id=run_id
     )
 
