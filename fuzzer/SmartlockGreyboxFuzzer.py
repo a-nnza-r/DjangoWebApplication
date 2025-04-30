@@ -1,6 +1,10 @@
 from collections import deque
+import json
+import os
 import random
 import sys
+import time
+import traceback
 from fuzzer.abstract import (
     AbstractGreyboxFuzzer,
     AbstractIsInteresting,
@@ -8,51 +12,62 @@ from fuzzer.abstract import (
     AbstractPowerSchedule,
     AbstractSeed,
 )
+from fuzzer.utilities.smartlock import (
+    ble_program,
+    connect_client_to_smartlock,
+    extract_transitions_as_integers,
+)
 from smartlock.BLEClient import BLEClient
+from smartlock.constants import LEGAL_STATE_TRANSITIONS
 from fuzzer.mutation.common_mutator import ByteArrayMutator
 import asyncio  # Ensure async operations work
+import logging
+
+from smartlock.constants import AUTH, CLOSE, DEVICE_NAME, OPEN, PASSCODE
+
+logging.basicConfig(
+    filename="smartlock.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    filemode="w",  # overwrites on every run
+)
 
 
-class Input:
-    def __init__(self, value: list[int], path_id: int = -1):
+class Input():
+    def __init__(self, value: list[int], path_state: tuple = ()):
         self.value: list[int] = value
-        self.path_id: int = path_id
+        self.path_state: int = path_state
 
 
 class Path:
-    def __init__(self, id):
-        self.id = id
+    def __init__(self, state):
+        self.state: tuple = state
         self.f: int = 1
         self.s: int = 0
-        self.e: int = PowerSchedule.e0
+        self.e: int = 1
 
     def update(self):
         self.s = self.s + 1
         self.f = self.f + self.e
 
 
-class Paths:  # sort of like a graph
+class Paths: # sort of like a graph
     def __init__(self):
         self.paths = {}
 
-    def append_if_not_exist(self, id: int):
-        if id not in self.paths:
-            self.paths[id] = Path(id)
+    def append_if_not_exist(self, state: tuple):
+        if state not in self.paths:
+            self.paths[state] = Path(state)
 
-    def get_path(self, id: int) -> Path:
-        return self.paths[id]
+    def get_path(self, state: tuple) -> Path:
+        return self.paths[state]
 
     def get_mean_f(self) -> int:
         return int(sum([path.f for path in self.paths.values()]) / len(self.paths))
-
+    
     def __str__(self):
-        s = f"\n[Paths] {len(self.paths)} discovered."
-        s += "".join(
-            [
-                f" (Path={id}) s={path.s}, f={path.f}."
-                for (id, path) in sorted(self.paths.items())
-            ]
-        )
+        s = f'\n[Paths] {len(self.paths)} discovered.'
+        s += ''.join([f" (Path={state}) s={path.s}, f={path.f}." for (state, path) in sorted(self.paths.items())])
         return s
 
 
@@ -63,141 +78,219 @@ class Seed(AbstractSeed):
     def chooseNext(self) -> Input:
         return self.queue.popleft()
 
-
 class PowerSchedule(AbstractPowerSchedule):
-    e0 = 1
-    M = 34000
-
-    def __init__(self):
-        self.paths = Paths()  # 1 response code = 1 path
+    def __init__(self, config):
+        self.paths = Paths() # 1 response code = 1 path
+        self.energy_const = config.get("power_schedule_settings", {}).get(
+            "energy_const", 1
+        )
+        self.max_energy = config.get("power_schedule_settings", {}).get(
+            "max_energy", 34000
+        )
 
     def assignEnergy(self, t: Input = None):
-        path = self.paths.get_path(t.path_id)
+        path = self.paths.get_path(t.path_state)
         path.update()
         if path.f <= self.paths.get_mean_f():
-            path.e = min(int(PowerSchedule.e0 * (2**path.s)), PowerSchedule.M)
+            path.e = min(int(self.energy_const * (2 ** path.s)), self.max_energy)
         else:
             path.e = 0
         return path.e
 
-
 class IsInteresting(AbstractIsInteresting):
-    def __call__(self, *args, **kwds) -> bool:
-        return True
+    def __init__(self, config, run_output_dir):
+        self.seen_path_states = set()
+        self.illegal_transitions = set()
+        self.config = config
+        self.run_output_dir = run_output_dir
 
+    def __call__(self, input: Input) -> bool:
+        # Check for new path discovery
+        is_new_path = input.path_state not in self.seen_path_states
+        if is_new_path:
+            self.seen_path_states.add(input.path_state)
+            logger.info(
+                f"Is interesting: New path discovered: {input.path_state}"
+            )  # Use logger instance
+            return True
+
+        # Check for illegal state transitions
+        transitions = extract_transitions_as_integers(input.path_state)
+        for src, dst in transitions:
+            allowed = LEGAL_STATE_TRANSITIONS.get(src, [])
+            if dst not in allowed:
+                print(
+                    f"Illegal state transition: {src} -> {dst} not allowed. Allowed: {src} -> {allowed}"
+                )
+                logger.info(  # Use logger instance
+                    f"Illegal state transition: {src} -> {dst} not allowed. Allowed: {src} -> {allowed}"
+                )
+                return True
+
+        return False
 
 class GreyboxFuzzer(AbstractGreyboxFuzzer):
-    def __init__(
-        self,
-        seed: AbstractSeed,
-        power_schedule: AbstractPowerSchedule,
-        mutator: AbstractMutator,
-        is_interesting: IsInteresting,
-        program,
-    ):
+    def __init__(self, seed: AbstractSeed, power_schedule: AbstractPowerSchedule, mutator: AbstractMutator, is_interesting: IsInteresting, program, generate_input_timings=[], run_input_timings=[], interesting_inputs=[]):
         self.seed = seed
         self.power_schedule = power_schedule
         self.mutator = mutator
         self.is_interesting = is_interesting
         self.program = program
         self.bugs = []  # failure queue
+        self.paths = set()
+        self.generate_input_timings = generate_input_timings
+        self.run_input_timings = run_input_timings
+        self.interesting_inputs = interesting_inputs
 
     async def check_program_for_bugs(self, input) -> tuple[bool, int]:
         try:
-            path_id = await self.program(
-                input
-            )  # Ensure the program function is awaited
-            return (False, path_id)
+            path_state = await self.program(input)  # Ensure the program function is awaited
+            return (False, path_state)
         except Exception as error:
             self.bugs.append((input, error))
             print(self.bugs)
             return (True, -1)
 
-        return random.choices([True, False], weights=[0.5, 0.5], k=1)[0]
-
     async def run(self):
         while len(self.seed.queue) > 0:
             t: Input = self.seed.chooseNext()
-
-            self.power_schedule.paths.append_if_not_exist(t.path_id)
+            
+            self.power_schedule.paths.append_if_not_exist(t.path_state)
             sys.stdout.flush()
             print(self.power_schedule.paths)
+            logging.info(self.power_schedule.paths)
             sys.stdout.flush()
 
             e = self.power_schedule.assignEnergy(t)
 
             for i in range(1, e + 1):
+                start = time.time()
                 mutated_value = self.mutator.mutateInput(t.value)
+                self.generate_input_timings.append((start, time.time()))
 
-                is_buggy, path_id = await self.check_program_for_bugs(mutated_value)
+                start = time.time()
+                is_buggy, path_state = await self.check_program_for_bugs(mutated_value)
+                self.run_input_timings.append((start, time.time()))
+
                 if is_buggy:
                     continue
                 sys.stdout.flush()
 
-                t_prime = Input(value=mutated_value, path_id=path_id)
+                t_prime = Input(value=mutated_value, path_state=path_state)
 
                 if self.is_interesting(t_prime):
                     self.seed.queue.append(t_prime)
+                    self.interesting_inputs.append(time.time())
 
+logger = logging.getLogger(__name__)
 
-DEVICE_NAME = "Smart Lock [Group 4]"  # <------ Modify here to match your group. Don't hijack other groups :-)
-# Commands
-AUTH = [0x00]  # 7 Bytes
-OPEN = [0x01]  # 1 Byte
-CLOSE = [0x02]  # 1 Byte
-PASSCODE = [0x01, 0x02, 0x03, 0x04, 0x05, 0x06]  # Correct PASSCODE
-# PASSCODE = [0x01, 0x02, 0x03, 0x04, 0x05, 0x07] # Wrong PASSCODE
+async def run_fuzzer(config, run_output_dir, logs=[], generate_input_timings=[], run_input_timings=[], mutation_mask=(), strategy_mask=(), interesting_inputs=[], crashes=[]):
+    global all_error_codes 
+    all_error_codes = set()
+    unique_errors_file_path = os.path.join(
+        run_output_dir,
+        config.get("unique_errors_file", "unique_errors_smartlock.jsonl"),
+    )
+    # Ensure the unique errors file is empty at the start of the run
+    if os.path.exists(unique_errors_file_path):
+        with open(unique_errors_file_path, "w") as f:
+            pass  # Clear the file
+    try:
+        # Load initial seeds from config
+        initial_seeds_values = config.get("seed_settings", {}).get(
+            "initial_seeds", [[1], [2]]
+        )
+        initial_inputs = [Input(seed_value) for seed_value in initial_seeds_values]
+        seed = Seed(queue=initial_inputs)
 
+        power_schedule = PowerSchedule(config=config)
+        mutator = ByteArrayMutator()
+        is_interesting = IsInteresting(
+            config=config, run_output_dir=run_output_dir
+        )  # Pass config and output dir
 
-async def run_fuzzer():
-    ble = BLEClient()
-    ble.init_logs()  # Collect logs from Smart Lock (Serial Port)
+        while True:
+            try:
+                ble = BLEClient()
+                ble.init_logs()
+                await connect_client_to_smartlock(ble)
 
-    print(f'[1] Connecting to "{DEVICE_NAME}"...')
-    await ble.connect(DEVICE_NAME)
+                async def ble_program(x: list[int]) -> tuple:
+                    global all_error_codes
+                    logger.info("-" * 60)
+                    logger.info(f"\n[>] Sending command: {x}")
+                    print("\n[3] Running random command")
 
-    print("\n[2] Authenticating...")
-    await asyncio.sleep(0.5)
-    res = await ble.write_command(AUTH + PASSCODE)
-    if res[0] != 0:
-        print(f"[X] Failure: Wrong Passcode.")
-        await ble.disconnect()
-        return
-    print("[!] Authenticated!!!")
-    await asyncio.sleep(2)
+                    res = await ble.write_command(x)
+                    logger.info(f"[<] Received response: {res}")
+                    await asyncio.sleep(2)
 
-    async def program(x: list[int]) -> int:  # Make program asyncs
-        print("\n[3] Running random command")
-        # await ble.write_command([1, 2, 3])
-        res = await ble.write_command(x)  # Ensure byte array
-        await asyncio.sleep(2)
+                    # print(f"\n[4] Logs from Smart Lock (Serial Port):\n{'-'*50}")
+                    lines = ble.read_logs()
 
-        print(f"\n[4] Logs from Smart Lock (Serial Port):\n{'-'*50}")
-        lines = ble.read_logs()  # Return a list of all log lines.
-        lines_with_error = [line for line in lines if line.startswith("[Error]")]
-        print("\nError codes:", lines_with_error)
-        sys.stdout.flush()
+                    current_state = []
+                    if lines:
+                        for line in lines:
+                            if line.startswith("[State]"):
+                                logger.info(line)
+                                current_state.append(line)
+                        error_codes = set(
+                            line.replace('[Error] Code: ','') for line in ble.read_logs() if line.startswith("[Error]")
+                        )
+                        new_error_codes = error_codes - all_error_codes
+                        for code in new_error_codes:
+                            crashes.append(time.time())
+                            with open(unique_errors_file_path, "a") as f:
+                                json.dump({"error": code}, f)
+                                f.write("\n")
+                        all_error_codes = error_codes.union(all_error_codes)
 
-        response_code = int(res[0])
-        return response_code
+                        transitions = extract_transitions_as_integers(lines)
+                        logger.info(f"State transitions: {transitions}")
+                    else:
+                        logger.info("No logs received from device.")
 
-    initial_inputs = [Input(OPEN), Input(CLOSE), Input(AUTH), Input(PASSCODE)]
-    seed = Seed(queue=initial_inputs)
-    power_schedule = PowerSchedule()
-    mutator = ByteArrayMutator()
-    is_interesting = IsInteresting()
+                    sys.stdout.flush()
+                    return tuple(current_state)
 
-    fuzzer = GreyboxFuzzer(seed, power_schedule, mutator, is_interesting, program)
-    await fuzzer.run()
+                try:
+                    # Re-instantiate components inside the connection loop
+                    # This might be necessary if BLEClient needs to be re-initialized
+                    # However, passing config and output_dir should be done once outside the loop
+                    # Let's keep the instantiation outside the loop for now and pass necessary info
+                    seed = Seed(queue=initial_inputs) # Re-use the seed queue from outer scope
+                    power_schedule = PowerSchedule(config=config) # Re-use from outer scope
+                    mutator = ByteArrayMutator(mutation_mask, strategy_mask) # Re-use from outer scope
+                    is_interesting = IsInteresting(config=config, run_output_dir=run_output_dir) # Re-use from outer scope
 
-    lines = ble.read_logs()  # Return a list of all log lines.
-    lines_with_error = [line for line in lines if line.startswith("[Error]")]
-    print("All error codes:", lines_with_error)
+                    fuzzer = GreyboxFuzzer(seed, power_schedule, mutator, is_interesting, ble_program, generate_input_timings, run_input_timings, interesting_inputs)
+                    await fuzzer.run()
+                except Exception as ex:
+                    print("\nProgram cannot be run. Exception:", ex)
+                    print(traceback.format_exc())
+                finally:
+                    await ble.disconnect()
+
+                error_codes = list(
+                    set(line for line in ble.read_logs() if line.startswith("[Error]"))
+                )
+                print(error_codes)
+                logger.info(error_codes)  # Use logger instance
+
+            except Exception as ex:
+                print("\nClient cannot be connected. Exception:", ex)
+                await ble.disconnect()
+                print(traceback.format_exc())
+                print("Re-running program in a few seconds.")
+            finally:
+                logs += ble.read_logs()
+                await ble.disconnect()
+
+    except KeyboardInterrupt:
+        print("Stopping fuzzer.")
 
 
 if __name__ == "__main__":
-    while True:
-        try:
-            asyncio.run(run_fuzzer())
-        except KeyboardInterrupt:
-            break
+    # Need to pass config and run_output_dir from fuzzer.py
+    # This part will be called by fuzzer.py, so we don't run it directly here anymore
+    pass
