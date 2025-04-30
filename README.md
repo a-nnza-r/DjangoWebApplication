@@ -47,7 +47,7 @@ The fuzzer will run based on the settings in the specified YAML file. Output (lo
 
 ## Measuring Fuzzer Efficiency
 
-A separate script, `fuzzer/DjangoGreyboxFuzzerEfficiencyMeasure.py`, is provided to measure the time spent on mutation and execution during a fuzzing run. This script is a modified version of the main fuzzer.
+For Django, a separate script, `fuzzer/DjangoGreyboxFuzzerEfficiencyMeasure.py`, is provided to measure the time spent on mutation and execution during a fuzzing run. This script is a modified version of the main fuzzer.
 
 To run the efficiency measurement:
 
@@ -60,6 +60,8 @@ python fuzzer/DjangoGreyboxFuzzerEfficiencyMeasure.py --config fuzzer_config_ful
 ```
 
 The script will execute the fuzzing process and log additional timing information (`mutation_time_ms`, `execution_time_ms`) within the `fuzz_exp.jsonl` file located in the specified output directory (e.g., `efficiency_measure/django/full/efficiency_run_1/`). This data can then be analyzed to understand the fuzzer's performance characteristics.
+
+For Smartlock, please run the .ipynb notebook `evaluation_smartlock.ipynb`.
 
 ## Running Experiments
 
@@ -97,3 +99,4 @@ The script will:
     - Start a separate thread for each configuration file found.
     - Run the specified `--fuzzer-script` with the corresponding `--config` file and a unique `run_id` (e.g., `run_1`, `run_2`).
 3.  Outputs (runner logs, fuzzer logs, unique errors, coverage data) for each run are stored in subdirectories within the `output_base_dir` specified in the respective configuration file (e.g., `evaluation_runs/django/full/run_1/`, `evaluation_runs/django/random/run_1/`, etc.).
+
