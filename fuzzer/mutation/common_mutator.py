@@ -64,10 +64,26 @@ class ByteMutator:
 
 
 class ByteArrayMutator(AbstractMutator):
-    def __init__(self):
+    def __init__(self, mutation_mask=(), strategy_mask=()):
         self.explorer = StateExplorationStrategies()
         self.state_strategies = self.explorer.get_all_strategies()
+        if strategy_mask != ():
+            self.state_strategies = self.state_strategies[:strategy_mask[0]+1] + self.state_strategies[strategy_mask[1]:]
         self.current_strategy_index = 0  # Track where you are in the list
+        self.fs = [
+            self.mutateRandomBytes,
+            self.deleteRandomBytes,
+            self.insertRandomBytes,
+            self.repeat_valid_command,
+            self.valid_command_out_of_order,
+            self.inject_unknown_command,
+            self.weighted_unknown_command,
+            self.sequence_valid_commands,
+            self.rapid_toggle_open_close,
+            self.mutate_command,
+        ]
+        if mutation_mask != ():
+            self.fs = self.fs[:mutation_mask[0]+1] + self.fs[mutation_mask[1]:]
 
     def mutateInput(self, input: list[int]) -> list[int]:
         copy_of_input = copy.deepcopy(input)
@@ -80,19 +96,7 @@ class ByteArrayMutator(AbstractMutator):
             strategy_name = f"explore_state_jump_{self.current_strategy_index - 1}"  # Already incremented
 
         else:
-            fs = [
-                self.mutateRandomBytes,
-                self.deleteRandomBytes,
-                self.insertRandomBytes,
-                self.repeat_valid_command,
-                self.valid_command_out_of_order,
-                self.inject_unknown_command,
-                self.weighted_unknown_command,
-                self.sequence_valid_commands,
-                self.rapid_toggle_open_close,
-                self.mutate_command,
-            ]
-            mutation_operator = random.choice(fs)
+            mutation_operator = random.choice(self.fs)
             mutated = mutation_operator(copy_of_input)
             strategy_name = mutation_operator.__name__
 
