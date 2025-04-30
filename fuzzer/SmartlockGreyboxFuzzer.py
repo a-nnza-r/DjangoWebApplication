@@ -1,4 +1,6 @@
 from collections import deque
+import json
+import os
 import random
 import sys
 import time
@@ -31,7 +33,7 @@ logging.basicConfig(
 )
 
 
-class Input:
+class Input():
     def __init__(self, value: list[int], path_state: tuple = ()):
         self.value: list[int] = value
         self.path_state: int = path_state
@@ -42,14 +44,14 @@ class Path:
         self.state: tuple = state
         self.f: int = 1
         self.s: int = 0
-        self.e: int = PowerSchedule.e0
+        self.e: int = 1
 
     def update(self):
         self.s = self.s + 1
         self.f = self.f + self.e
 
 
-class Paths:  # sort of like a graph
+class Paths: # sort of like a graph
     def __init__(self):
         self.paths = {}
 
@@ -62,15 +64,10 @@ class Paths:  # sort of like a graph
 
     def get_mean_f(self) -> int:
         return int(sum([path.f for path in self.paths.values()]) / len(self.paths))
-
+    
     def __str__(self):
-        s = f"\n[Paths] {len(self.paths)} discovered."
-        s += "".join(
-            [
-                f" (Path={state}) s={path.s}, f={path.f}."
-                for (state, path) in sorted(self.paths.items())
-            ]
-        )
+        s = f'\n[Paths] {len(self.paths)} discovered.'
+        s += ''.join([f" (Path={state}) s={path.s}, f={path.f}." for (state, path) in sorted(self.paths.items())])
         return s
 
 
@@ -81,10 +78,9 @@ class Seed(AbstractSeed):
     def chooseNext(self) -> Input:
         return self.queue.popleft()
 
-
 class PowerSchedule(AbstractPowerSchedule):
     def __init__(self, config):
-        self.paths = Paths()  # 1 response code = 1 path
+        self.paths = Paths() # 1 response code = 1 path
         self.energy_const = config.get("power_schedule_settings", {}).get(
             "energy_const", 1
         )
@@ -96,31 +92,17 @@ class PowerSchedule(AbstractPowerSchedule):
         path = self.paths.get_path(t.path_state)
         path.update()
         if path.f <= self.paths.get_mean_f():
-            path.e = min(int(self.energy_const * (2**path.s)), self.max_energy)
+            path.e = min(int(self.energy_const * (2 ** path.s)), self.max_energy)
         else:
             path.e = 0
         return path.e
 
-
-import json  # Import json for logging unique errors
-import os  # Import os for path joining
-
-
 class IsInteresting(AbstractIsInteresting):
     def __init__(self, config, run_output_dir):
         self.seen_path_states = set()
-        self.seen_errors = set()
         self.illegal_transitions = set()
         self.config = config
         self.run_output_dir = run_output_dir
-        self.unique_errors_file_path = os.path.join(
-            self.run_output_dir,
-            self.config.get("unique_errors_file", "unique_errors_smartlock.jsonl"),
-        )
-        # Ensure the unique errors file is empty at the start of the run
-        if os.path.exists(self.unique_errors_file_path):
-            with open(self.unique_errors_file_path, "w") as f:
-                pass  # Clear the file
 
     def __call__(self, input: Input) -> bool:
         # Check for new path discovery
@@ -131,24 +113,6 @@ class IsInteresting(AbstractIsInteresting):
                 f"Is interesting: New path discovered: {input.path_state}"
             )  # Use logger instance
             return True
-
-        # Check for error discovery (from logs)
-        logs = input.path_state
-        for log in logs:
-            if "[Error]" in log:
-                if log not in self.seen_errors:
-                    self.seen_errors.add(log)
-                    logger.info(
-                        f"Is interesting: New error discovered: {log}"
-                    )  # Use logger instance
-                    # Log the unique error to file
-                    try:
-                        with open(self.unique_errors_file_path, "a") as f:
-                            json.dump({"error": log, "input": input.value}, f)
-                            f.write("\n")
-                    except Exception as e:
-                        logger.error(f"Error writing unique error to file: {e}")
-                    return False  # might not want to keep exploring the same error
 
         # Check for illegal state transitions
         transitions = extract_transitions_as_integers(input.path_state)
@@ -161,20 +125,9 @@ class IsInteresting(AbstractIsInteresting):
                 logger.info(  # Use logger instance
                     f"Illegal state transition: {src} -> {dst} not allowed. Allowed: {src} -> {allowed}"
                 )
-                # Log the illegal transition as a unique error
-                error_msg = f"Illegal state transition: {src} -> {dst} not allowed. Allowed: {src} -> {allowed}"
-                if error_msg not in self.seen_errors:
-                    self.seen_errors.add(error_msg)
-                    try:
-                        with open(self.unique_errors_file_path, "a") as f:
-                            json.dump({"error": error_msg, "input": input.value}, f)
-                            f.write("\n")
-                    except Exception as e:
-                        logger.error(f"Error writing unique error to file: {e}")
                 return True
 
         return False
-
 
 class GreyboxFuzzer(AbstractGreyboxFuzzer):
     def __init__(self, seed: AbstractSeed, power_schedule: AbstractPowerSchedule, mutator: AbstractMutator, is_interesting: IsInteresting, program, generate_input_timings=[], run_input_timings=[], interesting_inputs=[]):
@@ -191,9 +144,7 @@ class GreyboxFuzzer(AbstractGreyboxFuzzer):
 
     async def check_program_for_bugs(self, input) -> tuple[bool, int]:
         try:
-            path_state = await self.program(
-                input
-            )  # Ensure the program function is awaited
+            path_state = await self.program(input)  # Ensure the program function is awaited
             return (False, path_state)
         except Exception as error:
             self.bugs.append((input, error))
@@ -203,7 +154,7 @@ class GreyboxFuzzer(AbstractGreyboxFuzzer):
     async def run(self):
         while len(self.seed.queue) > 0:
             t: Input = self.seed.chooseNext()
-
+            
             self.power_schedule.paths.append_if_not_exist(t.path_state)
             sys.stdout.flush()
             print(self.power_schedule.paths)
@@ -236,6 +187,14 @@ logger = logging.getLogger(__name__)
 async def run_fuzzer(config, run_output_dir, logs=[], generate_input_timings=[], run_input_timings=[], mutation_mask=(), strategy_mask=(), interesting_inputs=[], crashes=[]):
     global all_error_codes 
     all_error_codes = set()
+    unique_errors_file_path = os.path.join(
+        run_output_dir,
+        config.get("unique_errors_file", "unique_errors_smartlock.jsonl"),
+    )
+    # Ensure the unique errors file is empty at the start of the run
+    if os.path.exists(unique_errors_file_path):
+        with open(unique_errors_file_path, "w") as f:
+            pass  # Clear the file
     try:
         # Load initial seeds from config
         initial_seeds_values = config.get("seed_settings", {}).get(
@@ -278,8 +237,12 @@ async def run_fuzzer(config, run_output_dir, logs=[], generate_input_timings=[],
                         error_codes = set(
                             line.replace('[Error] Code: ','') for line in ble.read_logs() if line.startswith("[Error]")
                         )
-                        for i in range(len(error_codes - all_error_codes)):
+                        new_error_codes = error_codes - all_error_codes
+                        for code in new_error_codes:
                             crashes.append(time.time())
+                            with open(unique_errors_file_path, "a") as f:
+                                json.dump({"error": code}, f)
+                                f.write("\n")
                         all_error_codes = error_codes.union(all_error_codes)
 
                         transitions = extract_transitions_as_integers(lines)

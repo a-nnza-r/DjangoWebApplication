@@ -1,0 +1,233 @@
+2025-04-30 20:18:18,711 - INFO - Configured report logger to: evaluation_runs/smartlock/default/run_0\smartlock_report.log
+2025-04-30 20:18:18,711 - INFO - Configured Smartlock fuzzer logger to: evaluation_runs/smartlock/default/run_0\smartlock_fuzzer.log
+2025-04-30 20:18:18,711 - INFO - Configured unique errors logger to: evaluation_runs/smartlock/default/run_0\unique_errors_smartlock.jsonl
+2025-04-30 20:18:18,711 - INFO - Starting Smartlock fuzzer for run_id: run_0
+2025-04-30 20:18:18,727 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-30 20:18:19,750 - INFO - [2] Authenticating...
+2025-04-30 20:18:21,759 - INFO - Sent AUTH+PASSCODE: [0, 1, 2, 3, 4, 5, 6]
+2025-04-30 20:18:21,759 - INFO - Received response: [0]
+2025-04-30 20:18:21,759 - INFO - [!] Authenticated!!!
+2025-04-30 20:18:25,759 - INFO - 
+[Paths] 1 discovered. (Path=()) s=0, f=1.
+2025-04-30 20:18:25,759 - INFO - Mutation strategy for next input: inject_unknown_command | Original: [1] | Mutated: [222, 1]
+2025-04-30 20:18:25,759 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:25,759 - INFO - 
+[>] Sending command: [222, 1]
+2025-04-30 20:18:25,924 - INFO - [<] Received response: [2]
+2025-04-30 20:18:27,926 - INFO - [State] Device state: Authenticated
+2025-04-30 20:18:27,927 - INFO - State transitions: []
+2025-04-30 20:18:27,927 - INFO - Is interesting: New path discovered: ('[State] Device state: Authenticated',)
+2025-04-30 20:18:27,927 - INFO - State exploration strategy: open_without_auth | Sequence: [1]
+2025-04-30 20:18:27,927 - INFO - Mutation strategy for next input: explore_state_jump_0 | Original: [1] | Mutated: [1]
+2025-04-30 20:18:27,927 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:27,927 - INFO - 
+[>] Sending command: [1]
+2025-04-30 20:18:28,089 - INFO - [<] Received response: [0]
+2025-04-30 20:18:30,088 - INFO - [State] Device state: Authenticated
+2025-04-30 20:18:30,088 - INFO - [State] Opening the lock mechanism
+2025-04-30 20:18:30,089 - INFO - [State] Lock mechanism open
+2025-04-30 20:18:30,089 - INFO - State transitions: [(2, 3), (3, 4)]
+2025-04-30 20:18:30,089 - INFO - Is interesting: New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')
+2025-04-30 20:18:30,089 - INFO - 
+[Paths] 1 discovered. (Path=()) s=1, f=2.
+2025-04-30 20:18:30,089 - INFO - State exploration strategy: close_without_auth | Sequence: [2]
+2025-04-30 20:18:30,089 - INFO - Mutation strategy for next input: explore_state_jump_1 | Original: [2] | Mutated: [2]
+2025-04-30 20:18:30,089 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:30,089 - INFO - 
+[>] Sending command: [2]
+2025-04-30 20:18:30,208 - INFO - [<] Received response: [0]
+2025-04-30 20:18:32,221 - INFO - [State] Device state: Authenticated
+2025-04-30 20:18:32,221 - INFO - [State] Opening the lock mechanism
+2025-04-30 20:18:32,221 - INFO - [State] Lock mechanism open
+2025-04-30 20:18:32,221 - INFO - [State] Closing the lock mechanism
+2025-04-30 20:18:32,221 - INFO - [State] Lock mechanism closed
+2025-04-30 20:18:32,221 - INFO - State transitions: [(2, 3), (3, 4), (4, 5), (5, 6)]
+2025-04-30 20:18:32,221 - INFO - Is interesting: New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')
+2025-04-30 20:18:32,221 - INFO - State exploration strategy: partial_auth | Sequence: [0, 241, 5, 149]
+2025-04-30 20:18:32,221 - INFO - Mutation strategy for next input: explore_state_jump_2 | Original: [2] | Mutated: [0, 241, 5, 149]
+2025-04-30 20:18:32,221 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:32,221 - INFO - 
+[>] Sending command: [0, 241, 5, 149]
+2025-04-30 20:18:33,498 - INFO - State exploration strategy: spam_auth | Sequence: [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6]
+2025-04-30 20:18:33,498 - INFO - Mutation strategy for next input: explore_state_jump_3 | Original: [2] | Mutated: [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6]
+2025-04-30 20:18:33,498 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:33,498 - INFO - 
+[>] Sending command: [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6]
+2025-04-30 20:18:33,498 - INFO - State exploration strategy: spam_open_without_close | Sequence: [0, 1, 2, 3, 4, 5, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+2025-04-30 20:18:33,498 - INFO - Mutation strategy for next input: explore_state_jump_4 | Original: [2] | Mutated: [0, 1, 2, 3, 4, 5, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+2025-04-30 20:18:33,498 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:33,498 - INFO - 
+[>] Sending command: [0, 1, 2, 3, 4, 5, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+2025-04-30 20:18:33,498 - INFO - 
+[Paths] 2 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated',)) s=0, f=1.
+2025-04-30 20:18:33,498 - INFO - State exploration strategy: auth_open_unknown_close | Sequence: [0, 1, 2, 3, 4, 5, 6, 1, 196, 2]
+2025-04-30 20:18:33,498 - INFO - Mutation strategy for next input: explore_state_jump_5 | Original: [222, 1] | Mutated: [0, 1, 2, 3, 4, 5, 6, 1, 196, 2]
+2025-04-30 20:18:33,498 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:33,498 - INFO - 
+[>] Sending command: [0, 1, 2, 3, 4, 5, 6, 1, 196, 2]
+2025-04-30 20:18:33,498 - INFO - State exploration strategy: repeated_toggle | Sequence: [0, 1, 2, 3, 4, 5, 6, 2, 2, 1, 2, 2, 2, 1, 1, 1]
+2025-04-30 20:18:33,498 - INFO - Mutation strategy for next input: explore_state_jump_6 | Original: [222, 1] | Mutated: [0, 1, 2, 3, 4, 5, 6, 2, 2, 1, 2, 2, 2, 1, 1, 1]
+2025-04-30 20:18:33,498 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:33,498 - INFO - 
+[>] Sending command: [0, 1, 2, 3, 4, 5, 6, 2, 2, 1, 2, 2, 2, 1, 1, 1]
+2025-04-30 20:18:33,498 - INFO - 
+[Paths] 3 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated',)) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=0, f=1.
+2025-04-30 20:18:33,498 - INFO - Mutation strategy for next input: valid_command_out_of_order | Original: [1] | Mutated: [0, 2, 1, 2, 3, 4, 5, 6, 1]
+2025-04-30 20:18:33,498 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:33,498 - INFO - 
+[>] Sending command: [0, 2, 1, 2, 3, 4, 5, 6, 1]
+2025-04-30 20:18:33,498 - INFO - Mutation strategy for next input: repeat_valid_command | Original: [1] | Mutated: [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]
+2025-04-30 20:18:33,498 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:33,498 - INFO - 
+[>] Sending command: [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]
+2025-04-30 20:18:33,509 - INFO - 
+[Paths] 4 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated',)) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=0, f=1.
+2025-04-30 20:18:33,509 - INFO - State exploration strategy: unknown_before_auth | Sequence: [196, 0, 1, 2, 3, 4, 5, 6]
+2025-04-30 20:18:33,509 - INFO - Mutation strategy for next input: explore_state_jump_7 | Original: [2] | Mutated: [196, 0, 1, 2, 3, 4, 5, 6]
+2025-04-30 20:18:33,509 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:33,509 - INFO - 
+[>] Sending command: [196, 0, 1, 2, 3, 4, 5, 6]
+2025-04-30 20:18:33,511 - INFO - State exploration strategy: oversized_payload | Sequence: [20, 85, 105, 250, 252, 77, 72, 43, 52, 80, 245, 186, 44, 227, 4, 155, 9, 63, 58, 150, 124, 118, 167, 23, 42, 240, 200, 113, 12, 77, 129, 44, 80, 225, 199, 12, 138, 192, 201, 221, 155, 127, 95, 197, 176, 47, 147, 145, 241, 214, 62, 198, 156, 175, 163, 85, 6, 238, 20, 213, 180, 148, 2, 140, 205, 211, 209, 169, 137, 229, 144, 246, 136, 254, 100, 206, 187, 126, 200, 18, 235, 239, 107, 18, 122, 235, 215, 138, 136, 177, 78, 82, 58, 100, 160, 26, 118, 244, 67, 215, 87, 13, 25, 38, 245, 183, 79, 175, 209, 236, 102, 121, 251, 185, 119, 53, 13, 42, 173, 66, 70, 19, 91, 178, 235, 204, 110, 41, 197, 188, 141, 165, 215, 249, 18, 83, 170, 137, 197, 77, 76, 76, 144, 128, 223, 164, 159, 239, 28, 240, 19, 55, 35, 178, 146, 202, 58, 1, 90, 176, 7, 171, 206, 119, 208, 214, 166, 193, 140, 247, 170, 203, 183, 209, 205, 244, 123, 209, 40, 47, 41, 99, 177, 241, 52, 16, 30, 86, 95, 87, 25, 77, 213, 173, 153, 219, 179, 244, 234, 46, 48, 45, 139, 154, 160, 75, 151, 186, 97, 91, 85, 16, 57, 15, 114, 31, 161, 122, 230, 54, 64, 4, 240, 40, 120, 93, 164, 224, 100, 88, 76, 143, 160, 5, 115, 225, 195, 96, 26, 232, 86, 11, 140, 154, 166, 157, 135, 55, 38, 253, 205, 96, 250, 91, 199, 129, 4, 5, 66, 248, 1, 246, 87, 78, 42, 40, 22, 111, 4, 180, 81, 198, 129, 235, 126, 213, 225, 254, 227, 65, 162, 232, 248, 150, 56, 253, 65, 189, 194, 45, 4, 204, 183, 196, 106, 179, 176, 244, 134, 204, 249, 95, 105, 48, 22, 133, 84, 24, 81, 158, 121, 19, 5, 108, 254, 237, 210, 241, 172, 175, 70, 73, 121, 64, 225, 218, 227, 193, 2, 233, 224, 6, 242, 78, 81, 51, 2, 96, 180, 225, 69, 75, 84, 178, 205, 60, 12, 86, 104, 98, 234, 138, 100, 218, 102, 102, 0, 27, 124, 101, 228, 62, 168, 77, 136, 42, 118, 43, 111, 183, 21, 154, 204, 254, 220, 181, 66, 45, 73, 76, 14, 5, 158, 89, 244, 95, 253, 212, 17, 67, 238, 22, 146, 92, 179, 213, 102, 168, 78, 142, 136, 185, 2, 204, 236, 14, 218, 161, 224, 188, 103, 204, 37, 254, 42, 140, 109, 231, 53, 76, 246, 195, 4, 72, 71, 65, 107, 187, 93, 235, 248, 190, 184, 108, 167, 86, 229, 24, 77, 237, 67, 181, 160, 183, 225, 118, 5, 22, 194, 73, 98, 9, 176, 146, 168, 24, 183, 224, 52, 56, 250, 172, 17, 90, 104, 221, 113, 136, 168, 134, 106, 143, 74, 221, 78, 119, 136, 28, 16, 48, 149, 67, 171, 8, 192, 228, 126, 244, 161, 188, 80, 23, 236, 85, 253, 108, 148, 26, 30, 178, 185, 129, 59, 177, 7, 210, 76, 81, 120, 104, 137, 222, 75, 235, 61, 224, 244, 171, 117, 130, 123, 25, 242, 210, 6, 79, 109, 155, 119, 205, 206, 168, 44, 137, 232, 60, 140, 230, 24, 205, 50, 90, 239, 24, 74, 249, 224, 231, 193, 208, 181, 100, 251, 59, 12, 67, 27, 250, 27, 107, 110, 54, 178, 245, 143, 191, 20, 114, 39, 64, 251, 30, 137, 7, 127, 204, 57, 81, 53, 85, 145, 125, 117, 194, 145, 75, 181, 1, 228, 148, 105, 75, 89, 96, 60, 65, 251, 115, 36, 212, 184, 221, 44, 19, 72, 210, 20, 79, 22, 133, 196, 143, 10, 3, 86, 41, 148, 129, 58, 170, 52, 36, 232, 210, 219, 33, 3, 39, 176, 194, 214, 237, 232, 145, 37, 148, 43, 57, 90, 61, 99, 128, 231, 234, 68, 164, 60, 48, 197, 84, 132, 159, 116, 10, 60, 53, 254, 132, 98, 127, 0, 74, 77, 113, 207, 18, 43, 0, 162, 79, 59, 93, 189, 72, 180, 251, 3, 22, 198, 235, 111, 202, 160, 61, 167, 133, 21, 92, 240, 52, 47, 152, 124, 67, 251, 2, 27, 50, 19, 39, 61, 16, 77, 141, 229, 229, 106, 77, 32, 66, 176, 189, 152, 38, 149, 78, 22, 18, 104, 238, 21, 77, 139, 168, 128, 220, 78, 115, 159, 231, 12, 137, 58, 250, 131, 217, 147, 199, 214, 31, 152, 244, 182, 200, 239, 38, 86, 142, 96, 139, 9, 189, 242, 108, 158, 183, 143, 143, 234, 77, 186, 161, 238, 188, 214, 33, 219, 229, 117, 59, 207, 140, 215, 250, 209, 42, 189, 67, 115, 119, 222, 225, 172, 62, 64, 86, 247, 144, 139, 14, 195, 110, 214, 129, 221, 232, 209, 133, 180, 62, 140, 213, 199, 1, 173, 70, 66, 239, 120, 161, 111, 156, 251, 74, 65, 34, 122, 87, 115, 208, 80, 141, 80, 95, 160, 75, 103, 159, 80, 212, 125, 9, 131, 122, 39, 195, 78, 98, 210, 241, 90, 208, 248, 103, 0, 198, 188, 206, 164, 111, 29, 240, 33, 61, 209, 180, 24, 1, 250, 72, 245, 51, 171, 86, 39, 17, 134, 17, 145, 99, 214, 162, 78, 176, 90, 23, 161, 108, 173, 169, 39, 220, 47, 193, 125, 24, 247, 32, 57, 203, 191, 178, 150, 126, 190, 210, 38, 97, 58, 164, 98, 154, 42, 81, 163, 243, 41, 9, 7, 196, 22, 213, 27, 159, 230, 5, 135, 213, 114, 102, 61, 120, 228, 213, 104, 169, 244, 103, 171, 88, 35, 211, 65, 182, 172, 231, 174, 203, 216, 15, 51, 55, 85, 45, 58, 148, 65, 243, 15, 238, 209, 53, 56, 126, 47, 243, 157, 6, 0, 215, 25, 200, 138, 234, 47, 90, 7, 80, 221, 90, 110, 168, 44, 38, 131, 51, 179, 28, 135, 199, 180, 13, 61, 199, 32, 210, 106, 83, 66, 201, 10, 252, 13, 23, 180, 167, 126, 131, 215, 95]
+2025-04-30 20:18:33,512 - INFO - Mutation strategy for next input: explore_state_jump_8 | Original: [2] | Mutated: [20, 85, 105, 250, 252, 77, 72, 43, 52, 80, 245, 186, 44, 227, 4, 155, 9, 63, 58, 150, 124, 118, 167, 23, 42, 240, 200, 113, 12, 77, 129, 44, 80, 225, 199, 12, 138, 192, 201, 221, 155, 127, 95, 197, 176, 47, 147, 145, 241, 214, 62, 198, 156, 175, 163, 85, 6, 238, 20, 213, 180, 148, 2, 140, 205, 211, 209, 169, 137, 229, 144, 246, 136, 254, 100, 206, 187, 126, 200, 18, 235, 239, 107, 18, 122, 235, 215, 138, 136, 177, 78, 82, 58, 100, 160, 26, 118, 244, 67, 215, 87, 13, 25, 38, 245, 183, 79, 175, 209, 236, 102, 121, 251, 185, 119, 53, 13, 42, 173, 66, 70, 19, 91, 178, 235, 204, 110, 41, 197, 188, 141, 165, 215, 249, 18, 83, 170, 137, 197, 77, 76, 76, 144, 128, 223, 164, 159, 239, 28, 240, 19, 55, 35, 178, 146, 202, 58, 1, 90, 176, 7, 171, 206, 119, 208, 214, 166, 193, 140, 247, 170, 203, 183, 209, 205, 244, 123, 209, 40, 47, 41, 99, 177, 241, 52, 16, 30, 86, 95, 87, 25, 77, 213, 173, 153, 219, 179, 244, 234, 46, 48, 45, 139, 154, 160, 75, 151, 186, 97, 91, 85, 16, 57, 15, 114, 31, 161, 122, 230, 54, 64, 4, 240, 40, 120, 93, 164, 224, 100, 88, 76, 143, 160, 5, 115, 225, 195, 96, 26, 232, 86, 11, 140, 154, 166, 157, 135, 55, 38, 253, 205, 96, 250, 91, 199, 129, 4, 5, 66, 248, 1, 246, 87, 78, 42, 40, 22, 111, 4, 180, 81, 198, 129, 235, 126, 213, 225, 254, 227, 65, 162, 232, 248, 150, 56, 253, 65, 189, 194, 45, 4, 204, 183, 196, 106, 179, 176, 244, 134, 204, 249, 95, 105, 48, 22, 133, 84, 24, 81, 158, 121, 19, 5, 108, 254, 237, 210, 241, 172, 175, 70, 73, 121, 64, 225, 218, 227, 193, 2, 233, 224, 6, 242, 78, 81, 51, 2, 96, 180, 225, 69, 75, 84, 178, 205, 60, 12, 86, 104, 98, 234, 138, 100, 218, 102, 102, 0, 27, 124, 101, 228, 62, 168, 77, 136, 42, 118, 43, 111, 183, 21, 154, 204, 254, 220, 181, 66, 45, 73, 76, 14, 5, 158, 89, 244, 95, 253, 212, 17, 67, 238, 22, 146, 92, 179, 213, 102, 168, 78, 142, 136, 185, 2, 204, 236, 14, 218, 161, 224, 188, 103, 204, 37, 254, 42, 140, 109, 231, 53, 76, 246, 195, 4, 72, 71, 65, 107, 187, 93, 235, 248, 190, 184, 108, 167, 86, 229, 24, 77, 237, 67, 181, 160, 183, 225, 118, 5, 22, 194, 73, 98, 9, 176, 146, 168, 24, 183, 224, 52, 56, 250, 172, 17, 90, 104, 221, 113, 136, 168, 134, 106, 143, 74, 221, 78, 119, 136, 28, 16, 48, 149, 67, 171, 8, 192, 228, 126, 244, 161, 188, 80, 23, 236, 85, 253, 108, 148, 26, 30, 178, 185, 129, 59, 177, 7, 210, 76, 81, 120, 104, 137, 222, 75, 235, 61, 224, 244, 171, 117, 130, 123, 25, 242, 210, 6, 79, 109, 155, 119, 205, 206, 168, 44, 137, 232, 60, 140, 230, 24, 205, 50, 90, 239, 24, 74, 249, 224, 231, 193, 208, 181, 100, 251, 59, 12, 67, 27, 250, 27, 107, 110, 54, 178, 245, 143, 191, 20, 114, 39, 64, 251, 30, 137, 7, 127, 204, 57, 81, 53, 85, 145, 125, 117, 194, 145, 75, 181, 1, 228, 148, 105, 75, 89, 96, 60, 65, 251, 115, 36, 212, 184, 221, 44, 19, 72, 210, 20, 79, 22, 133, 196, 143, 10, 3, 86, 41, 148, 129, 58, 170, 52, 36, 232, 210, 219, 33, 3, 39, 176, 194, 214, 237, 232, 145, 37, 148, 43, 57, 90, 61, 99, 128, 231, 234, 68, 164, 60, 48, 197, 84, 132, 159, 116, 10, 60, 53, 254, 132, 98, 127, 0, 74, 77, 113, 207, 18, 43, 0, 162, 79, 59, 93, 189, 72, 180, 251, 3, 22, 198, 235, 111, 202, 160, 61, 167, 133, 21, 92, 240, 52, 47, 152, 124, 67, 251, 2, 27, 50, 19, 39, 61, 16, 77, 141, 229, 229, 106, 77, 32, 66, 176, 189, 152, 38, 149, 78, 22, 18, 104, 238, 21, 77, 139, 168, 128, 220, 78, 115, 159, 231, 12, 137, 58, 250, 131, 217, 147, 199, 214, 31, 152, 244, 182, 200, 239, 38, 86, 142, 96, 139, 9, 189, 242, 108, 158, 183, 143, 143, 234, 77, 186, 161, 238, 188, 214, 33, 219, 229, 117, 59, 207, 140, 215, 250, 209, 42, 189, 67, 115, 119, 222, 225, 172, 62, 64, 86, 247, 144, 139, 14, 195, 110, 214, 129, 221, 232, 209, 133, 180, 62, 140, 213, 199, 1, 173, 70, 66, 239, 120, 161, 111, 156, 251, 74, 65, 34, 122, 87, 115, 208, 80, 141, 80, 95, 160, 75, 103, 159, 80, 212, 125, 9, 131, 122, 39, 195, 78, 98, 210, 241, 90, 208, 248, 103, 0, 198, 188, 206, 164, 111, 29, 240, 33, 61, 209, 180, 24, 1, 250, 72, 245, 51, 171, 86, 39, 17, 134, 17, 145, 99, 214, 162, 78, 176, 90, 23, 161, 108, 173, 169, 39, 220, 47, 193, 125, 24, 247, 32, 57, 203, 191, 178, 150, 126, 190, 210, 38, 97, 58, 164, 98, 154, 42, 81, 163, 243, 41, 9, 7, 196, 22, 213, 27, 159, 230, 5, 135, 213, 114, 102, 61, 120, 228, 213, 104, 169, 244, 103, 171, 88, 35, 211, 65, 182, 172, 231, 174, 203, 216, 15, 51, 55, 85, 45, 58, 148, 65, 243, 15, 238, 209, 53, 56, 126, 47, 243, 157, 6, 0, 215, 25, 200, 138, 234, 47, 90, 7, 80, 221, 90, 110, 168, 44, 38, 131, 51, 179, 28, 135, 199, 180, 13, 61, 199, 32, 210, 106, 83, 66, 201, 10, 252, 13, 23, 180, 167, 126, 131, 215, 95]
+2025-04-30 20:18:33,512 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:33,512 - INFO - 
+[>] Sending command: [20, 85, 105, 250, 252, 77, 72, 43, 52, 80, 245, 186, 44, 227, 4, 155, 9, 63, 58, 150, 124, 118, 167, 23, 42, 240, 200, 113, 12, 77, 129, 44, 80, 225, 199, 12, 138, 192, 201, 221, 155, 127, 95, 197, 176, 47, 147, 145, 241, 214, 62, 198, 156, 175, 163, 85, 6, 238, 20, 213, 180, 148, 2, 140, 205, 211, 209, 169, 137, 229, 144, 246, 136, 254, 100, 206, 187, 126, 200, 18, 235, 239, 107, 18, 122, 235, 215, 138, 136, 177, 78, 82, 58, 100, 160, 26, 118, 244, 67, 215, 87, 13, 25, 38, 245, 183, 79, 175, 209, 236, 102, 121, 251, 185, 119, 53, 13, 42, 173, 66, 70, 19, 91, 178, 235, 204, 110, 41, 197, 188, 141, 165, 215, 249, 18, 83, 170, 137, 197, 77, 76, 76, 144, 128, 223, 164, 159, 239, 28, 240, 19, 55, 35, 178, 146, 202, 58, 1, 90, 176, 7, 171, 206, 119, 208, 214, 166, 193, 140, 247, 170, 203, 183, 209, 205, 244, 123, 209, 40, 47, 41, 99, 177, 241, 52, 16, 30, 86, 95, 87, 25, 77, 213, 173, 153, 219, 179, 244, 234, 46, 48, 45, 139, 154, 160, 75, 151, 186, 97, 91, 85, 16, 57, 15, 114, 31, 161, 122, 230, 54, 64, 4, 240, 40, 120, 93, 164, 224, 100, 88, 76, 143, 160, 5, 115, 225, 195, 96, 26, 232, 86, 11, 140, 154, 166, 157, 135, 55, 38, 253, 205, 96, 250, 91, 199, 129, 4, 5, 66, 248, 1, 246, 87, 78, 42, 40, 22, 111, 4, 180, 81, 198, 129, 235, 126, 213, 225, 254, 227, 65, 162, 232, 248, 150, 56, 253, 65, 189, 194, 45, 4, 204, 183, 196, 106, 179, 176, 244, 134, 204, 249, 95, 105, 48, 22, 133, 84, 24, 81, 158, 121, 19, 5, 108, 254, 237, 210, 241, 172, 175, 70, 73, 121, 64, 225, 218, 227, 193, 2, 233, 224, 6, 242, 78, 81, 51, 2, 96, 180, 225, 69, 75, 84, 178, 205, 60, 12, 86, 104, 98, 234, 138, 100, 218, 102, 102, 0, 27, 124, 101, 228, 62, 168, 77, 136, 42, 118, 43, 111, 183, 21, 154, 204, 254, 220, 181, 66, 45, 73, 76, 14, 5, 158, 89, 244, 95, 253, 212, 17, 67, 238, 22, 146, 92, 179, 213, 102, 168, 78, 142, 136, 185, 2, 204, 236, 14, 218, 161, 224, 188, 103, 204, 37, 254, 42, 140, 109, 231, 53, 76, 246, 195, 4, 72, 71, 65, 107, 187, 93, 235, 248, 190, 184, 108, 167, 86, 229, 24, 77, 237, 67, 181, 160, 183, 225, 118, 5, 22, 194, 73, 98, 9, 176, 146, 168, 24, 183, 224, 52, 56, 250, 172, 17, 90, 104, 221, 113, 136, 168, 134, 106, 143, 74, 221, 78, 119, 136, 28, 16, 48, 149, 67, 171, 8, 192, 228, 126, 244, 161, 188, 80, 23, 236, 85, 253, 108, 148, 26, 30, 178, 185, 129, 59, 177, 7, 210, 76, 81, 120, 104, 137, 222, 75, 235, 61, 224, 244, 171, 117, 130, 123, 25, 242, 210, 6, 79, 109, 155, 119, 205, 206, 168, 44, 137, 232, 60, 140, 230, 24, 205, 50, 90, 239, 24, 74, 249, 224, 231, 193, 208, 181, 100, 251, 59, 12, 67, 27, 250, 27, 107, 110, 54, 178, 245, 143, 191, 20, 114, 39, 64, 251, 30, 137, 7, 127, 204, 57, 81, 53, 85, 145, 125, 117, 194, 145, 75, 181, 1, 228, 148, 105, 75, 89, 96, 60, 65, 251, 115, 36, 212, 184, 221, 44, 19, 72, 210, 20, 79, 22, 133, 196, 143, 10, 3, 86, 41, 148, 129, 58, 170, 52, 36, 232, 210, 219, 33, 3, 39, 176, 194, 214, 237, 232, 145, 37, 148, 43, 57, 90, 61, 99, 128, 231, 234, 68, 164, 60, 48, 197, 84, 132, 159, 116, 10, 60, 53, 254, 132, 98, 127, 0, 74, 77, 113, 207, 18, 43, 0, 162, 79, 59, 93, 189, 72, 180, 251, 3, 22, 198, 235, 111, 202, 160, 61, 167, 133, 21, 92, 240, 52, 47, 152, 124, 67, 251, 2, 27, 50, 19, 39, 61, 16, 77, 141, 229, 229, 106, 77, 32, 66, 176, 189, 152, 38, 149, 78, 22, 18, 104, 238, 21, 77, 139, 168, 128, 220, 78, 115, 159, 231, 12, 137, 58, 250, 131, 217, 147, 199, 214, 31, 152, 244, 182, 200, 239, 38, 86, 142, 96, 139, 9, 189, 242, 108, 158, 183, 143, 143, 234, 77, 186, 161, 238, 188, 214, 33, 219, 229, 117, 59, 207, 140, 215, 250, 209, 42, 189, 67, 115, 119, 222, 225, 172, 62, 64, 86, 247, 144, 139, 14, 195, 110, 214, 129, 221, 232, 209, 133, 180, 62, 140, 213, 199, 1, 173, 70, 66, 239, 120, 161, 111, 156, 251, 74, 65, 34, 122, 87, 115, 208, 80, 141, 80, 95, 160, 75, 103, 159, 80, 212, 125, 9, 131, 122, 39, 195, 78, 98, 210, 241, 90, 208, 248, 103, 0, 198, 188, 206, 164, 111, 29, 240, 33, 61, 209, 180, 24, 1, 250, 72, 245, 51, 171, 86, 39, 17, 134, 17, 145, 99, 214, 162, 78, 176, 90, 23, 161, 108, 173, 169, 39, 220, 47, 193, 125, 24, 247, 32, 57, 203, 191, 178, 150, 126, 190, 210, 38, 97, 58, 164, 98, 154, 42, 81, 163, 243, 41, 9, 7, 196, 22, 213, 27, 159, 230, 5, 135, 213, 114, 102, 61, 120, 228, 213, 104, 169, 244, 103, 171, 88, 35, 211, 65, 182, 172, 231, 174, 203, 216, 15, 51, 55, 85, 45, 58, 148, 65, 243, 15, 238, 209, 53, 56, 126, 47, 243, 157, 6, 0, 215, 25, 200, 138, 234, 47, 90, 7, 80, 221, 90, 110, 168, 44, 38, 131, 51, 179, 28, 135, 199, 180, 13, 61, 199, 32, 210, 106, 83, 66, 201, 10, 252, 13, 23, 180, 167, 126, 131, 215, 95]
+2025-04-30 20:18:33,606 - INFO - ['[Error] Code: 0x010203']
+2025-04-30 20:18:33,606 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-30 20:18:35,499 - INFO - [2] Authenticating...
+2025-04-30 20:18:37,520 - INFO - Sent AUTH+PASSCODE: [0, 1, 2, 3, 4, 5, 6]
+2025-04-30 20:18:37,520 - INFO - Received response: [0]
+2025-04-30 20:18:37,520 - INFO - [!] Authenticated!!!
+2025-04-30 20:18:41,535 - INFO - 
+[Paths] 1 discovered. (Path=()) s=0, f=1.
+2025-04-30 20:18:41,535 - INFO - Mutation strategy for next input: rapid_toggle_open_close | Original: [1] | Mutated: [2, 1, 1, 2, 2, 2, 1, 1, 1, 2, 1, 2, 2, 2, 1, 1, 1, 1, 2, 2, 1, 2, 2]
+2025-04-30 20:18:41,535 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:41,535 - INFO - 
+[>] Sending command: [2, 1, 1, 2, 2, 2, 1, 1, 1, 2, 1, 2, 2, 2, 1, 1, 1, 1, 2, 2, 1, 2, 2]
+2025-04-30 20:18:41,702 - INFO - [<] Received response: [4]
+2025-04-30 20:18:43,706 - INFO - [State] Device state: Authenticated
+2025-04-30 20:18:43,706 - INFO - [State] Opening the lock mechanism
+2025-04-30 20:18:43,706 - INFO - [State] Lock mechanism open
+2025-04-30 20:18:43,706 - INFO - [State] Closing the lock mechanism
+2025-04-30 20:18:43,706 - INFO - [State] Lock mechanism closed
+2025-04-30 20:18:43,706 - INFO - State transitions: [(2, 3), (3, 4), (4, 5), (5, 6)]
+2025-04-30 20:18:43,706 - INFO - Is interesting: New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')
+2025-04-30 20:18:43,706 - INFO - State exploration strategy: open_without_auth | Sequence: [1]
+2025-04-30 20:18:43,706 - INFO - Mutation strategy for next input: explore_state_jump_0 | Original: [1] | Mutated: [1]
+2025-04-30 20:18:43,706 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:43,706 - INFO - 
+[>] Sending command: [1]
+2025-04-30 20:18:43,886 - INFO - [<] Received response: [0]
+2025-04-30 20:18:45,902 - INFO - [State] Device state: Authenticated
+2025-04-30 20:18:45,902 - INFO - [State] Opening the lock mechanism
+2025-04-30 20:18:45,902 - INFO - [State] Lock mechanism open
+2025-04-30 20:18:45,902 - INFO - [State] Closing the lock mechanism
+2025-04-30 20:18:45,902 - INFO - [State] Lock mechanism closed
+2025-04-30 20:18:45,902 - INFO - [State] Device state: Authenticated
+2025-04-30 20:18:45,902 - INFO - [State] Opening the lock mechanism
+2025-04-30 20:18:45,902 - INFO - [State] Lock mechanism open
+2025-04-30 20:18:45,902 - INFO - State transitions: [(2, 3), (3, 4), (4, 5), (5, 6), (6, 2), (2, 3), (3, 4)]
+2025-04-30 20:18:45,902 - INFO - Is interesting: New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')
+2025-04-30 20:18:45,902 - INFO - 
+[Paths] 1 discovered. (Path=()) s=1, f=2.
+2025-04-30 20:18:45,902 - INFO - Mutation strategy for next input: rapid_toggle_open_close | Original: [2] | Mutated: [2, 2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1]
+2025-04-30 20:18:45,902 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:45,902 - INFO - 
+[>] Sending command: [2, 2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1]
+2025-04-30 20:18:46,082 - INFO - [<] Received response: [0]
+2025-04-30 20:18:48,084 - INFO - [State] Device state: Authenticated
+2025-04-30 20:18:48,084 - INFO - [State] Opening the lock mechanism
+2025-04-30 20:18:48,084 - INFO - [State] Lock mechanism open
+2025-04-30 20:18:48,084 - INFO - [State] Closing the lock mechanism
+2025-04-30 20:18:48,084 - INFO - [State] Lock mechanism closed
+2025-04-30 20:18:48,084 - INFO - [State] Device state: Authenticated
+2025-04-30 20:18:48,084 - INFO - [State] Opening the lock mechanism
+2025-04-30 20:18:48,084 - INFO - [State] Lock mechanism open
+2025-04-30 20:18:48,084 - INFO - [State] Closing the lock mechanism
+2025-04-30 20:18:48,084 - INFO - [State] Lock mechanism closed
+2025-04-30 20:18:48,084 - INFO - State transitions: [(2, 3), (3, 4), (4, 5), (5, 6), (6, 2), (2, 3), (3, 4), (4, 5), (5, 6)]
+2025-04-30 20:18:48,084 - INFO - Is interesting: New path discovered: ('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')
+2025-04-30 20:18:48,084 - INFO - State exploration strategy: close_without_auth | Sequence: [2]
+2025-04-30 20:18:48,084 - INFO - Mutation strategy for next input: explore_state_jump_1 | Original: [2] | Mutated: [2]
+2025-04-30 20:18:48,084 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:48,084 - INFO - 
+[>] Sending command: [2]
+2025-04-30 20:18:48,263 - INFO - [<] Received response: [4]
+2025-04-30 20:18:50,256 - INFO - [State] Device state: Authenticated
+2025-04-30 20:18:50,256 - INFO - [State] Opening the lock mechanism
+2025-04-30 20:18:50,256 - INFO - [State] Lock mechanism open
+2025-04-30 20:18:50,256 - INFO - [State] Closing the lock mechanism
+2025-04-30 20:18:50,256 - INFO - [State] Lock mechanism closed
+2025-04-30 20:18:50,256 - INFO - [State] Device state: Authenticated
+2025-04-30 20:18:50,256 - INFO - [State] Opening the lock mechanism
+2025-04-30 20:18:50,256 - INFO - [State] Lock mechanism open
+2025-04-30 20:18:50,256 - INFO - [State] Closing the lock mechanism
+2025-04-30 20:18:50,256 - INFO - [State] Lock mechanism closed
+2025-04-30 20:18:50,256 - INFO - State transitions: [(2, 3), (3, 4), (4, 5), (5, 6), (6, 2), (2, 3), (3, 4), (4, 5), (5, 6)]
+2025-04-30 20:18:50,256 - INFO - Illegal state transition: 6 -> 2 not allowed. Allowed: 6 -> [0]
+2025-04-30 20:18:50,256 - INFO - Mutation strategy for next input: mutate_command | Original: [2] | Mutated: [2]
+2025-04-30 20:18:50,256 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:50,256 - INFO - 
+[>] Sending command: [2]
+2025-04-30 20:18:50,366 - INFO - [<] Received response: [4]
+2025-04-30 20:18:52,346 - INFO - [State] Device state: Authenticated
+2025-04-30 20:18:52,346 - INFO - [State] Opening the lock mechanism
+2025-04-30 20:18:52,346 - INFO - [State] Lock mechanism open
+2025-04-30 20:18:52,346 - INFO - [State] Closing the lock mechanism
+2025-04-30 20:18:52,346 - INFO - [State] Lock mechanism closed
+2025-04-30 20:18:52,346 - INFO - [State] Device state: Authenticated
+2025-04-30 20:18:52,346 - INFO - [State] Opening the lock mechanism
+2025-04-30 20:18:52,346 - INFO - [State] Lock mechanism open
+2025-04-30 20:18:52,346 - INFO - [State] Closing the lock mechanism
+2025-04-30 20:18:52,346 - INFO - [State] Lock mechanism closed
+2025-04-30 20:18:52,347 - INFO - State transitions: [(2, 3), (3, 4), (4, 5), (5, 6), (6, 2), (2, 3), (3, 4), (4, 5), (5, 6)]
+2025-04-30 20:18:52,347 - INFO - Illegal state transition: 6 -> 2 not allowed. Allowed: 6 -> [0]
+2025-04-30 20:18:52,347 - INFO - State exploration strategy: partial_auth | Sequence: [0, 238, 64, 109]
+2025-04-30 20:18:52,347 - INFO - Mutation strategy for next input: explore_state_jump_2 | Original: [2] | Mutated: [0, 238, 64, 109]
+2025-04-30 20:18:52,347 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:52,347 - INFO - 
+[>] Sending command: [0, 238, 64, 109]
+2025-04-30 20:18:53,546 - INFO - 
+[Paths] 2 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=0, f=1.
+2025-04-30 20:18:53,561 - INFO - State exploration strategy: spam_auth | Sequence: [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6]
+2025-04-30 20:18:53,561 - INFO - Mutation strategy for next input: explore_state_jump_3 | Original: [2, 1, 1, 2, 2, 2, 1, 1, 1, 2, 1, 2, 2, 2, 1, 1, 1, 1, 2, 2, 1, 2, 2] | Mutated: [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6]
+2025-04-30 20:18:53,561 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:53,561 - INFO - 
+[>] Sending command: [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6]
+2025-04-30 20:18:53,562 - INFO - Mutation strategy for next input: deleteRandomBytes | Original: [2, 1, 1, 2, 2, 2, 1, 1, 1, 2, 1, 2, 2, 2, 1, 1, 1, 1, 2, 2, 1, 2, 2] | Mutated: [2, 2, 1, 1, 1, 2, 1, 2, 2, 2, 1, 1, 1, 2, 2, 2]
+2025-04-30 20:18:53,562 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:53,562 - INFO - 
+[>] Sending command: [2, 2, 1, 1, 1, 2, 1, 2, 2, 2, 1, 1, 1, 2, 2, 2]
+2025-04-30 20:18:53,562 - INFO - 
+[Paths] 3 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=0, f=1.
+2025-04-30 20:18:53,562 - INFO - Mutation strategy for next input: repeat_valid_command | Original: [1] | Mutated: [0, 0, 0, 0, 0]
+2025-04-30 20:18:53,562 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:53,562 - INFO - 
+[>] Sending command: [0, 0, 0, 0, 0]
+2025-04-30 20:18:53,562 - INFO - State exploration strategy: spam_open_without_close | Sequence: [0, 1, 2, 3, 4, 5, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+2025-04-30 20:18:53,562 - INFO - Mutation strategy for next input: explore_state_jump_4 | Original: [1] | Mutated: [0, 1, 2, 3, 4, 5, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+2025-04-30 20:18:53,562 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:53,562 - INFO - 
+[>] Sending command: [0, 1, 2, 3, 4, 5, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+2025-04-30 20:18:53,562 - INFO - 
+[Paths] 4 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=0, f=1.
+2025-04-30 20:18:53,562 - INFO - Mutation strategy for next input: repeat_valid_command | Original: [2, 2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1] | Mutated: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2025-04-30 20:18:53,562 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:53,562 - INFO - 
+[>] Sending command: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2025-04-30 20:18:53,567 - INFO - Mutation strategy for next input: repeat_valid_command | Original: [2, 2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1] | Mutated: [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]
+2025-04-30 20:18:53,567 - INFO - ------------------------------------------------------------
+2025-04-30 20:18:53,567 - INFO - 
+[>] Sending command: [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]
+2025-04-30 20:18:53,568 - INFO - 
+[Paths] 4 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=1, f=2.
+2025-04-30 20:18:53,568 - INFO - 
+[Paths] 4 discovered. (Path=()) s=2, f=4. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open')) s=1, f=2. (Path=('[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed', '[State] Device state: Authenticated', '[State] Opening the lock mechanism', '[State] Lock mechanism open', '[State] Closing the lock mechanism', '[State] Lock mechanism closed')) s=2, f=4.
+2025-04-30 20:18:53,679 - INFO - ['[Error] Code: 0x010203']
+2025-04-30 20:18:53,679 - INFO - [1] Connecting to "Smart Lock [Group 10]"...
+2025-04-30 20:18:55,726 - INFO - [2] Authenticating...
+2025-04-30 20:18:57,747 - INFO - Sent AUTH+PASSCODE: [0, 1, 2, 3, 4, 5, 6]
+2025-04-30 20:18:57,747 - INFO - Received response: [0]
+2025-04-30 20:18:57,747 - INFO - [!] Authenticated!!!
+2025-04-30 20:18:59,957 - INFO - Smartlock fuzzing interrupted by user (main).
+2025-04-30 20:18:59,957 - INFO - Smartlock fuzzer run run_0 finished.
